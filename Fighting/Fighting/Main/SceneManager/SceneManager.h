@@ -15,13 +15,13 @@ class SceneManager
 {
 public:
 	/**
-	 * SceneManagerのコンストラクタ
+	 * コンストラクタ
 	 * @param[in] _hwnd ゲームを動作させるウィンドウのハンドル
 	 */
 	SceneManager(HWND _hwnd);
 	
 	/**
-	 * SceneManagerのデストラクタ
+	 * デストラクタ
 	 */
 	~SceneManager();
 
@@ -43,20 +43,20 @@ private:
 	};
 
 	/**
-	 * SceneManagerクラスの制御関数
+	 * 更新関数
 	 */
-	void Control();
+	void Update();
 
 	/**
-	 * SceneManagerクラスの描画関数
+	 * 描画関数
 	 */
 	void Draw();
 
 	SceneBase*			m_pScene;
-	State			m_State;
+	State				m_State;
 	SceneBase::SceneID	m_NextSceneID;
-	HWND			m_hWnd;
-	bool			m_IsGameEnd;
+	HWND				m_hWnd;
+	bool				m_IsGameEnd;
 
 };
 

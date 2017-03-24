@@ -67,19 +67,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="SceneManager\SceneBase\GameScene\GameScene.cpp" />
-    <ClCompile Include="SceneManager\SceneBase\SceneBase.cpp" />
-    <ClCompile Include="SceneManager\SceneBase\TitleScene\TitleScene.cpp" />
-    <ClCompile Include="SceneManager\SceneFactory\SceneFactory.cpp" />
-    <ClCompile Include="SceneManager\SceneManager.cpp" />
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\GameObjectManager.cpp" />
+    <ClCompile Include="Main\Main.cpp" />
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\ObjectManager.cpp" />
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\GameScene.cpp" />
+    <ClCompile Include="Main\SceneManager\SceneBase\SceneBase.cpp" />
+    <ClCompile Include="Main\SceneManager\SceneBase\TitleScene\TitleScene.cpp" />
+    <ClCompile Include="Main\SceneManager\SceneFactory\SceneFactory.cpp" />
+    <ClCompile Include="Main\SceneManager\SceneManager.cpp" />
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager\UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SceneManager\SceneBase\GameScene\GameScene.h" />
-    <ClInclude Include="SceneManager\SceneBase\SceneBase.h" />
-    <ClInclude Include="SceneManager\SceneBase\TitleScene\TitleScene.h" />
-    <ClInclude Include="SceneManager\SceneFactory\SceneFactory.h" />
-    <ClInclude Include="SceneManager\SceneManager.h" />
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\GameObjectManager.h" />
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\ObjectManager.h" />
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\GameScene.h" />
+    <ClInclude Include="Main\SceneManager\SceneBase\SceneBase.h" />
+    <ClInclude Include="Main\SceneManager\SceneBase\TitleScene\TitleScene.h" />
+    <ClInclude Include="Main\SceneManager\SceneFactory\SceneFactory.h" />
+    <ClInclude Include="Main\SceneManager\SceneManager.h" />
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager\UIManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

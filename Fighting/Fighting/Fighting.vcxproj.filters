@@ -23,42 +23,69 @@
     <Filter Include="Main\SceneManager\SceneBase\TitleScene">
       <UniqueIdentifier>{1ebab0cf-e3c3-4d9e-822b-844b628bf630}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager">
+      <UniqueIdentifier>{7400726c-19af-4ada-820f-780ef88d7e01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager">
+      <UniqueIdentifier>{533f6c15-51df-4240-a551-c0aa790e36c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager">
+      <UniqueIdentifier>{fb8eaa6d-c2af-4242-b38f-fc2f96c0e8d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\GameObjectManager.cpp">
+      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager\UIManager.cpp">
+      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\ObjectManager.cpp">
+      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\GameScene.cpp">
+      <Filter>Main\SceneManager\SceneBase\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\SceneManager\SceneBase\TitleScene\TitleScene.cpp">
+      <Filter>Main\SceneManager\SceneBase\TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\SceneManager\SceneBase\SceneBase.cpp">
+      <Filter>Main\SceneManager\SceneBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\SceneManager\SceneFactory\SceneFactory.cpp">
+      <Filter>Main\SceneManager\SceneFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\SceneManager\SceneManager.cpp">
+      <Filter>Main\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\Main.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager\SceneManager.cpp">
-      <Filter>Main\SceneManager</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager\SceneBase\GameScene\GameScene.cpp">
-      <Filter>Main\SceneManager\SceneBase\GameScene</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager\SceneBase\TitleScene\TitleScene.cpp">
-      <Filter>Main\SceneManager\SceneBase\TitleScene</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager\SceneBase\SceneBase.cpp">
-      <Filter>Main\SceneManager\SceneBase</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager\SceneFactory\SceneFactory.cpp">
-      <Filter>Main\SceneManager\SceneFactory</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SceneManager\SceneManager.h">
-      <Filter>Main\SceneManager</Filter>
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\GameObjectManager.h">
+      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager\SceneBase\GameScene\GameScene.h">
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager\UIManager.h">
+      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\ObjectManager.h">
+      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\GameScene.h">
       <Filter>Main\SceneManager\SceneBase\GameScene</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager\SceneBase\TitleScene\TitleScene.h">
+    <ClInclude Include="Main\SceneManager\SceneBase\TitleScene\TitleScene.h">
       <Filter>Main\SceneManager\SceneBase\TitleScene</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager\SceneBase\SceneBase.h">
+    <ClInclude Include="Main\SceneManager\SceneBase\SceneBase.h">
       <Filter>Main\SceneManager\SceneBase</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager\SceneFactory\SceneFactory.h">
+    <ClInclude Include="Main\SceneManager\SceneFactory\SceneFactory.h">
       <Filter>Main\SceneManager\SceneFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\SceneManager\SceneManager.h">
+      <Filter>Main\SceneManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -22,15 +22,20 @@ SceneManager::~SceneManager()
 	delete m_pScene;
 }
 
+
+//----------------------------------------------------------------------------------------------------
+// Public Functions
+//----------------------------------------------------------------------------------------------------
+
 bool SceneManager::Run()
 {
-	Control();
+	Update();
 	Draw();
 
 	return m_IsGameEnd;
 }
 
-void SceneManager::Control()
+void SceneManager::Update()
 {
 	SceneBase::SceneID CurrentSceneID;
 
@@ -50,7 +55,7 @@ void SceneManager::Control()
 		break;
 	case SCENE_PROC:
 		CurrentSceneID = m_pScene->GetSceneID();
-		m_NextSceneID = m_pScene->Control();
+		m_NextSceneID = m_pScene->Update();
 
 		if (m_NextSceneID != CurrentSceneID)
 		{

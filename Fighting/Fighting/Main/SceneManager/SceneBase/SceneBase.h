@@ -28,24 +28,24 @@ public:
 	};
 
 	/**
-	 * SceneBaseクラスのコンストラクタ
+	 * コンストラクタ
 	 * @param[in] _sceneID 作成したSceneBaseクラスのID
 	 */
 	SceneBase(SceneID _sceneID);
 
 	/**
-	 * SceneBaseクラスのデストラクタ
+	 * デストラクタ
 	 */
 	virtual ~SceneBase();
 
 	/**
-	 * SceneBaseの制御関数
+	 * 制御関数
 	 * @return 遷移先のシーンID
 	 */
-	virtual SceneID Control() = 0;
+	virtual SceneID Update() = 0;
 
 	/**
-	 * SceneBaseの描画関数
+	 * 描画関数
 	 */
 	virtual void Draw() = 0;
 
@@ -53,7 +53,7 @@ public:
 	 * シーンIDの取得関数
 	 * @return シーンのID
 	 */
-	inline SceneID GetSceneID()
+	inline SceneID GetSceneID() const
 	{ 
 		return m_SceneID;
 	}

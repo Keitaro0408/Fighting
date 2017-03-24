@@ -17,6 +17,11 @@ SceneFactory::~SceneFactory()
 {
 }
 
+
+//----------------------------------------------------------------------------------------------------
+// Public Functions
+//----------------------------------------------------------------------------------------------------
+
 SceneBase* SceneFactory::CreateScene(SceneBase::SceneID _sceneID)
 {
 	SceneBase* pScene = NULL;

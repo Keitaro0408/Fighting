@@ -15,7 +15,7 @@ TitleScene::~TitleScene()
 {
 }
 
-SceneBase::SceneID TitleScene::Control()
+SceneBase::SceneID TitleScene::Update()
 {
 	SceneID NextSceneID = m_SceneID;
 

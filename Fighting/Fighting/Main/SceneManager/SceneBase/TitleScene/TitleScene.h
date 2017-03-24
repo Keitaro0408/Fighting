@@ -15,29 +15,30 @@ class TitleScene : public SceneBase
 {
 public:
 	/**
-	 * TitleSceneのコンストラクタ
+	 * コンストラクタ
 	 */
 	TitleScene();
 
 	/**
-	 * TitleSceneのデストラクタ
+	 * デストラクタ
 	 */
 	virtual ~TitleScene();
 
 	/**
-	 * TitleSceneの制御関数
+	 * 制御関数
 	 * @return 遷移先のシーンID
 	 */
-	virtual SceneID Control();
+	virtual SceneID Update();
 
 	/**
-	 * TitleSceneの描画関数
+	 * 描画関数
 	 */
 	virtual void Draw();
 
 private:
 	TitleScene(const TitleScene&);
 	void operator=(const TitleScene&);
+
 	int m_SoundIndex;
 
 };

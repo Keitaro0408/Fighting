@@ -14,23 +14,23 @@ class GameScene : public SceneBase
 {
 public:
 	/**
-	 * GameSceneのコンストラクタ
+	 * コンストラクタ
 	 */
 	GameScene();
 
 	/**
-	 * GameSceneのデストラクタ
+	 * デストラクタ
 	 */
 	virtual ~GameScene();
 
 	/**
-	 * GameSceneの制御関数
+	 * 制御関数
 	 * @return シーンの遷移先ID
 	 */
-	virtual SceneID Control();
+	virtual SceneID Update();
 
 	/**
-	 * GameSceneの描画関数
+	 * 描画関数
 	 */
 	virtual void Draw();
 
