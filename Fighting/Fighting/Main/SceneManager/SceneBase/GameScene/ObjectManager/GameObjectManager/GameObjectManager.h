@@ -5,13 +5,42 @@
  */
 #ifndef GAMEOBJECTMANAGER_H
 #define GAMEOBJECTMANAGER_H
+#include <vector>
+#include <memory>
 
+class ObjecBase;
+
+/**
+ * ゲームのUI以外のオブジェクト管理
+ */
 class GameObjectManager
 {
 public:
+	/**
+	 * コンストラクタ
+	 */
 	GameObjectManager();
+
+	/**
+	 * デストラクタ
+	 */
 	~GameObjectManager();
 
+	/**
+	 * 更新関数
+	 */
+	void Update();
+
+	/**
+	 * 描画関数
+	 */
+	void Draw();
+
+private:
+	GameObjectManager(const GameObjectManager&);
+	void operator=(const GameObjectManager&);
+
+	std::vector<std::unique_ptr<ObjecBase> > m_pObjectBase;
 };
 
 

@@ -1,6 +1,10 @@
-﻿#ifndef OBJECTBASE_H
+﻿/**
+ * @file   GameObjectManager.h
+ * @brief  GameObjectManagerクラスのヘッダファイル
+ * @author kotani
+ */
+#ifndef OBJECTBASE_H
 #define OBJECTBASE_H
-#include <D3DX10.h>
 
 /**
  * ゲームのオブジェクトの基底クラス
@@ -27,10 +31,6 @@ public:
 	 * 描画関数
 	 */
 	virtual void Draw() = 0;
-
-protected:
-	D3DXVECTOR2 m_Pos;
-
 };
 
 

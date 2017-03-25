@@ -5,6 +5,10 @@
  */
 #ifndef OBJECTMANAGER_H
 #define OBJECTMANAGER_H
+#include <memory>
+
+class GameObjectManager;
+class UIManager;
 
 class ObjectManager
 {
@@ -28,6 +32,10 @@ public:
 	 * 描画関数
 	 */
 	void Draw();
+
+private:
+	std::unique_ptr<GameObjectManager> m_pGameObjectManager;
+	std::unique_ptr<UIManager>		   m_pUIManager;
 
 };
 

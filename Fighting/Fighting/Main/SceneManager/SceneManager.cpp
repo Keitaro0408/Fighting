@@ -6,7 +6,12 @@
 #include "SceneManager.h"
 #include "SceneBase\SceneBase.h"
 #include "SceneFactory\SceneFactory.h"
+#include "DebugTimer.h"
 
+namespace
+{
+	Lib::DebugTimer Timer(60);
+}
 
 SceneManager::SceneManager(HWND _hwnd) :
 m_pScene(NULL),
@@ -29,9 +34,11 @@ SceneManager::~SceneManager()
 
 bool SceneManager::Run()
 {
+	Timer.Begin();
 	Update();
 	Draw();
-
+	Timer.End();
+	Timer.TimerShow();
 	return m_IsGameEnd;
 }
 

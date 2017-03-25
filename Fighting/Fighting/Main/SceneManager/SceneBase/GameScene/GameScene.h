@@ -5,7 +5,10 @@
  */
 #ifndef GAMESCENE_H
 #define GAMESCENE_H
+#include <memory>
 #include "..\SceneBase.h"
+
+class ObjectManager;
 
 /**
  * ゲームシーンを管理するクラス
@@ -37,6 +40,8 @@ public:
 private:
 	GameScene(const GameScene&);
 	void operator=(const GameScene&);
+
+	std::unique_ptr<ObjectManager> m_pObjectManager;
 
 };
 
