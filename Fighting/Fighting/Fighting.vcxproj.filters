@@ -32,6 +32,9 @@
     <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager">
       <UniqueIdentifier>{fb8eaa6d-c2af-4242-b38f-fc2f96c0e8d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\ObjectBase">
+      <UniqueIdentifier>{41be03e3-1ee5-4746-9b61-9f8791cb3f5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\GameObjectManager.cpp">
@@ -86,6 +89,9 @@
     </ClInclude>
     <ClInclude Include="Main\SceneManager\SceneManager.h">
       <Filter>Main\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\ObjectBase\ObjecBase.h">
+      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\ObjectBase</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

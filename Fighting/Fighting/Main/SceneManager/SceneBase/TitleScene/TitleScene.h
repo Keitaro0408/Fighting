@@ -28,12 +28,12 @@ public:
 	 * 制御関数
 	 * @return 遷移先のシーンID
 	 */
-	virtual SceneID Update();
+	SceneID Update() override;
 
 	/**
 	 * 描画関数
 	 */
-	virtual void Draw();
+	void Draw() override;
 
 private:
 	TitleScene(const TitleScene&);
