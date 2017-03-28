@@ -10,31 +10,43 @@
 #include "KeyDevice.h"
 #include "DX11Manager.h"
 #include "ObjectManager\ObjectManager.h"
+#include "DXInputDevice.h"
 
 GameScene::GameScene() :
 SceneBase(SCENE_GAME)
 {
 	{
-		HWND hWnd = SINGLETON_INSTANCE(Lib::Window).GetWindowHandle();
+		const HWND hWnd = SINGLETON_INSTANCE(Lib::Window).GetWindowHandle();
 
 		// Lib::DX11Manager
 		SINGLETON_CREATE(Lib::DX11Manager);
 		SINGLETON_INSTANCE(Lib::DX11Manager).Init(hWnd);
-		// end
 
 		// Lib::DSoundManager
 		SINGLETON_CREATE(Lib::DSoundManager);
 		SINGLETON_INSTANCE(Lib::DSoundManager).Init(hWnd);
-		// end
+
+		SINGLETON_CREATE(Lib::DXInputDevice);
+
+		// InputDevice関係
+		SINGLETON_CREATE(Lib::DXInputDevice);
+		SINGLETON_INSTANCE(Lib::DXInputDevice).Init(hWnd);
+
+		SINGLETON_CREATE(Lib::MouseDevice);
+		SINGLETON_INSTANCE(Lib::MouseDevice).Init(
+			SINGLETON_INSTANCE(Lib::DXInputDevice).GetInputDevice(), hWnd);
+
+		SINGLETON_CREATE(Lib::KeyDevice);
+		SINGLETON_INSTANCE(Lib::KeyDevice).Init(
+			SINGLETON_INSTANCE(Lib::DXInputDevice).GetInputDevice(), hWnd);
 	}
 
 	{
-		ID3D11Device* pDevice = SINGLETON_INSTANCE(Lib::DX11Manager).GetDevice();
+		ID3D11Device* const pDevice = SINGLETON_INSTANCE(Lib::DX11Manager).GetDevice();
 
 		// Lib::TextureManager
 		SINGLETON_CREATE(Lib::TextureManager);
 		SINGLETON_INSTANCE(Lib::TextureManager).Init(pDevice);
-		// end
 	}
 
 	m_pObjectManager.reset(new ObjectManager());
@@ -47,17 +59,25 @@ GameScene::~GameScene()
 	// Lib::TextureManager
 	SINGLETON_INSTANCE(Lib::TextureManager).Release();
 	SINGLETON_DELETE(Lib::TextureManager);
-	// end
+
+
+	// InputDevice関係
+	SINGLETON_INSTANCE(Lib::KeyDevice).Release();
+	SINGLETON_DELETE(Lib::KeyDevice);
+
+	SINGLETON_INSTANCE(Lib::MouseDevice).Release();
+	SINGLETON_DELETE(Lib::MouseDevice);
+
+	SINGLETON_INSTANCE(Lib::DXInputDevice).Release();
+	SINGLETON_DELETE(Lib::DXInputDevice);
 
 	// Lib::DSoundManager
 	SINGLETON_INSTANCE(Lib::DSoundManager).Release();
 	SINGLETON_DELETE(Lib::DSoundManager);
-	// end
 
 	// Lib::DX11Manager
 	SINGLETON_INSTANCE(Lib::DX11Manager).Release();
 	SINGLETON_DELETE(Lib::DX11Manager);
-	// end
 }
 
 
@@ -68,11 +88,13 @@ GameScene::~GameScene()
 SceneBase::SceneID GameScene::Update()
 {
 	m_pObjectManager->Update();
+	SINGLETON_INSTANCE(Lib::KeyDevice).Update();
 	return m_SceneID;
 }
 
 void GameScene::Draw()
 {
+	SINGLETON_INSTANCE(Lib::DX11Manager).SetDepthStencilTest(false);
 	SINGLETON_INSTANCE(Lib::DX11Manager).BeginScene();
 	m_pObjectManager->Draw();
 	SINGLETON_INSTANCE(Lib::DX11Manager).EndScene();

@@ -5,9 +5,7 @@
  */
 #ifndef BACKGROUND_H
 #define BACKGROUND_H
-#include <memory>
 #include "../../ObjectBase/ObjecBase.h"
-#include "Vertex2D.h"
 
 /**
  * 背景管理クラス
@@ -39,10 +37,9 @@ private:
 	BackGround(const BackGround&);
 	void operator=(const BackGround&);
 	
-	static const D3DXVECTOR2 m_Pos;
-	static const D3DXVECTOR2 m_RectSize;
+	static const D3DXVECTOR2	   m_Pos;
+	static const D3DXVECTOR2	   m_RectSize;
 	
-	std::unique_ptr<Lib::Vertex2D> m_pVertex;
 	D3DXVECTOR2					   m_UV[4];
 	int							   m_TextureIndex;
 
