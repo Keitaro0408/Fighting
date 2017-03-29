@@ -10,7 +10,7 @@
 
 namespace
 {
-	Lib::DebugTimer Timer(60);
+	Lib::DebugTimer g_Timer(60);
 }
 
 SceneManager::SceneManager(HWND _hwnd) :
@@ -34,11 +34,11 @@ SceneManager::~SceneManager()
 
 bool SceneManager::Run()
 {
-	Timer.Begin();
+	g_Timer.Begin();
 	Update();
 	Draw();
-	Timer.End();
-	Timer.TimerShow();
+	g_Timer.End();
+	g_Timer.TimerShow();
 	return m_IsGameEnd;
 }
 

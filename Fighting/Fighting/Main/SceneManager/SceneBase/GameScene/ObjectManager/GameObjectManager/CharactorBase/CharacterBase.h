@@ -49,11 +49,14 @@ protected:
 
 	static const float		 m_GroundHeight;
 	static const float		 m_StageWidth;
+	static const float		 m_JumpPower;
 
 	D3DXVECTOR2				 m_Pos;
 	D3DXVECTOR2				 m_RectSize;
 	D3DXVECTOR2				 m_Collision;
+	float					 m_OldHeight;
 	bool					 m_isRight;
+	bool					 m_isJump; //! ジャンプしているか？
 
 };
 

@@ -12,7 +12,7 @@
 Player::Player() :
 CharacterBase(D3DXVECTOR2(120, 550), D3DXVECTOR2(256, 256), true),
 m_PlayerAnimState(WAIT),
-m_MoveSpeed(3.f)
+m_MoveSpeed(4.5f)
 {
 	// Lib::AnimTexture Init
 	InitAnim(WAIT, "Wait", 7);
@@ -59,24 +59,47 @@ void Player::Update()
 
 	m_pAnimTexture[m_PlayerAnimState]->Control(true);
 
+	if (m_isJump)
+	{
+		float HeightTmp = m_Pos.y;
+		m_Pos.y += (m_Pos.y - m_OldHeight) + 1.f;
+		m_OldHeight = HeightTmp;
+		if (550.f < m_Pos.y)
+		{
+			m_isJump = false;
+			m_Pos.y = 550.f;
+		}
+	}
+	
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_ON)
 	{
 		m_PlayerAnimState = BACK_WALK;
 		m_Pos.x -= m_MoveSpeed;
 	}
-	else if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_ON)
+
+	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_ON)
 	{
 		m_PlayerAnimState = FRONT_WALK;
 		m_Pos.x += m_MoveSpeed;
 	}
-	else if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_UPARROW] == Lib::KEY_ON)
+
+	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_UPARROW] == Lib::KEY_PUSH &&
+		!m_isJump)
 	{
 		// ジャンプ処理.
+		m_OldHeight = m_Pos.y;
+		m_Pos.y -= m_JumpPower;
+		//m_JumpAcceleration -= 0.1;
+		m_isJump = true;
 	}
-	else
+
+	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_OFF &&
+		SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_OFF)
 	{
 		m_PlayerAnimState = WAIT;
 	}
+
+
 }
 
 void Player::Draw()

@@ -50,6 +50,9 @@
     <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\Enemy">
       <UniqueIdentifier>{7954323a-1005-44ce-bd16-b7cc12cbf370}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\CommandManager">
+      <UniqueIdentifier>{3b5cada3-6eda-4478-abe6-8e5c976db17a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\GameObjectManager.cpp">
@@ -89,6 +92,9 @@
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\Player</Filter>
     </ClCompile>
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Enemy\Enemy.cpp" />
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\CommandManager\CommandManager.cpp">
+      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\CommandManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\GameObjectManager.h">
@@ -128,5 +134,8 @@
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\Player</Filter>
     </ClInclude>
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Enemy\Enemy.h" />
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\CommandManager\CommandManager.h">
+      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\CommandManager</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

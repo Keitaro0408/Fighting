@@ -71,6 +71,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\CommandManager\CommandManager.cpp" />
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Enemy\Enemy.cpp" />
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\CharacterBase.cpp" />
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\BackGround\BackGround.cpp" />
@@ -86,6 +87,7 @@
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Player\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\CommandManager\CommandManager.h" />
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Enemy\Enemy.h" />
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\CharacterBase.h" />
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\BackGround\BackGround.h" />
