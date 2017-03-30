@@ -57,7 +57,7 @@ void Player::Update()
 	SINGLETON_INSTANCE(Lib::KeyDevice).KeyCheck(DIK_RIGHT);
 	SINGLETON_INSTANCE(Lib::KeyDevice).KeyCheck(DIK_UPARROW);
 
-	m_pAnimTexture[m_PlayerAnimState]->Control(true);
+	m_pAnimTexture[m_PlayerAnimState]->Control(false,Lib::ANIM_LOOP);
 
 	if (m_isJump)
 	{

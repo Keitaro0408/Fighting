@@ -12,13 +12,10 @@ namespace Lib
 {
 	class AnimFileParser;
 
-	struct Anim
+	enum ANIM_OPERATION
 	{
-		float LeftUpX;
-		float LeftUpY;
-		float Width;
-		float Height;
-		int	  AnimNum;
+		ANIM_LOOP,   //!< アニメーションをループする。
+		ANIM_NORMAL  //!< 再生が終わると停止する 
 	};
 
 	// TODO 下に続いているアニメーションも対応したい
@@ -69,7 +66,7 @@ namespace Lib
 		 */
 		inline void ResetAnim()
 		{
-			m_AnimCount = 1;
+			m_AnimCount = 0;
 		}
 
 		/**
@@ -91,10 +88,24 @@ namespace Lib
 		/**
 		 * アニメーション制御
 		 * @param[in] _isReverse 逆再生するか？
+		 * @param[in] _playOperation 再生設定
+		 * @return アニメーションが最後ならtrue
 		 */
-		void Control(bool _isReverse);
+		bool Control(bool _isReverse, ANIM_OPERATION _playOperation);
 
 	private:
+		struct Anim
+		{
+			float LeftUpX;
+			float LeftUpY;
+			float Width;
+			float Height;
+			int	  AnimNum;
+		};
+
+		bool NormalControl(ANIM_OPERATION _playOperation);
+		bool ReverseControl(ANIM_OPERATION _playOperation);
+
 		AnimFileParser* m_pAnimFileParser;
 		Anim			m_AnimData;
 		D3DXVECTOR2		m_TextureSize;
