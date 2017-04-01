@@ -41,6 +41,7 @@ private:
 	void operator=(const GameObjectManager&);
 
 	std::vector<std::unique_ptr<ObjecBase> > m_pObjectBase;
+
 };
 
 

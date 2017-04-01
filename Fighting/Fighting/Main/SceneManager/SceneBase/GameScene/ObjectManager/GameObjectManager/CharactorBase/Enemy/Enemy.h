@@ -8,8 +8,7 @@ public:
 	/**
 	 * コンストラクタ
 	 */
-	Enemy() :
-		CharacterBase(D3DXVECTOR2(0, 0), D3DXVECTOR2(256, 256), true){};
+	Enemy();
 
 	/**
 	 * デストラクタ
@@ -27,6 +26,8 @@ public:
 	void Draw() override;
 
 private:
+	int			  m_TextureIndex;
+	float		  m_MoveSpeed;
 
 
 };

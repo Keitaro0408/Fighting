@@ -49,17 +49,17 @@ SceneBase(SCENE_GAME)
 		SINGLETON_INSTANCE(Lib::TextureManager).Init(pDevice);
 	}
 
-	m_pObjectManager.reset(new ObjectManager());
+	m_pObjectManager = new ObjectManager();
 }
 
 GameScene::~GameScene()
 {
-	m_pObjectManager.reset();
+	delete m_pObjectManager;
 
-	// Lib::TextureManager
+	// Lib::TextureManager Delete
 	SINGLETON_INSTANCE(Lib::TextureManager).Release();
 	SINGLETON_DELETE(Lib::TextureManager);
-
+	// Lib::TextureManager Delete End
 
 	// InputDevice関係
 	SINGLETON_INSTANCE(Lib::KeyDevice).Release();

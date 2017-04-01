@@ -6,8 +6,6 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "../../CharactorBase/CharacterBase.h"
-#include "AnimTexture.h"
-#include <map>
 
 /**
  * 自分が操作するキャラクターのクラス
@@ -36,20 +34,34 @@ public:
 	void Draw() override;
 
 private:
-	typedef std::map<int ,std::unique_ptr<Lib::AnimTexture> > CharacterAnim;
+	/**
+	 * ジャンプ処理
+	 */
+	void JumpControl();
 
 	/**
-	 * アニメーションの初期化
-	 * @param[in] _animEnum アニメーションのenum
-	 * @param[in] _animName アニメーションの名前
-	 * @param[in] _setFrame 何フレームでアニメーションを進めるかの数値
+	 * 左のボタンの処理
 	 */
-	void InitAnim(ANIMATION _animEnum, LPCTSTR _animName, int _setFrame);
-	
-	CharacterAnim m_pAnimTexture;
+	void LeftKeyControl();
+
+	/**
+	 * 右のボタンの処理
+	 */
+	void RightKeyControl();
+
+	/**
+	 * 上のボタンの処理
+	 */
+	void UpKeyControl();
+
+	/**
+	 * 下のボタンの処理
+	 */
+	void DownKeyControl();
+
 	int			  m_TextureIndex;
 	float		  m_MoveSpeed;
-	ANIMATION	  m_PlayerAnimState;
+
 };
 
 

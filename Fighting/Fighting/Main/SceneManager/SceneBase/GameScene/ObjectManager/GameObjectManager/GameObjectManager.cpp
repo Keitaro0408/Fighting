@@ -7,12 +7,14 @@
 #include "../ObjectBase/ObjecBase.h"
 #include "BackGround\BackGround.h"
 #include "CharactorBase\Player\Player.h"
+#include "CharactorBase\Enemy\Enemy.h"
 
 
 GameObjectManager::GameObjectManager()
 {
 	m_pObjectBase.push_back(std::unique_ptr<BackGround>(new BackGround()));
 	m_pObjectBase.push_back(std::unique_ptr<Player>(new Player()));
+	m_pObjectBase.push_back(std::unique_ptr<Enemy>(new Enemy()));
 }
 
 GameObjectManager::~GameObjectManager()

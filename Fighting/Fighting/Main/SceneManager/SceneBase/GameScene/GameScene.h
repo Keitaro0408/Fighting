@@ -41,7 +41,7 @@ private:
 	GameScene(const GameScene&);
 	void operator=(const GameScene&);
 
-	std::unique_ptr<ObjectManager> m_pObjectManager;
+	ObjectManager* m_pObjectManager;
 
 };
 
