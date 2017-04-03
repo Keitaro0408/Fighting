@@ -37,15 +37,24 @@ public:
 	 */
 	virtual void Draw() override{};
 
+	/**
+	 * 座標を取得する
+	 * @return キャラクターの座標
+	 */
+	inline D3DXVECTOR2& GetPos()
+	{
+		return m_Pos;
+	}
+
 protected:
 	typedef std::map<int, std::unique_ptr<Lib::AnimTexture> > CharacterAnim;
 	enum ANIMATION
 	{
-		WAIT,
-		FRONT_WALK,
-		BACK_WALK,
-		JUMP,
-		SQUAT,
+		ANIM_WAIT,
+		ANIM_FRONT_WALK,
+		ANIM_BACK_WALK,
+		ANIM_JUMP,
+		ANIM_SQUAT,
 		ANIM_MAX
 	};
 
@@ -63,7 +72,6 @@ protected:
 	 */
 	void InvertUV(D3DXVECTOR2* _uv);
 
-
 	static const float		 m_GroundHeight;
 	static const float		 m_StageWidth;
 	static const float		 m_JumpPower;
@@ -76,7 +84,8 @@ protected:
 	ANIMATION				 m_AnimState;
 	float					 m_OldHeight;
 	bool					 m_isRight;
-	bool					 m_isJump; //! ジャンプしているか？
+	bool					 m_isSquat; //!< しゃがんでいるか？ 
+	bool					 m_isJump;  //!< ジャンプしているか？
 
 
 };

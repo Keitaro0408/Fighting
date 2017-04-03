@@ -59,8 +59,9 @@ private:
 	 */
 	void DownKeyControl();
 
-	int			  m_TextureIndex;
-	float		  m_MoveSpeed;
+	int					m_TextureIndex;
+	float				m_MoveSpeed;
+	Lib::ANIM_OPERATION m_AnimOperation; //!< アニメーションの再生設定
 
 };
 

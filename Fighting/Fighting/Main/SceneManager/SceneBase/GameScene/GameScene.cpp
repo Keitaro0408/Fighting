@@ -61,7 +61,7 @@ GameScene::~GameScene()
 	SINGLETON_DELETE(Lib::TextureManager);
 	// Lib::TextureManager Delete End
 
-	// InputDevice関係
+	// Lib::InputDevice関係
 	SINGLETON_INSTANCE(Lib::KeyDevice).Release();
 	SINGLETON_DELETE(Lib::KeyDevice);
 
@@ -71,13 +71,15 @@ GameScene::~GameScene()
 	SINGLETON_INSTANCE(Lib::DXInputDevice).Release();
 	SINGLETON_DELETE(Lib::DXInputDevice);
 
-	// Lib::DSoundManager
+	// Lib::DSoundManager Delete
 	SINGLETON_INSTANCE(Lib::DSoundManager).Release();
 	SINGLETON_DELETE(Lib::DSoundManager);
+	// Lib::DSoundManager Delete End
 
-	// Lib::DX11Manager
+	// Lib::DX11Manager Delete
 	SINGLETON_INSTANCE(Lib::DX11Manager).Release();
 	SINGLETON_DELETE(Lib::DX11Manager);
+	// Lib::DX11Manager Delete End
 }
 
 

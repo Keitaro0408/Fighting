@@ -19,9 +19,7 @@ m_MoveSpeed(4.5f)
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDevice(),
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
 		SINGLETON_INSTANCE(Lib::Window).GetWindowHandle()));
-
-	m_pVertex->Init(&m_RectSize, m_pAnimTexture[WAIT]->GetUV());
-
+	m_pVertex->Init(&m_RectSize, m_pAnimTexture[ANIM_WAIT]->GetUV());
 	m_pVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
 		GetTexture(m_TextureIndex));
 	// Lib::Vertex2D Init end
@@ -39,12 +37,7 @@ void Enemy::Update()
 void Enemy::Draw()
 {
 	D3DXVECTOR2 UV[4];
-
-	for (int i = 0; i < 4; i++)
-	{
-		UV[i] = m_pAnimTexture[m_AnimState]->GetUV()[i];
-	}
+	memcpy(UV, m_pAnimTexture[m_AnimState]->GetUV(), sizeof(D3DXVECTOR2) * 4);
 	InvertUV(UV);
-
 	m_pVertex->Draw(&m_Pos, UV);
 }

@@ -12,16 +12,17 @@ const float CharacterBase::m_JumpPower = 20.f;
 CharacterBase::CharacterBase(D3DXVECTOR2& _pos, D3DXVECTOR2& _rectSize, bool isRight) :
 m_Pos(_pos),
 m_RectSize(_rectSize),
-m_AnimState(WAIT),
+m_AnimState(ANIM_WAIT),
 m_isRight(isRight),
-m_HP(100)
+m_HP(100),
+m_isSquat(false)
 {
 	// Lib::AnimTexture Init
-	InitAnim(WAIT, "Wait", 10);
-	InitAnim(FRONT_WALK, "FrontWalk", 7);
-	InitAnim(BACK_WALK, "BackWalk", 7);
-	InitAnim(JUMP, "Jump", 3);
-	InitAnim(SQUAT, "Squat", 7);
+	InitAnim(ANIM_WAIT, "Wait", 10);
+	InitAnim(ANIM_FRONT_WALK, "FrontWalk", 7);
+	InitAnim(ANIM_BACK_WALK, "BackWalk", 7);
+	InitAnim(ANIM_JUMP, "Jump", 2);
+	InitAnim(ANIM_SQUAT, "Squat", 3);
 	// Lib::AnimTexture Init End
 }
 

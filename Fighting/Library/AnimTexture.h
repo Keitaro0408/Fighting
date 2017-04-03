@@ -64,10 +64,7 @@ namespace Lib
 		/**
 		 * アニメーションをリセットする
 		 */
-		inline void ResetAnim()
-		{
-			m_AnimCount = 0;
-		}
+		void ResetAnim();
 
 		/**
 		 * テクスチャのスクロール値を取得する

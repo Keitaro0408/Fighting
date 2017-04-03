@@ -13,8 +13,8 @@
 GameObjectManager::GameObjectManager()
 {
 	m_pObjectBase.push_back(std::unique_ptr<BackGround>(new BackGround()));
-	m_pObjectBase.push_back(std::unique_ptr<Player>(new Player()));
 	m_pObjectBase.push_back(std::unique_ptr<Enemy>(new Enemy()));
+	m_pObjectBase.push_back(std::unique_ptr<Player>(new Player()));
 }
 
 GameObjectManager::~GameObjectManager()

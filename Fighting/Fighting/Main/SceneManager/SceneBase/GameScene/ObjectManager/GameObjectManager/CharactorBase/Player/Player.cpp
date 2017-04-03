@@ -24,7 +24,7 @@ m_MoveSpeed(4.5f)
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
 		SINGLETON_INSTANCE(Lib::Window).GetWindowHandle()));
 
-	m_pVertex->Init(&m_RectSize, m_pAnimTexture[WAIT]->GetUV());
+	m_pVertex->Init(&m_RectSize, m_pAnimTexture[ANIM_WAIT]->GetUV());
 
 	m_pVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
 		GetTexture(m_TextureIndex));
@@ -56,10 +56,18 @@ void Player::Update()
 	{
 		JumpControl();
 	}
-	else
+	else if (m_AnimState != ANIM_SQUAT)
 	{
-		/* ジャンプ中以外のアニメーション処理 */
-		m_pAnimTexture[m_AnimState]->Control(false, Lib::ANIM_LOOP);
+		m_AnimOperation =  Lib::ANIM_LOOP;
+	}
+
+	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_OFF &&
+		SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_OFF &&
+		SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWN] == Lib::KEY_OFF &&
+		!m_isJump)
+	{
+		m_AnimState = ANIM_WAIT;
+		m_AnimOperation = Lib::ANIM_LOOP;
 	}
 
 	LeftKeyControl();
@@ -67,36 +75,40 @@ void Player::Update()
 	UpKeyControl();
 	DownKeyControl();
 
-	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_OFF &&
-		SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_OFF &&
-		SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_OFF &&
-		!m_isJump)
+	if (m_AnimState == ANIM_SQUAT && m_AnimOperation == Lib::ANIM_LOOP)
 	{
-		m_AnimState = WAIT;
+		int test = 0;
+		test++;
 	}
+	m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
 }
 
 void Player::Draw()
 {
+	if (m_AnimState == ANIM_SQUAT && m_AnimOperation == Lib::ANIM_LOOP)
+	{
+		int test = 0;
+		test++;
+	}
 	m_pVertex->Draw(&m_Pos, m_pAnimTexture[m_AnimState]->GetUV());
 }
 
 
 //----------------------------------------------------------------------------------------------------
-// Public Functions
+// Private Functions
 //----------------------------------------------------------------------------------------------------
 
 void Player::JumpControl()
 {
-	m_AnimState = JUMP;
-	m_pAnimTexture[m_AnimState]->Control(false, Lib::ANIM_NORMAL);
+	m_AnimState = ANIM_JUMP;
+	m_AnimOperation = Lib::ANIM_NORMAL;
 
 	float HeightTmp = m_Pos.y;
 	m_Pos.y += (m_Pos.y - m_OldHeight) + 1.f;
 	m_OldHeight = HeightTmp;
 	if (550.f < m_Pos.y)
 	{
-		m_pAnimTexture[m_AnimState]->ResetAnim();
+		m_pAnimTexture[ANIM_JUMP]->ResetAnim();
 		m_isJump = false;
 		m_Pos.y = 550.f;
 	}
@@ -108,7 +120,8 @@ void Player::LeftKeyControl()
 	{
 		if (!m_isJump)
 		{
-			m_AnimState = BACK_WALK;
+			m_AnimState = ANIM_BACK_WALK;
+			m_AnimOperation = Lib::ANIM_LOOP;
 		}
 		m_Pos.x -= m_MoveSpeed;
 	}
@@ -120,7 +133,8 @@ void Player::RightKeyControl()
 	{
 		if (!m_isJump)
 		{
-			m_AnimState = FRONT_WALK;
+			m_AnimState = ANIM_FRONT_WALK;
+			m_AnimOperation = Lib::ANIM_LOOP;
 		}
 		m_Pos.x += m_MoveSpeed;
 	}
@@ -140,8 +154,15 @@ void Player::UpKeyControl()
 
 void Player::DownKeyControl()
 {
-	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWNARROW] == Lib::KEY_ON)
+	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWNARROW] == Lib::KEY_ON && !m_isJump)
 	{
-
+		m_isSquat = true;
+		m_AnimState = ANIM_SQUAT;
+		m_AnimOperation = Lib::ANIM_NORMAL;
+	}
+	else if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWNARROW] == Lib::KEY_RELEASE)
+	{
+		m_isSquat = false;
+		m_pAnimTexture[ANIM_SQUAT]->ResetAnim();
 	}
 }
