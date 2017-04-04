@@ -11,6 +11,8 @@
 #include "Vertex2D.h"
 #include "AnimTexture.h"
 
+class CombatManager;
+
 /**
  * キャラクターの基底クラス
  */
@@ -20,12 +22,12 @@ public:
 	/**
 	 * コンストラクタ
 	 */
-	CharacterBase(D3DXVECTOR2& _pos, D3DXVECTOR2& _rectSize, bool isRight);
+	CharacterBase(D3DXVECTOR2& _pos, D3DXVECTOR2& _rectSize, const std::shared_ptr<CombatManager> &_pCombatManager, bool isRight);
 
 	/**
 	 * デストラクタ
 	 */
-	~CharacterBase(){};
+	~CharacterBase() = default;
 
 	/**
 	 * 更新関数
@@ -50,12 +52,29 @@ protected:
 	typedef std::map<int, std::unique_ptr<Lib::AnimTexture> > CharacterAnim;
 	enum ANIMATION
 	{
-		ANIM_WAIT,
-		ANIM_FRONT_WALK,
-		ANIM_BACK_WALK,
-		ANIM_JUMP,
-		ANIM_SQUAT,
-		ANIM_MAX
+		ANIM_WAIT,		 //!< 待機
+		ANIM_FRONT_WALK, //!< 前歩き
+		ANIM_BACK_WALK,  //!< 後ろ歩き
+		ANIM_JUMP,		 //!< ジャンプ
+		ANIM_SQUAT,		 //!< しゃがみ
+		ANIM_LOW_PUNCH,  //!< 弱パンチ
+		ANIM_HIGH_PUNCH, //!< 強パンチ
+		ANIM_LOW_KICK,   //!< 弱キック
+		ANIM_HIGH_KICK,	 //!< 強キック
+		ANIM_SQUAT_LOW_PUNCH,  //!< しゃがみ弱パンチ
+		ANIM_SQUAT_HIGH_PUNCH, //!< しゃがみ強パンチ
+		ANIM_SQUAT_LOW_KICK,   //!< しゃがみ弱キック
+		ANIM_SQUAT_HIGH_KICK,  //!< しゃがみ強キック
+		ANIM_MAX		
+	};
+
+	struct CHARACTER_STATE
+	{
+		int							   HP;
+		bool						   isRight;
+		bool						   isSquat; //!< しゃがんでいるか?
+		bool						   isJump;  //!< ジャンプしているか?
+		bool						   isAttackMotion; //!< 攻撃中か?
 	};
 
 	/**
@@ -72,22 +91,18 @@ protected:
 	 */
 	void InvertUV(D3DXVECTOR2* _uv);
 
-	static const float		 m_GroundHeight;
-	static const float		 m_StageWidth;
-	static const float		 m_JumpPower;
+	static const float			   m_GroundHeight;
+	static const float			   m_StageWidth;
+	static const float			   m_JumpPower;
 
-	int						 m_HP;
-	D3DXVECTOR2				 m_Pos;
-	D3DXVECTOR2				 m_RectSize;
-	D3DXVECTOR2				 m_Collision;
-	CharacterAnim			 m_pAnimTexture;
-	ANIMATION				 m_AnimState;
-	float					 m_OldHeight;
-	bool					 m_isRight;
-	bool					 m_isSquat; //!< しゃがんでいるか？ 
-	bool					 m_isJump;  //!< ジャンプしているか？
-
-
+	std::shared_ptr<CombatManager> m_pCombatManager;
+	D3DXVECTOR2					   m_Pos;
+	D3DXVECTOR2					   m_RectSize;
+	D3DXVECTOR2					   m_Collision;
+	CharacterAnim				   m_pAnimTexture;
+	ANIMATION					   m_AnimState;
+	float						   m_OldHeight;
+	CHARACTER_STATE				   m_CharacterState;
 };
 
 

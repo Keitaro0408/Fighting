@@ -17,12 +17,12 @@ public:
 	/**
 	 * コンストラクタ
 	 */
-	ObjecBase(){};
+	ObjecBase() = default;
 
 	/**
 	 * デストラクタ
 	 */
-	virtual ~ObjecBase(){};
+	virtual ~ObjecBase() = default;
 
 	/**
 	 * 更新関数

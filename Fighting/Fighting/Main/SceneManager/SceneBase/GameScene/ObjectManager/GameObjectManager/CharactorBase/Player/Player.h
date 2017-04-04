@@ -7,6 +7,8 @@
 #define PLAYER_H
 #include "../../CharactorBase/CharacterBase.h"
 
+class CommandManager;
+
 /**
  * 自分が操作するキャラクターのクラス
  */
@@ -16,7 +18,7 @@ public:
 	/**
 	 * コンストラクタ
 	 */
-	Player();
+	Player(const std::shared_ptr<CombatManager> &_pCombatManager);
 
 	/**
 	 * デストラクタ
@@ -34,6 +36,11 @@ public:
 	void Draw() override;
 
 private:
+	/**
+	 * 使うキーのチェック
+	 */
+	void KeyCheck();
+
 	/**
 	 * ジャンプ処理
 	 */
@@ -59,9 +66,30 @@ private:
 	 */
 	void DownKeyControl();
 
-	int					m_TextureIndex;
-	float				m_MoveSpeed;
-	Lib::ANIM_OPERATION m_AnimOperation; //!< アニメーションの再生設定
+	/**
+	 * Zボタン処理
+	 */
+	void ZKeyControl();
+
+	/**
+	 * Xボタン処理
+	 */
+	void XKeyControl();
+
+	/**
+	 * Cボタン処理
+	 */
+	void CKeyControl();
+
+	/**
+	 * Vボタン処理
+	 */
+	void VKeyControl();
+
+	std::unique_ptr<CommandManager> m_pCommandManager;
+	int							    m_TextureIndex;
+	float						    m_MoveSpeed;
+	Lib::ANIM_OPERATION			    m_AnimOperation; //!< アニメーションの再生設定
 
 };
 

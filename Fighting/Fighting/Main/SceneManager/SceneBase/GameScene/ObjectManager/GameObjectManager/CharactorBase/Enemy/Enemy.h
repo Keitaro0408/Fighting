@@ -1,4 +1,9 @@
-﻿#ifndef ENEMY_H
+﻿/**
+ * @file   Enemy.h
+ * @brief  Enemyクラスのヘッダファイル
+ * @author kotani
+ */
+#ifndef ENEMY_H
 #define ENEMY_H
 #include "../../CharactorBase/CharacterBase.h"
 
@@ -8,7 +13,7 @@ public:
 	/**
 	 * コンストラクタ
 	 */
-	Enemy();
+	Enemy(const std::shared_ptr<CombatManager> &_pCombatManager);
 
 	/**
 	 * デストラクタ

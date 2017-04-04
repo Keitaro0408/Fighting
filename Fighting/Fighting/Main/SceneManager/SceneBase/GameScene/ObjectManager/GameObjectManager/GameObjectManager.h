@@ -8,6 +8,7 @@
 #include <vector>
 #include <memory>
 
+class CombatManager;
 class ObjecBase;
 
 /**
@@ -40,6 +41,7 @@ private:
 	GameObjectManager(const GameObjectManager&);
 	void operator=(const GameObjectManager&);
 
+	std::shared_ptr<CombatManager>			 m_pCombatManager;
 	std::vector<std::unique_ptr<ObjecBase> > m_pObjectBase;
 
 };
