@@ -8,10 +8,6 @@
 #include "SceneFactory\SceneFactory.h"
 #include "DebugTimer.h"
 
-namespace
-{
-	Lib::DebugTimer g_Timer(60);
-}
 
 SceneManager::SceneManager(HWND _hwnd) :
 m_pScene(NULL),
@@ -34,11 +30,8 @@ SceneManager::~SceneManager()
 
 bool SceneManager::Run()
 {
-	g_Timer.Begin();
 	Update();
 	Draw();
-	g_Timer.End();
-	g_Timer.TimerShow();
 	return m_IsGameEnd;
 }
 

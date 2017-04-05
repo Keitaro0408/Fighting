@@ -91,6 +91,7 @@ private:
 	float						    m_MoveSpeed;
 	Lib::ANIM_OPERATION			    m_AnimOperation; //!< アニメーションの再生設定
 
+
 };
 
 

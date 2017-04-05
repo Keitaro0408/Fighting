@@ -20,6 +20,7 @@ m_MoveSpeed(4.5f)
 	// Lib::TextureManager Texture Load
 	SINGLETON_INSTANCE(Lib::TextureManager).
 		Load("Resource/GameScene/Character.png", &m_TextureIndex);
+
 	// Lib::TextureManager Texture Load end
 
 	// Lib::Vertex2D Init
@@ -76,25 +77,35 @@ void Player::Update()
 	RightKeyControl();
 	UpKeyControl();
 	DownKeyControl();
+
 	ZKeyControl();
 	XKeyControl();
 	CKeyControl();
 	VKeyControl();
 	
-	if (!m_CharacterState.isAttackMotion)
+	/* 攻撃のモーション中か */
+	if (m_CharacterState.isAttackMotion)
 	{
-		m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
-	}
-	else
-	{
-		/* モーション中にしゃがみを解除したらフラグが切り替わらない */
-		DownKeyControl();
 		bool isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
+		/* アニメーション再生が最後ならフラグを反転させてisAttackMotionをfalseにしている */
 		m_CharacterState.isAttackMotion = !isAnimEnd;
 		if (!m_CharacterState.isAttackMotion)
 		{
 			m_pAnimTexture[m_AnimState]->ResetAnim();
 		}
+		else
+		{
+			int attackAnimCount = m_pAnimTexture[m_AnimState]->GetAnimCount();
+			
+			if (m_SkillSpec[m_AnimState].FirstHitCheckCount < attackAnimCount)
+			{
+				int var = 0;
+			}
+		}
+	}
+	else
+	{
+		m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
 	}
 	
 	m_pCombatManager->SetPlayerPos(&m_Pos);
@@ -117,6 +128,9 @@ void Player::Draw()
 		InvertUV(UV);
 		m_pVertex->Draw(&m_Pos, UV);
 	}
+#ifdef _DEBUG
+	CollisionDraw();
+#endif
 }
 
 
@@ -217,9 +231,21 @@ void Player::ZKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_Z] == Lib::KEY_PUSH)
 	{
-		m_AnimState = ANIM_LOW_PUNCH;
-		m_AnimOperation = Lib::ANIM_NORMAL;
-		m_CharacterState.isAttackMotion = true;
+		if (!m_CharacterState.isAttackMotion)
+		{
+			if (m_CharacterState.isSquat)
+			{
+				m_AnimState = ANIM_SQUAT_LOW_PUNCH;
+				m_AnimOperation = Lib::ANIM_NORMAL;
+				m_CharacterState.isAttackMotion = true;
+			}
+			else
+			{
+				m_AnimState = ANIM_LOW_PUNCH;
+				m_AnimOperation = Lib::ANIM_NORMAL;
+				m_CharacterState.isAttackMotion = true;
+			}
+		}
 	}
 }
 
@@ -227,9 +253,21 @@ void Player::XKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_X] == Lib::KEY_PUSH)
 	{
-		m_AnimState = ANIM_HIGH_PUNCH;
-		m_AnimOperation = Lib::ANIM_NORMAL;
-		m_CharacterState.isAttackMotion = true;
+		if (!m_CharacterState.isAttackMotion)
+		{
+			if (m_CharacterState.isSquat)
+			{
+				m_AnimState = ANIM_SQUAT_HIGH_PUNCH;
+				m_AnimOperation = Lib::ANIM_NORMAL;
+				m_CharacterState.isAttackMotion = true;
+			}
+			else
+			{
+				m_AnimState = ANIM_HIGH_PUNCH;
+				m_AnimOperation = Lib::ANIM_NORMAL;
+				m_CharacterState.isAttackMotion = true;
+			}
+		}
 	}
 }
 
@@ -237,17 +275,20 @@ void Player::CKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_C] == Lib::KEY_PUSH)
 	{
-		if (m_CharacterState.isSquat)
+		if (!m_CharacterState.isAttackMotion)
 		{
-			m_AnimState = ANIM_SQUAT_LOW_KICK;
-			m_AnimOperation = Lib::ANIM_NORMAL;
-			m_CharacterState.isAttackMotion = true;
-		}
-		else
-		{
-			m_AnimState = ANIM_LOW_KICK;
-			m_AnimOperation = Lib::ANIM_NORMAL;
-			m_CharacterState.isAttackMotion = true;
+			if (m_CharacterState.isSquat)
+			{
+				m_AnimState = ANIM_SQUAT_LOW_KICK;
+				m_AnimOperation = Lib::ANIM_NORMAL;
+				m_CharacterState.isAttackMotion = true;
+			}
+			else
+			{
+				m_AnimState = ANIM_LOW_KICK;
+				m_AnimOperation = Lib::ANIM_NORMAL;
+				m_CharacterState.isAttackMotion = true;
+			}
 		}
 	}
 }
@@ -256,8 +297,20 @@ void Player::VKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_V] == Lib::KEY_PUSH)
 	{
-		m_AnimState = ANIM_HIGH_KICK;
-		m_AnimOperation = Lib::ANIM_NORMAL;
-		m_CharacterState.isAttackMotion = true;
+		if (!m_CharacterState.isAttackMotion)
+		{
+			if (m_CharacterState.isSquat)
+			{
+				m_AnimState = ANIM_SQUAT_HIGH_KICK;
+				m_AnimOperation = Lib::ANIM_NORMAL;
+				m_CharacterState.isAttackMotion = true;
+			}
+			else
+			{
+				m_AnimState = ANIM_HIGH_KICK;
+				m_AnimOperation = Lib::ANIM_NORMAL;
+				m_CharacterState.isAttackMotion = true;
+			}
+		}
 	}
 }

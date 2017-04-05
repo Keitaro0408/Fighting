@@ -83,6 +83,22 @@ namespace Lib
 		}
 
 		/**
+		 * アニメーションの数を取得する
+		 */
+		inline int GetAnimNum() const
+		{
+			return m_AnimData.AnimNum;
+		}
+
+		/**
+		 * 現在のアニメーション番号を取得する
+		 */
+		inline int GetAnimCount() const
+		{
+			return m_AnimCount;
+		}
+
+		/**
 		 * アニメーション制御
 		 * @param[in] _isReverse 逆再生するか？
 		 * @param[in] _playOperation 再生設定
@@ -100,7 +116,16 @@ namespace Lib
 			int	  AnimNum;
 		};
 
+		/**
+		 * アニメーションの再生処理
+		 * @param[in] 再生設定
+		 */
 		bool NormalControl(ANIM_OPERATION _playOperation);
+
+		/**
+		 * アニメーションの逆再生処理
+		 * @param[in] 再生設定
+		 */
 		bool ReverseControl(ANIM_OPERATION _playOperation);
 
 		AnimFileParser* m_pAnimFileParser;

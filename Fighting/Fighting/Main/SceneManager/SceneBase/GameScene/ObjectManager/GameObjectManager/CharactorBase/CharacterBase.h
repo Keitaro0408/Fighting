@@ -27,7 +27,7 @@ public:
 	/**
 	 * デストラクタ
 	 */
-	~CharacterBase() = default;
+	~CharacterBase();
 
 	/**
 	 * 更新関数
@@ -49,7 +49,6 @@ public:
 	}
 
 protected:
-	typedef std::map<int, std::unique_ptr<Lib::AnimTexture> > CharacterAnim;
 	enum ANIMATION
 	{
 		ANIM_WAIT,		 //!< 待機
@@ -67,23 +66,23 @@ protected:
 		ANIM_SQUAT_HIGH_KICK,  //!< しゃがみ強キック
 		ANIM_MAX		
 	};
+	typedef std::map<ANIMATION, std::unique_ptr<Lib::AnimTexture> > CharacterAnim;
 
 	struct CHARACTER_STATE
 	{
-		int							   HP;
-		bool						   isRight;
-		bool						   isSquat; //!< しゃがんでいるか?
-		bool						   isJump;  //!< ジャンプしているか?
-		bool						   isAttackMotion; //!< 攻撃中か?
+		int	 HP;
+		bool isRight;
+		bool isSquat; //!< しゃがんでいるか?
+		bool isJump;  //!< ジャンプしているか?
+		bool isAttackMotion; //!< 攻撃中か?
 	};
 
-	/**
-	 * アニメーションの初期化
-	 * @param[in] _animEnum アニメーションのenum
-	 * @param[in] _animName アニメーションの名前
-	 * @param[in] _setFrame 何フレームでアニメーションを進めるかの数値
-	 */
-	void InitAnim(ANIMATION _animEnum, LPCTSTR _animName, int _setFrame);
+	struct SKILL_SPEC
+	{
+		int FirstHitCheckCount; //!< 判定を開始するアニメーションの番号
+		int HitEnableFrame;		//!< 何フレームの間、判定が有効かのフレーム数
+		bool isUnderHit;		//!< しゃがんでいるとき当たるか？
+	};
 
 	/**
 	 * UVの左右反転
@@ -91,18 +90,51 @@ protected:
 	 */
 	void InvertUV(D3DXVECTOR2* _uv);
 
-	static const float			   m_GroundHeight;
-	static const float			   m_StageWidth;
-	static const float			   m_JumpPower;
+	/**
+	 * 当たり判定の表示
+	 */
+	void CollisionDraw();
 
-	std::shared_ptr<CombatManager> m_pCombatManager;
-	D3DXVECTOR2					   m_Pos;
-	D3DXVECTOR2					   m_RectSize;
-	D3DXVECTOR2					   m_Collision;
-	CharacterAnim				   m_pAnimTexture;
-	ANIMATION					   m_AnimState;
-	float						   m_OldHeight;
-	CHARACTER_STATE				   m_CharacterState;
+	static const float			    m_GroundHeight;
+	static const float			    m_StageWidth;
+	static const float			    m_JumpPower;
+
+	std::shared_ptr<CombatManager>  m_pCombatManager;
+	D3DXVECTOR2					    m_Pos;
+	D3DXVECTOR2					    m_RectSize;
+	D3DXVECTOR2					    m_StandCollision; //!< 立っているときのあたり判定
+	D3DXVECTOR2					    m_SquatCollision; //!< 座っているときのあたり判定
+	CharacterAnim				    m_pAnimTexture;
+	std::map<ANIMATION, SKILL_SPEC> m_SkillSpec; //!< 技の性能
+	ANIMATION					    m_AnimState;
+	float						    m_OldHeight;
+	CHARACTER_STATE				    m_CharacterState;
+	
+	// 当たり判定確認用
+	std::unique_ptr<Lib::Vertex2D> m_pStandCollisionVertex; //!< 当たり判定確認用
+	std::unique_ptr<Lib::Vertex2D> m_pSquatCollisionVertex; //!< 当たり判定確認用
+	D3DXVECTOR2					   m_UV[4];
+	int							   m_CollisionTextureIndex;
+
+private:
+	/**
+	 * アニメーションの初期化
+	 * @param[in] _animEnum アニメーションのenum
+	 * @param[in] _animName アニメーションの名前
+	 * @param[in] _setFrame 何フレームでアニメーションを進めるかの数値
+	 */
+	void InitAnim(ANIMATION _animEnum, LPCTSTR _animName, int _setFrame);
+	
+	/**
+	 * 技性能の初期化
+	 */
+	void InitSkillSpec(ANIMATION _animEnum, int _firstHitCheckCount, int _hitEnableFrame, bool _isUnderHit);
+	
+	/**
+	 * 矩形描画のライブラリの初期化
+	 */
+	void InitVertex2D();
+
 };
 
 

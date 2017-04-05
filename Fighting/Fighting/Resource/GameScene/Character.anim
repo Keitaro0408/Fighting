@@ -85,6 +85,15 @@ HighKick
 	11
 }
 
+SquatLowPunch
+{
+	1536,
+	256,
+	256,
+	256,
+	8
+}
+
 SquatLowKick
 {
 	2048,
@@ -92,5 +101,23 @@ SquatLowKick
 	256,
 	256,
 	7
+}
+
+SquatHighPunch
+{
+	0,
+	2304,
+	256,
+	256,
+	10
+}
+
+SquatHighKick
+{
+	768,
+	1024,
+	256,
+	256,
+	10
 }
 

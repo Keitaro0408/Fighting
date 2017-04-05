@@ -58,4 +58,7 @@ void Enemy::Draw()
 		InvertUV(UV);
 		m_pVertex->Draw(&m_Pos, UV);
 	}
+#ifdef _DEBUG
+	CollisionDraw();
+#endif
 }
