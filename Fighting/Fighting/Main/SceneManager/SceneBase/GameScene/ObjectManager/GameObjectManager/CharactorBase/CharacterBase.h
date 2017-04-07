@@ -79,9 +79,16 @@ protected:
 
 	struct SKILL_SPEC
 	{
-		int  FirstHitCheckCount; //!< 判定を開始するアニメーションの番号
-		int  HitEnableFrame;		//!< 何フレームの間、判定が有効かのフレーム数
-		bool IsUnderHit;		//!< しゃがんでいるとき当たるか？
+		SKILL_SPEC(){};
+		SKILL_SPEC(int _firstHitCheckCount, int _hitEnableFrame, bool _isUnderHit)
+		{
+			FirstHitCheckCount = _firstHitCheckCount;
+			HitEnableFrame = _hitEnableFrame;
+			isUnderHit = _isUnderHit;
+		}
+		int FirstHitCheckCount; //!< 判定を開始するアニメーションの番号
+		int HitEnableFrame;		//!< 何フレームの間、判定が有効かのフレーム数
+		bool isUnderHit;		//!< しゃがんでいるとき当たるか？
 	};
 
 	/**
@@ -124,11 +131,6 @@ private:
 	 * @param[in] _setFrame 何フレームでアニメーションを進めるかの数値
 	 */
 	void InitAnim(ANIMATION _animEnum, LPCTSTR _animName, int _setFrame);
-	
-	/**
-	 * 技性能の初期化
-	 */
-	void InitSkillSpec(ANIMATION _animEnum, int _firstHitCheckCount, int _hitEnableFrame, bool _isUnderHit);
 	
 	/**
 	 * 矩形描画のライブラリの初期化

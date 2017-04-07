@@ -45,28 +45,28 @@ m_AnimState(ANIM_WAIT)
 	InitAnim(ANIM_SQUAT, "Squat", 3);
 
 	InitAnim(ANIM_LOW_PUNCH, "LowPunch", 3);
-	InitSkillSpec(ANIM_LOW_PUNCH,4,3,false);
+	m_SkillSpec[ANIM_LOW_PUNCH] = SKILL_SPEC(4, 3, false);
 
 	InitAnim(ANIM_HIGH_PUNCH, "HighPunch", 3);
-	InitSkillSpec(ANIM_HIGH_PUNCH, 7, 3, false);
+	m_SkillSpec[ANIM_HIGH_PUNCH] = SKILL_SPEC(7, 3, false);
 	
 	InitAnim(ANIM_LOW_KICK, "LowKick", 3);
-	InitSkillSpec(ANIM_LOW_KICK, 5, 3, false);
+	m_SkillSpec[ANIM_LOW_KICK] = SKILL_SPEC(5, 3, false);
 	
 	InitAnim(ANIM_HIGH_KICK, "HighKick", 3);
-	InitSkillSpec(ANIM_HIGH_KICK, 6, 6, false);
+	m_SkillSpec[ANIM_HIGH_KICK] = SKILL_SPEC(6, 6, false);
 
 	InitAnim(ANIM_SQUAT_LOW_PUNCH, "SquatLowPunch", 3);
-	InitSkillSpec(ANIM_SQUAT_LOW_PUNCH, 7, 3, true);
+	m_SkillSpec[ANIM_SQUAT_LOW_PUNCH] = SKILL_SPEC(7, 3, true);
 	
 	InitAnim(ANIM_SQUAT_LOW_KICK, "SquatLowKick", 3);
-	InitSkillSpec(ANIM_SQUAT_LOW_KICK, 4, 6, true);
+	m_SkillSpec[ANIM_SQUAT_LOW_KICK] = SKILL_SPEC(4, 6, true);
 	
 	InitAnim(ANIM_SQUAT_HIGH_PUNCH, "SquatHighPunch", 3);
-	InitSkillSpec(ANIM_SQUAT_HIGH_PUNCH, 5, 5, true);
+	m_SkillSpec[ANIM_SQUAT_HIGH_PUNCH] = SKILL_SPEC(5, 5, true);
 	
 	InitAnim(ANIM_SQUAT_HIGH_KICK, "SquatHighKick", 3);
-	InitSkillSpec(ANIM_SQUAT_HIGH_KICK, 6, 6, true);
+	m_SkillSpec[ANIM_SQUAT_HIGH_KICK] = SKILL_SPEC(6, 6, true);
 	// Lib::AnimTexture Init End
 }
 
@@ -121,13 +121,6 @@ void CharacterBase::InitAnim(ANIMATION _animEnum, LPCTSTR _animName, int _setFra
 	m_pAnimTexture[_animEnum] = (std::unique_ptr<Lib::AnimTexture>(new Lib::AnimTexture()));
 	m_pAnimTexture[_animEnum]->LoadAnimation("Resource/GameScene/Character.anim", _animName);
 	m_pAnimTexture[_animEnum]->SetAnimFrame(_setFrame);
-}
-
-void CharacterBase::InitSkillSpec(ANIMATION _animEnum, int _firstHitCheckCount, int _hitEnableFrame, bool _isUnderHit)
-{
-	m_SkillSpec[_animEnum].FirstHitCheckCount = _firstHitCheckCount;
-	m_SkillSpec[_animEnum].HitEnableFrame = _hitEnableFrame;
-	m_SkillSpec[_animEnum].IsUnderHit = _isUnderHit;
 }
 
 void CharacterBase::InitVertex2D()
