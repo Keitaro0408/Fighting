@@ -45,9 +45,9 @@ void Enemy::Draw()
 {
 	// 相手が右に居れば右に向き、左に居れば左を向かせる
 	D3DXVECTOR2 playerPos = m_pCombatManager->GetPlayerPos();
-	m_Pos.x < playerPos.x ? (m_CharacterState.isRight = true) : (m_CharacterState.isRight = false);
-
-	if (m_CharacterState.isRight)
+	// 修正する
+	m_CharacterState.IsRight = (m_Pos.x < playerPos.x);
+	if (m_CharacterState.IsRight)
 	{
 		m_pVertex->Draw(&m_Pos, m_pAnimTexture[m_AnimState]->GetUV());
 	}

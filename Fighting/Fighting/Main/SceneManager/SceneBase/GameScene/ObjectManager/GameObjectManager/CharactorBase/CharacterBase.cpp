@@ -21,10 +21,10 @@ m_pCombatManager(_pCombatManager),
 m_AnimState(ANIM_WAIT)
 {
 	m_CharacterState.HP = 100;
-	m_CharacterState.isRight = isRight;
-	m_CharacterState.isSquat = false;
-	m_CharacterState.isAttackMotion = false;
-	m_CharacterState.isJump = false;
+	m_CharacterState.IsRight = isRight;
+	m_CharacterState.IsSquat = false;
+	m_CharacterState.IsAttackMotion = false;
+	m_CharacterState.IsJump = false;
 
 	m_StandCollision.x = 100;
 	m_StandCollision.y = 200;
@@ -101,7 +101,7 @@ void CharacterBase::InvertUV(D3DXVECTOR2* _uv)
 
 void CharacterBase::CollisionDraw()
 {
-	if (m_CharacterState.isSquat)
+	if (m_CharacterState.IsSquat)
 	{
 		m_pSquatCollisionVertex->Draw(&D3DXVECTOR2(m_Pos.x, m_Pos.y + 40), m_UV);
 	}
@@ -127,7 +127,7 @@ void CharacterBase::InitSkillSpec(ANIMATION _animEnum, int _firstHitCheckCount, 
 {
 	m_SkillSpec[_animEnum].FirstHitCheckCount = _firstHitCheckCount;
 	m_SkillSpec[_animEnum].HitEnableFrame = _hitEnableFrame;
-	m_SkillSpec[_animEnum].isUnderHit = _isUnderHit;
+	m_SkillSpec[_animEnum].IsUnderHit = _isUnderHit;
 }
 
 void CharacterBase::InitVertex2D()

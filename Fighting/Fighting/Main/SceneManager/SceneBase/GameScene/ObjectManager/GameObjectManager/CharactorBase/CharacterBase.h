@@ -71,17 +71,17 @@ protected:
 	struct CHARACTER_STATE
 	{
 		int	 HP;
-		bool isRight;
-		bool isSquat; //!< しゃがんでいるか?
-		bool isJump;  //!< ジャンプしているか?
-		bool isAttackMotion; //!< 攻撃中か?
+		bool IsRight;
+		bool IsSquat; //!< しゃがんでいるか?
+		bool IsJump;  //!< ジャンプしているか?
+		bool IsAttackMotion; //!< 攻撃中か?
 	};
 
 	struct SKILL_SPEC
 	{
-		int FirstHitCheckCount; //!< 判定を開始するアニメーションの番号
-		int HitEnableFrame;		//!< 何フレームの間、判定が有効かのフレーム数
-		bool isUnderHit;		//!< しゃがんでいるとき当たるか？
+		int  FirstHitCheckCount; //!< 判定を開始するアニメーションの番号
+		int  HitEnableFrame;		//!< 何フレームの間、判定が有効かのフレーム数
+		bool IsUnderHit;		//!< しゃがんでいるとき当たるか？
 	};
 
 	/**

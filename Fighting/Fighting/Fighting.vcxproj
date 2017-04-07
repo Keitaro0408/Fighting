@@ -72,6 +72,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\HPBar\HPBar.cpp" />
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager\CombatManager.cpp" />
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Player\CommandManager\CommandManager.cpp" />
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Enemy\Enemy.cpp" />
@@ -85,10 +86,10 @@
     <ClCompile Include="Main\SceneManager\SceneBase\TitleScene\TitleScene.cpp" />
     <ClCompile Include="Main\SceneManager\SceneFactory\SceneFactory.cpp" />
     <ClCompile Include="Main\SceneManager\SceneManager.cpp" />
-    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager\UIManager.cpp" />
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Player\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\HPBar\HPBar.h" />
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager\CombatManager.h" />
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Player\CommandManager\CommandManager.h" />
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Enemy\Enemy.h" />
@@ -101,7 +102,6 @@
     <ClInclude Include="Main\SceneManager\SceneBase\TitleScene\TitleScene.h" />
     <ClInclude Include="Main\SceneManager\SceneFactory\SceneFactory.h" />
     <ClInclude Include="Main\SceneManager\SceneManager.h" />
-    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager\UIManager.h" />
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\ObjectBase\ObjecBase.h" />
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Player\Player.h" />
   </ItemGroup>

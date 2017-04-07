@@ -8,7 +8,6 @@
 #include <memory>
 
 class GameObjectManager;
-class UIManager;
 
 class ObjectManager
 {
@@ -35,7 +34,6 @@ public:
 
 private:
 	std::unique_ptr<GameObjectManager> m_pGameObjectManager;
-	std::unique_ptr<UIManager>		   m_pUIManager;
 
 };
 

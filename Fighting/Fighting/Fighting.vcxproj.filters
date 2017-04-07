@@ -29,14 +29,8 @@
     <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager">
       <UniqueIdentifier>{533f6c15-51df-4240-a551-c0aa790e36c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager">
-      <UniqueIdentifier>{fb8eaa6d-c2af-4242-b38f-fc2f96c0e8d5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\ObjectBase">
       <UniqueIdentifier>{41be03e3-1ee5-4746-9b61-9f8791cb3f5a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager\HPBar">
-      <UniqueIdentifier>{fe763bc8-cc39-4a15-95e8-9b7f9ca26b11}</UniqueIdentifier>
     </Filter>
     <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\BackGround">
       <UniqueIdentifier>{7d9ac0e4-e912-4f71-93b8-a218be4c6a68}</UniqueIdentifier>
@@ -56,13 +50,13 @@
     <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager">
       <UniqueIdentifier>{8b6dda31-c2ed-4a24-850d-bb67737764fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\HPBar">
+      <UniqueIdentifier>{26b32e75-6a22-4a38-82fc-666c94f61416}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\GameObjectManager.cpp">
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager</Filter>
-    </ClCompile>
-    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager\UIManager.cpp">
-      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager</Filter>
     </ClCompile>
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\ObjectManager.cpp">
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager</Filter>
@@ -103,13 +97,13 @@
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager\CombatManager.cpp">
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager</Filter>
     </ClCompile>
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\HPBar\HPBar.cpp">
+      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\HPBar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\GameObjectManager.h">
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager</Filter>
-    </ClInclude>
-    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager\UIManager.h">
-      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\UIManager</Filter>
     </ClInclude>
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\ObjectManager.h">
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager</Filter>
@@ -149,6 +143,9 @@
     </ClInclude>
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager\CombatManager.h">
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\HPBar\HPBar.h">
+      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\HPBar</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

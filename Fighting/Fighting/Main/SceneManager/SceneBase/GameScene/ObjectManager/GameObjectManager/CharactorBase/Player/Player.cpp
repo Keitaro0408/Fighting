@@ -56,7 +56,7 @@ void Player::Update()
 	KeyCheck();
 
 	/* ジャンプしているかチェック */
-	if (m_CharacterState.isJump)
+	if (m_CharacterState.IsJump)
 	{
 		JumpControl();
 	}
@@ -65,9 +65,9 @@ void Player::Update()
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_OFF &&
 		SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_OFF &&
 		SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWN] == Lib::KEY_OFF &&
-		!m_CharacterState.isAttackMotion &&
-		!m_CharacterState.isSquat &&
-		!m_CharacterState.isJump)
+		!m_CharacterState.IsAttackMotion &&
+		!m_CharacterState.IsSquat &&
+		!m_CharacterState.IsJump)
 	{
 		m_AnimState = ANIM_WAIT;
 		m_AnimOperation = Lib::ANIM_LOOP;
@@ -84,12 +84,12 @@ void Player::Update()
 	VKeyControl();
 	
 	/* 攻撃のモーション中か */
-	if (m_CharacterState.isAttackMotion)
+	if (m_CharacterState.IsAttackMotion)
 	{
 		bool isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
-		/* アニメーション再生が最後ならフラグを反転させてisAttackMotionをfalseにしている */
-		m_CharacterState.isAttackMotion = !isAnimEnd;
-		if (!m_CharacterState.isAttackMotion)
+		/* アニメーション再生が最後ならフラグを反転させてIsAttackMotionをfalseにしている */
+		m_CharacterState.IsAttackMotion = !isAnimEnd;
+		if (!m_CharacterState.IsAttackMotion)
 		{
 			m_pAnimTexture[m_AnimState]->ResetAnim();
 		}
@@ -99,7 +99,7 @@ void Player::Update()
 			
 			if (m_SkillSpec[m_AnimState].FirstHitCheckCount < attackAnimCount)
 			{
-				int var = 0;
+
 			}
 		}
 	}
@@ -115,9 +115,8 @@ void Player::Draw()
 {
 	// 相手が右に居れば右に向き、左に居れば左を向かせる
 	D3DXVECTOR2 enemyPos = m_pCombatManager->GetEnemyPos();
-	m_Pos.x < enemyPos.x ? (m_CharacterState.isRight = true) : (m_CharacterState.isRight = false);
-
-	if (m_CharacterState.isRight)
+	m_CharacterState.IsRight = (m_Pos.x < enemyPos.x);
+	if (m_CharacterState.IsRight)
 	{
 		m_pVertex->Draw(&m_Pos, m_pAnimTexture[m_AnimState]->GetUV());
 	}
@@ -161,7 +160,7 @@ void Player::JumpControl()
 	if (550.f < m_Pos.y)
 	{
 		m_pAnimTexture[ANIM_JUMP]->ResetAnim();
-		m_CharacterState.isJump = false;
+		m_CharacterState.IsJump = false;
 		m_Pos.y = 550.f;
 	}
 }
@@ -169,10 +168,10 @@ void Player::JumpControl()
 void Player::LeftKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_ON && 
-		!m_CharacterState.isSquat &&
-		!m_CharacterState.isAttackMotion)
+		!m_CharacterState.IsSquat &&
+		!m_CharacterState.IsAttackMotion)
 	{
-		if (!m_CharacterState.isJump)
+		if (!m_CharacterState.IsJump)
 		{
 			m_AnimState = ANIM_BACK_WALK;
 			m_AnimOperation = Lib::ANIM_LOOP;
@@ -184,10 +183,10 @@ void Player::LeftKeyControl()
 void Player::RightKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_ON && 
-		!m_CharacterState.isSquat &&
-		!m_CharacterState.isAttackMotion)
+		!m_CharacterState.IsSquat &&
+		!m_CharacterState.IsAttackMotion)
 	{
-		if (!m_CharacterState.isJump)
+		if (!m_CharacterState.IsJump)
 		{
 			m_AnimState = ANIM_FRONT_WALK;
 			m_AnimOperation = Lib::ANIM_LOOP;
@@ -199,30 +198,30 @@ void Player::RightKeyControl()
 void Player::UpKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_UPARROW] == Lib::KEY_PUSH &&
-		!m_CharacterState.isJump &&
-		!m_CharacterState.isSquat &&
-		!m_CharacterState.isAttackMotion)
+		!m_CharacterState.IsJump &&
+		!m_CharacterState.IsSquat &&
+		!m_CharacterState.IsAttackMotion)
 	{
 		// ジャンプ処理.
 		m_OldHeight = m_Pos.y;
 		m_Pos.y -= m_JumpPower;
-		m_CharacterState.isJump = true;
+		m_CharacterState.IsJump = true;
 	}
 }
 
 void Player::DownKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWNARROW] == Lib::KEY_ON && 
-		!m_CharacterState.isJump &&
-		!m_CharacterState.isAttackMotion)
+		!m_CharacterState.IsJump &&
+		!m_CharacterState.IsAttackMotion)
 	{
-		m_CharacterState.isSquat = true;
+		m_CharacterState.IsSquat = true;
 		m_AnimState = ANIM_SQUAT;
 		m_AnimOperation = Lib::ANIM_NORMAL;
 	}
 	else if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWNARROW] == Lib::KEY_RELEASE)
 	{
-		m_CharacterState.isSquat = false;
+		m_CharacterState.IsSquat = false;
 		m_pAnimTexture[ANIM_SQUAT]->ResetAnim();
 	}
 }
@@ -231,19 +230,19 @@ void Player::ZKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_Z] == Lib::KEY_PUSH)
 	{
-		if (!m_CharacterState.isAttackMotion)
+		if (!m_CharacterState.IsAttackMotion)
 		{
-			if (m_CharacterState.isSquat)
+			if (m_CharacterState.IsSquat)
 			{
 				m_AnimState = ANIM_SQUAT_LOW_PUNCH;
 				m_AnimOperation = Lib::ANIM_NORMAL;
-				m_CharacterState.isAttackMotion = true;
+				m_CharacterState.IsAttackMotion = true;
 			}
 			else
 			{
 				m_AnimState = ANIM_LOW_PUNCH;
 				m_AnimOperation = Lib::ANIM_NORMAL;
-				m_CharacterState.isAttackMotion = true;
+				m_CharacterState.IsAttackMotion = true;
 			}
 		}
 	}
@@ -253,19 +252,19 @@ void Player::XKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_X] == Lib::KEY_PUSH)
 	{
-		if (!m_CharacterState.isAttackMotion)
+		if (!m_CharacterState.IsAttackMotion)
 		{
-			if (m_CharacterState.isSquat)
+			if (m_CharacterState.IsSquat)
 			{
 				m_AnimState = ANIM_SQUAT_HIGH_PUNCH;
 				m_AnimOperation = Lib::ANIM_NORMAL;
-				m_CharacterState.isAttackMotion = true;
+				m_CharacterState.IsAttackMotion = true;
 			}
 			else
 			{
 				m_AnimState = ANIM_HIGH_PUNCH;
 				m_AnimOperation = Lib::ANIM_NORMAL;
-				m_CharacterState.isAttackMotion = true;
+				m_CharacterState.IsAttackMotion = true;
 			}
 		}
 	}
@@ -275,19 +274,19 @@ void Player::CKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_C] == Lib::KEY_PUSH)
 	{
-		if (!m_CharacterState.isAttackMotion)
+		if (!m_CharacterState.IsAttackMotion)
 		{
-			if (m_CharacterState.isSquat)
+			if (m_CharacterState.IsSquat)
 			{
 				m_AnimState = ANIM_SQUAT_LOW_KICK;
 				m_AnimOperation = Lib::ANIM_NORMAL;
-				m_CharacterState.isAttackMotion = true;
+				m_CharacterState.IsAttackMotion = true;
 			}
 			else
 			{
 				m_AnimState = ANIM_LOW_KICK;
 				m_AnimOperation = Lib::ANIM_NORMAL;
-				m_CharacterState.isAttackMotion = true;
+				m_CharacterState.IsAttackMotion = true;
 			}
 		}
 	}
@@ -297,19 +296,19 @@ void Player::VKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_V] == Lib::KEY_PUSH)
 	{
-		if (!m_CharacterState.isAttackMotion)
+		if (!m_CharacterState.IsAttackMotion)
 		{
-			if (m_CharacterState.isSquat)
+			if (m_CharacterState.IsSquat)
 			{
 				m_AnimState = ANIM_SQUAT_HIGH_KICK;
 				m_AnimOperation = Lib::ANIM_NORMAL;
-				m_CharacterState.isAttackMotion = true;
+				m_CharacterState.IsAttackMotion = true;
 			}
 			else
 			{
 				m_AnimState = ANIM_HIGH_KICK;
 				m_AnimOperation = Lib::ANIM_NORMAL;
-				m_CharacterState.isAttackMotion = true;
+				m_CharacterState.IsAttackMotion = true;
 			}
 		}
 	}
