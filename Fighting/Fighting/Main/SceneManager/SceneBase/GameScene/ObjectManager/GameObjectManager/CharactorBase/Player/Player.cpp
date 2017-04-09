@@ -55,28 +55,23 @@ void Player::Update()
 {
 	KeyCheck();
 
+	/* 操作がされないとステートが変化しないので、最初に */
+	if (!m_CharacterState.IsAttackMotion)
+	{
+		m_AnimState = ANIM_WAIT;
+		m_AnimOperation = Lib::ANIM_LOOP;
+	}
+
 	/* ジャンプしているかチェック */
 	if (m_CharacterState.IsJump)
 	{
 		JumpControl();
 	}
 
-	/* 無操作で地面に立っている場合 */
-	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_OFF &&
-		SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_OFF &&
-		SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWN] == Lib::KEY_OFF &&
-		!m_CharacterState.IsAttackMotion &&
-		!m_CharacterState.IsSquat &&
-		!m_CharacterState.IsJump)
-	{
-		m_AnimState = ANIM_WAIT;
-		m_AnimOperation = Lib::ANIM_LOOP;
-	}
-
-	LeftKeyControl();
-	RightKeyControl();
-	UpKeyControl();
-	DownKeyControl();
+	LeftMoveControl();
+	RightMoveControl();
+	UpMoveControl();
+	DownMoveControl();
 
 	ZKeyControl();
 	XKeyControl();
@@ -86,14 +81,11 @@ void Player::Update()
 	/* 攻撃のモーション中か */
 	if (m_CharacterState.IsAttackMotion)
 	{
+		m_AnimOperation = Lib::ANIM_NORMAL;
 		bool isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
 		/* アニメーション再生が最後ならフラグを反転させてIsAttackMotionをfalseにしている */
 		m_CharacterState.IsAttackMotion = !isAnimEnd;
-		if (!m_CharacterState.IsAttackMotion)
-		{
-			m_pAnimTexture[m_AnimState]->ResetAnim();
-		}
-		else
+		if (m_CharacterState.IsAttackMotion)
 		{
 			int attackAnimCount = m_pAnimTexture[m_AnimState]->GetAnimCount();
 			
@@ -101,6 +93,10 @@ void Player::Update()
 			{
 
 			}
+		}
+		else
+		{
+			m_pAnimTexture[m_AnimState]->ResetAnim();
 		}
 	}
 	else
@@ -165,7 +161,7 @@ void Player::JumpControl()
 	}
 }
 
-void Player::LeftKeyControl()
+void Player::LeftMoveControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_ON && 
 		!m_CharacterState.IsSquat &&
@@ -180,7 +176,7 @@ void Player::LeftKeyControl()
 	}
 }
 
-void Player::RightKeyControl()
+void Player::RightMoveControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_ON && 
 		!m_CharacterState.IsSquat &&
@@ -195,7 +191,7 @@ void Player::RightKeyControl()
 	}
 }
 
-void Player::UpKeyControl()
+void Player::UpMoveControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_UPARROW] == Lib::KEY_PUSH &&
 		!m_CharacterState.IsJump &&
@@ -209,7 +205,7 @@ void Player::UpKeyControl()
 	}
 }
 
-void Player::DownKeyControl()
+void Player::DownMoveControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWNARROW] == Lib::KEY_ON && 
 		!m_CharacterState.IsJump &&

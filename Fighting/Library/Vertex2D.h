@@ -59,9 +59,25 @@ namespace Lib
 			const D3DXVECTOR2* _pDrawPos,
 			const D3DXVECTOR2* _pUV,
 			float _alpha = 1.f,
-			const D3DXVECTOR3* _pScale = &D3DXVECTOR3(1.f, 1.f, 1.f),
+			const D3DXVECTOR2* _pScale = &D3DXVECTOR2(1.f, 1.f),
 			float _angle = 0.f);
 
+		/**
+		 * 2Dの矩形を描画する関数
+		 * @param[in] _pDrawPos 矩形を描画するスクリーン座標位置
+		 * @param[in] _pRectDiff 指定した値分矩形が変化する
+		 * @param[in] _pUV UV値
+		 * @param[in] _alpha 描画する矩形のアルファ値
+		 * @param[in] _pScale 描画する矩形の拡縮率
+		 * @param[in] _angle 描画する矩形の傾き
+		 */
+		void Draw(
+			const D3DXVECTOR2* _pDrawPos,
+			const RECT* _pRectDiff, 
+			const D3DXVECTOR2* _pUV,
+			float _alpha = 1.f,
+			const D3DXVECTOR2* _pScale = &D3DXVECTOR2(1.f, 1.f),
+			float _angle = 0.f);
 
 		/**
 		 * 描画するテクスチャをセットする関数

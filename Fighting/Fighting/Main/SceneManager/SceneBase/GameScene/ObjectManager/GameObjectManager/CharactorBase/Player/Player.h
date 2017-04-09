@@ -49,22 +49,22 @@ private:
 	/**
 	 * 左のボタンの処理
 	 */
-	void LeftKeyControl();
+	void LeftMoveControl();
 
 	/**
 	 * 右のボタンの処理
 	 */
-	void RightKeyControl();
+	void RightMoveControl();
 
 	/**
 	 * 上のボタンの処理
 	 */
-	void UpKeyControl();
+	void UpMoveControl();
 
 	/**
 	 * 下のボタンの処理
 	 */
-	void DownKeyControl();
+	void DownMoveControl();
 
 	/**
 	 * Zボタン処理

@@ -1,6 +1,6 @@
-/**
+ï»¿/**
  * @file   HPBar.h
- * @brief  HPBarƒNƒ‰ƒX‚Ìƒwƒbƒ_ƒtƒ@ƒCƒ‹
+ * @brief  HPBarã‚¯ãƒ©ã‚¹ã®ãƒ˜ãƒƒãƒ€ãƒ•ã‚¡ã‚¤ãƒ«
  * @author kotani
  */
 #ifndef HPBAR_H
@@ -13,22 +13,22 @@ class HPBar : public ObjecBase
 {
 public:
 	/**
-	 * ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	 * ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	 */
 	HPBar(D3DXVECTOR2* _pos);
 
 	/**
-	 * ƒfƒXƒgƒ‰ƒNƒ^
+	 * ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	 */
 	~HPBar();
 
 	/**
-	 * §ŒäŠÖ”
+	 * åˆ¶å¾¡é–¢æ•°
 	 */
 	void Update() override;
 
 	/**
-	 * •`‰æŠÖ”
+	 * æç”»é–¢æ•°
 	 */
 	void Draw() override;
 
@@ -37,7 +37,6 @@ private:
 	int			m_TextureIndex;
 	int			m_HPBar;
 	D3DXVECTOR2	m_UV[4];
-
 
 };
 

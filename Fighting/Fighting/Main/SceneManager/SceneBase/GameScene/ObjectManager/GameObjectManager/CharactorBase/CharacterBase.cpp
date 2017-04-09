@@ -37,6 +37,7 @@ m_AnimState(ANIM_WAIT)
 
 	InitVertex2D();
 
+	// TODO: ファイルを読んだりしてもっと綺麗に管理したい。
 	// Lib::AnimTexture Init
 	InitAnim(ANIM_WAIT, "Wait", 10);
 	InitAnim(ANIM_FRONT_WALK, "FrontWalk", 7);

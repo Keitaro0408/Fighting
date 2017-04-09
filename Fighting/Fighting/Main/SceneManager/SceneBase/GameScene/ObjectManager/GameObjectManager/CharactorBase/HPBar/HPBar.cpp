@@ -1,6 +1,6 @@
-/**
+ï»¿/**
  * @file   HPBar.cpp
- * @brief  HPBarƒNƒ‰ƒX‚ÌŽÀ‘•
+ * @brief  HPBarã‚¯ãƒ©ã‚¹ã®å®Ÿè£…
  * @author kotani
  */
 #include "HPBar.h"
@@ -8,8 +8,12 @@
 #include "DX11Manager.h"
 #include "Window.h"
 
+namespace
+{
+	RECT g_RectBar = {0,0,0,0};
+}
 
-HPBar::HPBar(D3DXVECTOR2* _pos) :
+HPBar::HPBar(D3DXVECTOR2*  _pos) :
 m_Pos(*_pos)
 {
 	SINGLETON_INSTANCE(Lib::TextureManager).Load("Resource/GameScene/Character.png", &m_TextureIndex);
@@ -51,5 +55,5 @@ void HPBar::Update()
 
 void HPBar::Draw()
 {
-	m_pVertex->Draw(&m_Pos, m_UV);
+	m_pVertex->Draw(&m_Pos,&g_RectBar, m_UV);
 }
