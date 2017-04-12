@@ -34,7 +34,6 @@ private:
 	int			  m_TextureIndex;
 	float		  m_MoveSpeed;
 
-
 };
 
 

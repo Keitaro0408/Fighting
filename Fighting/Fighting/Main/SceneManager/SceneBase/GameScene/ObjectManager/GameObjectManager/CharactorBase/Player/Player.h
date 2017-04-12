@@ -86,11 +86,12 @@ private:
 	 */
 	void VKeyControl();
 
+	void AttackControl();
+
+	static const D3DXVECTOR2		m_HPBarPos;
 	std::unique_ptr<CommandManager> m_pCommandManager;
 	int							    m_TextureIndex;
 	float						    m_MoveSpeed;
-	Lib::ANIM_OPERATION			    m_AnimOperation; //!< アニメーションの再生設定
-
 
 };
 

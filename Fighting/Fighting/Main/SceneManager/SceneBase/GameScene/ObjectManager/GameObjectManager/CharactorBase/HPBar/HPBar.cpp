@@ -33,8 +33,6 @@ m_Pos(*_pos)
 	m_pVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
 		GetTexture(m_TextureIndex));
 	// Lib::Vertex2D Init end
-
-
 }
 
 HPBar::~HPBar()

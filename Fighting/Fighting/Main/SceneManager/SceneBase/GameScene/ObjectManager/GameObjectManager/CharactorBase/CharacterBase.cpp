@@ -8,6 +8,7 @@
 #include "TextureManager.h"
 #include "DX11Manager.h"
 #include "Window.h"
+#include "../../../CollisionManager/CollisionManager.h"
 
 const float CharacterBase::m_GroundHeight = 550;
 const float CharacterBase::m_StageWidth = 1280.f;
@@ -18,19 +19,21 @@ CharacterBase::CharacterBase(D3DXVECTOR2& _pos, D3DXVECTOR2& _rectSize, const st
 m_Pos(_pos),
 m_RectSize(_rectSize),
 m_pCombatManager(_pCombatManager),
-m_AnimState(ANIM_WAIT)
+m_AnimState(ANIM_WAIT),
+m_isAnimEnd(false)
 {
 	m_CharacterState.HP = 100;
 	m_CharacterState.IsRight = isRight;
 	m_CharacterState.IsSquat = false;
 	m_CharacterState.IsAttackMotion = false;
 	m_CharacterState.IsJump = false;
+	m_CharacterState.IsDamageMotion = false;
 
-	m_StandCollision.x = 100;
-	m_StandCollision.y = 200;
+	m_StandRectCollision.x = 70;
+	m_StandRectCollision.y = 200;
 
-	m_SquatCollision.x = 100;
-	m_SquatCollision.y = 100;
+	m_SquatRectCollision.x = 100;
+	m_SquatRectCollision.y = 100;
 
 	SINGLETON_INSTANCE(Lib::TextureManager).
 		Load("Resource/GameScene/test.png", &m_CollisionTextureIndex);
@@ -44,30 +47,32 @@ m_AnimState(ANIM_WAIT)
 	InitAnim(ANIM_BACK_WALK, "BackWalk", 7);
 	InitAnim(ANIM_JUMP, "Jump", 2);
 	InitAnim(ANIM_SQUAT, "Squat", 3);
+	InitAnim(ANIM_DAMAGE, "Damage", 4);
+	InitAnim(ANIM_SQUAT_DAMAGE, "SquatDamage", 4);
 
 	InitAnim(ANIM_LOW_PUNCH, "LowPunch", 3);
-	m_SkillSpec[ANIM_LOW_PUNCH] = SKILL_SPEC(4, 3, false);
+	m_SkillSpec[ANIM_LOW_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 4, 3, false);
 
 	InitAnim(ANIM_HIGH_PUNCH, "HighPunch", 3);
-	m_SkillSpec[ANIM_HIGH_PUNCH] = SKILL_SPEC(7, 3, false);
+	m_SkillSpec[ANIM_HIGH_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 7, 3, false);
 	
 	InitAnim(ANIM_LOW_KICK, "LowKick", 3);
-	m_SkillSpec[ANIM_LOW_KICK] = SKILL_SPEC(5, 3, false);
+	m_SkillSpec[ANIM_LOW_KICK] = SkillSpec(&D3DXVECTOR2(0, 20), &D3DXVECTOR2(250, 10), 5, 3, false);
 	
 	InitAnim(ANIM_HIGH_KICK, "HighKick", 3);
-	m_SkillSpec[ANIM_HIGH_KICK] = SKILL_SPEC(6, 6, false);
+	m_SkillSpec[ANIM_HIGH_KICK] = SkillSpec(&D3DXVECTOR2(0, 20), &D3DXVECTOR2(250, 10), 6, 6, false);
 
 	InitAnim(ANIM_SQUAT_LOW_PUNCH, "SquatLowPunch", 3);
-	m_SkillSpec[ANIM_SQUAT_LOW_PUNCH] = SKILL_SPEC(7, 3, true);
+	m_SkillSpec[ANIM_SQUAT_LOW_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 6, 3, true);
 	
 	InitAnim(ANIM_SQUAT_LOW_KICK, "SquatLowKick", 3);
-	m_SkillSpec[ANIM_SQUAT_LOW_KICK] = SKILL_SPEC(4, 6, true);
+	m_SkillSpec[ANIM_SQUAT_LOW_KICK] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 4, 6, true);
 	
 	InitAnim(ANIM_SQUAT_HIGH_PUNCH, "SquatHighPunch", 3);
-	m_SkillSpec[ANIM_SQUAT_HIGH_PUNCH] = SKILL_SPEC(5, 5, true);
+	m_SkillSpec[ANIM_SQUAT_HIGH_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 5, 5, true);
 	
 	InitAnim(ANIM_SQUAT_HIGH_KICK, "SquatHighKick", 3);
-	m_SkillSpec[ANIM_SQUAT_HIGH_KICK] = SKILL_SPEC(6, 6, true);
+	m_SkillSpec[ANIM_SQUAT_HIGH_KICK] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 6, 6, true);
 	// Lib::AnimTexture Init End
 }
 
@@ -136,7 +141,7 @@ void CharacterBase::InitVertex2D()
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
 		SINGLETON_INSTANCE(Lib::Window).GetWindowHandle()));
 
-	m_pStandCollisionVertex->Init(&m_StandCollision, m_UV);
+	m_pStandCollisionVertex->Init(&m_StandRectCollision, m_UV);
 
 	m_pStandCollisionVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
 		GetTexture(m_CollisionTextureIndex));
@@ -147,8 +152,36 @@ void CharacterBase::InitVertex2D()
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
 		SINGLETON_INSTANCE(Lib::Window).GetWindowHandle()));
 
-	m_pSquatCollisionVertex->Init(&m_SquatCollision, m_UV);
+	m_pSquatCollisionVertex->Init(&m_SquatRectCollision, m_UV);
 
 	m_pSquatCollisionVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
 		GetTexture(m_CollisionTextureIndex));
 }
+
+void CharacterBase::DamageControl()
+{
+	if (m_pCollisionData->GetCollisionState().HitType == CollisionData::ATTACK_HIT &&
+		!m_CharacterState.IsDamageMotion)
+	{
+		/* ダメージ処理 */
+		m_AnimState = ANIM_DAMAGE;
+		m_CharacterState.IsDamageMotion = true;
+		m_AnimOperation = Lib::ANIM_NORMAL;
+	}
+	else if (m_CharacterState.IsDamageMotion)
+	{
+		m_AnimState = ANIM_DAMAGE;
+		m_AnimOperation = Lib::ANIM_NORMAL;
+
+		if (m_isAnimEnd)
+		{
+			m_pAnimTexture[m_AnimState]->ResetAnim();
+			m_CharacterState.IsDamageMotion = false;
+		}
+	}
+	else if (m_pCollisionData->GetCollisionState().HitType == CollisionData::BODY_HIT)
+	{
+		m_Pos = m_OldPos;
+	}
+}
+

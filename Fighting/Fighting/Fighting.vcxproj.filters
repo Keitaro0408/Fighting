@@ -53,6 +53,12 @@
     <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\HPBar">
       <UniqueIdentifier>{26b32e75-6a22-4a38-82fc-666c94f61416}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Main\SceneManager\SceneBase\GameScene\CollisionManager">
+      <UniqueIdentifier>{00afaf64-04af-42af-b090-119ffcddf55b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionData">
+      <UniqueIdentifier>{09f06385-732c-4e75-972c-5eb378b7c2d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\GameObjectManager.cpp">
@@ -100,6 +106,12 @@
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\HPBar\HPBar.cpp">
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\HPBar</Filter>
     </ClCompile>
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionManager.cpp">
+      <Filter>Main\SceneManager\SceneBase\GameScene\CollisionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionData\CollisionData.cpp">
+      <Filter>Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\GameObjectManager.h">
@@ -146,6 +158,12 @@
     </ClInclude>
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\HPBar\HPBar.h">
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\HPBar</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionManager.h">
+      <Filter>Main\SceneManager\SceneBase\GameScene\CollisionManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionData\CollisionData.h">
+      <Filter>Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionData</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

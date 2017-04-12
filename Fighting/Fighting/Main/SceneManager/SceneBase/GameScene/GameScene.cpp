@@ -11,7 +11,7 @@
 #include "DX11Manager.h"
 #include "ObjectManager\ObjectManager.h"
 #include "DXInputDevice.h"
-
+#include "CollisionManager\CollisionManager.h"
 
 GameScene::GameScene() :
 SceneBase(SCENE_GAME)
@@ -52,13 +52,14 @@ SceneBase(SCENE_GAME)
 		SINGLETON_INSTANCE(Lib::TextureManager).Init(pDevice);
 		// Lib::TextureManager Init end
 	}
-
+	SINGLETON_CREATE(CollisionManager);
 	m_pObjectManager = new ObjectManager();
 }
 
 GameScene::~GameScene()
 {
 	delete m_pObjectManager;
+	SINGLETON_DELETE(CollisionManager);
 
 	// Lib::TextureManager Delete
 	SINGLETON_INSTANCE(Lib::TextureManager).Release();

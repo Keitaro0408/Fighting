@@ -9,6 +9,8 @@
 #include "Window.h"
 #include "KeyDevice.h"
 #include "../../CombatManager/CombatManager.h"
+#include "../../../../CollisionManager/CollisionManager.h"
+
 
 Enemy::Enemy(const std::shared_ptr<CombatManager> &_pCombatManager) :
 CharacterBase(D3DXVECTOR2(1060, 550), D3DXVECTOR2(256, 256), _pCombatManager, false),
@@ -28,24 +30,41 @@ m_MoveSpeed(4.5f)
 	m_pVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
 		GetTexture(m_TextureIndex));
 	// Lib::Vertex2D Init end
+
+	m_pCollisionData.reset(new CollisionData(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY)));
+	SINGLETON_INSTANCE(CollisionManager).AddCollision(m_pCollisionData.get());
+
 	m_pCombatManager->SetEnemyPos(&m_Pos);
 }
 
 Enemy::~Enemy()
 {
+	m_pVertex->Release();
+	SINGLETON_INSTANCE(Lib::TextureManager).ReleaseTexture(m_TextureIndex);
 }
+
+
+//----------------------------------------------------------------------------------------------------
+// Public Functions
+//----------------------------------------------------------------------------------------------------
 
 void Enemy::Update()
 {
-	m_pAnimTexture[m_AnimState]->Control(false, Lib::ANIM_LOOP);
+	m_AnimState = ANIM_WAIT;
+
 	m_pCombatManager->SetEnemyPos(&m_Pos);
+	
+	SINGLETON_INSTANCE(CollisionManager).Update();
+	DamageControl();
+	m_isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
+
+	m_OldPos = m_Pos;
 }
 
 void Enemy::Draw()
 {
 	// 相手が右に居れば右に向き、左に居れば左を向かせる
 	D3DXVECTOR2 playerPos = m_pCombatManager->GetPlayerPos();
-	// 修正する
 	m_CharacterState.IsRight = (m_Pos.x < playerPos.x);
 	if (m_CharacterState.IsRight)
 	{
