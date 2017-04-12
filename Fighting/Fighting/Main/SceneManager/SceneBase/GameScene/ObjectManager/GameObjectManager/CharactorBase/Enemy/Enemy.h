@@ -31,8 +31,9 @@ public:
 	void Draw() override;
 
 private:
-	int			  m_TextureIndex;
-	float		  m_MoveSpeed;
+	static const D3DXVECTOR2 m_HPBarPos;
+	int						 m_TextureIndex;
+	float					 m_MoveSpeed;
 
 };
 

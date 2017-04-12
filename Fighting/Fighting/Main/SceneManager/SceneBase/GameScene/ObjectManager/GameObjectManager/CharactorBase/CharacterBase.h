@@ -7,10 +7,11 @@
 #define CHARACTERBASE_H
 #include <memory>
 #include <map>
-#include "../../ObjectBase/ObjecBase.h"
 #include "Vertex2D.h"
 #include "AnimTexture.h"
+#include "../../ObjectBase/ObjecBase.h"
 #include "../../../CollisionManager/CollisionData/CollisionData.h"
+#include "HPBar/HPBar.h"
 
 class CombatManager;
 
@@ -84,19 +85,19 @@ protected:
 	struct SkillSpec
 	{
 		SkillSpec(){};
-		SkillSpec(D3DXVECTOR2* _pos, D3DXVECTOR2* _rect, int _firstHitCheckCount, int _hitEnableFrame, bool _isUnderHit)
+		SkillSpec(D3DXVECTOR2* _pos, D3DXVECTOR2* _rect,int _damage, int _firstHitCheckCount, int _hitEnableFrame)
 		{
 			Pos = *_pos;
 			Rect = *_rect;
+			Damage = _damage;
 			FirstHitCheckCount = _firstHitCheckCount;
 			HitEnableFrame = _hitEnableFrame;
-			isUnderHit = _isUnderHit;
 		}
 		D3DXVECTOR2 Pos;				//!< 攻撃の発生位置(プレイヤー座標からの相対)
 		D3DXVECTOR2 Rect;				//!< 攻撃のサイズ
+		int			Damage;				//!< ダメージ
 		int			FirstHitCheckCount; //!< 判定を開始するアニメーションの番号
 		int			HitEnableFrame;		//!< 何フレームの間、判定が有効かのフレーム数
-		bool		isUnderHit;			//!< しゃがんでいるとき当たるか？
 	};
 
 	/**
@@ -111,9 +112,9 @@ protected:
 	void CollisionDraw();
 
 	/**
-	 * ダメージ処理
+	 * 当たり判定処理
 	 */
-	void DamageControl();
+	void CollisionControl();
 
 	static const float			    m_GroundHeight;
 	static const float			    m_StageWidth;
@@ -128,7 +129,8 @@ protected:
 	ANIMATION					    m_AnimState;
 	float						    m_OldHeight;
 	CharacterState					m_CharacterState;
-	
+	std::unique_ptr<HPBar>			m_pHPBar;
+
 	// 当たり判定
 	std::unique_ptr<CollisionData>  m_pCollisionData;
 	D3DXVECTOR2					    m_StandRectCollision; //!< 立っているときのあたり判定

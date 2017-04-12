@@ -8,15 +8,16 @@
 #include "DX11Manager.h"
 #include "Window.h"
 
-namespace
-{
-	RECT g_RectBar = {0,0,0,0};
-}
+const D3DXVECTOR2 HPBar::m_HPBarRect = D3DXVECTOR2(500, 70);
 
-HPBar::HPBar(D3DXVECTOR2*  _pos) :
+HPBar::HPBar(const D3DXVECTOR2*  _pos) :
 m_Pos(*_pos)
 {
-	SINGLETON_INSTANCE(Lib::TextureManager).Load("Resource/GameScene/Character.png", &m_TextureIndex);
+	SINGLETON_INSTANCE(Lib::TextureManager).
+		Load("Resource/GameScene/HPbarFrame.png", &m_BarFrameTextureIndex);
+	SINGLETON_INSTANCE(Lib::TextureManager).
+		Load("Resource/GameScene/HPbar.png", &m_BarTextureIndex);
+
 	m_UV[0] = D3DXVECTOR2(0, 0);
 	m_UV[1] = D3DXVECTOR2(1, 0);
 	m_UV[2] = D3DXVECTOR2(0, 1);
@@ -28,18 +29,27 @@ m_Pos(*_pos)
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
 		SINGLETON_INSTANCE(Lib::Window).GetWindowHandle()));
 
-	m_pVertex->Init(&D3DXVECTOR2(524,125), m_UV);
-
+	m_pVertex->Init(&m_HPBarRect, m_UV);
 	m_pVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
-		GetTexture(m_TextureIndex));
+		GetTexture(m_BarTextureIndex));
+	
+	m_pBarFrameVertex.reset(new Lib::Vertex2D(
+		SINGLETON_INSTANCE(Lib::DX11Manager).GetDevice(),
+		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
+		SINGLETON_INSTANCE(Lib::Window).GetWindowHandle()));
+
+	m_pBarFrameVertex->Init(&m_HPBarRect, m_UV);
+	m_pBarFrameVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
+		GetTexture(m_BarFrameTextureIndex));
 	// Lib::Vertex2D Init end
 }
 
 HPBar::~HPBar()
 {
-	SINGLETON_INSTANCE(Lib::TextureManager).ReleaseTexture(m_TextureIndex);
+	m_pBarFrameVertex->Release();
 	m_pVertex->Release();
-
+	SINGLETON_INSTANCE(Lib::TextureManager).ReleaseTexture(m_BarTextureIndex);
+	SINGLETON_INSTANCE(Lib::TextureManager).ReleaseTexture(m_BarFrameTextureIndex);
 }
 
 
@@ -51,7 +61,10 @@ void HPBar::Update()
 {
 }
 
-void HPBar::Draw()
+void HPBar::Draw(int _hp)
 {
+
+	RECT g_RectBar = { 0, 0, -500, 0 };
 	m_pVertex->Draw(&m_Pos,&g_RectBar, m_UV);
+	m_pBarFrameVertex->Draw(&m_Pos, m_UV);
 }

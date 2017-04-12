@@ -11,6 +11,8 @@
 #include "../../CombatManager/CombatManager.h"
 #include "../../../../CollisionManager/CollisionManager.h"
 
+const D3DXVECTOR2 Enemy::m_HPBarPos = D3DXVECTOR2(1280 - (HPBar::m_HPBarRect.x / 2 + 70), 67.5);
+
 
 Enemy::Enemy(const std::shared_ptr<CombatManager> &_pCombatManager) :
 CharacterBase(D3DXVECTOR2(1060, 550), D3DXVECTOR2(256, 256), _pCombatManager, false),
@@ -34,6 +36,8 @@ m_MoveSpeed(4.5f)
 	m_pCollisionData.reset(new CollisionData(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY)));
 	SINGLETON_INSTANCE(CollisionManager).AddCollision(m_pCollisionData.get());
 
+	m_pHPBar.reset(new HPBar(&m_HPBarPos));
+
 	m_pCombatManager->SetEnemyPos(&m_Pos);
 }
 
@@ -55,7 +59,7 @@ void Enemy::Update()
 	m_pCombatManager->SetEnemyPos(&m_Pos);
 	
 	SINGLETON_INSTANCE(CollisionManager).Update();
-	DamageControl();
+	CollisionControl();
 	m_isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
 
 	m_OldPos = m_Pos;
@@ -77,6 +81,7 @@ void Enemy::Draw()
 		InvertUV(UV);
 		m_pVertex->Draw(&m_Pos, UV);
 	}
+	m_pHPBar->Draw();
 #ifdef _DEBUG
 	CollisionDraw();
 #endif

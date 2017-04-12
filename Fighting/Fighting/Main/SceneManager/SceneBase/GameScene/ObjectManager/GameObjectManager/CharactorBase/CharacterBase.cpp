@@ -12,7 +12,7 @@
 
 const float CharacterBase::m_GroundHeight = 550;
 const float CharacterBase::m_StageWidth = 1280.f;
-const float CharacterBase::m_JumpPower = 20.f;
+const float CharacterBase::m_JumpPower = 23.f;
 
 
 CharacterBase::CharacterBase(D3DXVECTOR2& _pos, D3DXVECTOR2& _rectSize, const std::shared_ptr<CombatManager> &_pCombatManager, bool isRight) :
@@ -29,7 +29,7 @@ m_isAnimEnd(false)
 	m_CharacterState.IsJump = false;
 	m_CharacterState.IsDamageMotion = false;
 
-	m_StandRectCollision.x = 70;
+	m_StandRectCollision.x = 90;
 	m_StandRectCollision.y = 200;
 
 	m_SquatRectCollision.x = 100;
@@ -51,28 +51,28 @@ m_isAnimEnd(false)
 	InitAnim(ANIM_SQUAT_DAMAGE, "SquatDamage", 4);
 
 	InitAnim(ANIM_LOW_PUNCH, "LowPunch", 3);
-	m_SkillSpec[ANIM_LOW_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 4, 3, false);
+	m_SkillSpec[ANIM_LOW_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 10 ,4, 3);
 
 	InitAnim(ANIM_HIGH_PUNCH, "HighPunch", 3);
-	m_SkillSpec[ANIM_HIGH_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 7, 3, false);
+	m_SkillSpec[ANIM_HIGH_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 10, 7, 3);
 	
 	InitAnim(ANIM_LOW_KICK, "LowKick", 3);
-	m_SkillSpec[ANIM_LOW_KICK] = SkillSpec(&D3DXVECTOR2(0, 20), &D3DXVECTOR2(250, 10), 5, 3, false);
+	m_SkillSpec[ANIM_LOW_KICK] = SkillSpec(&D3DXVECTOR2(0, 20), &D3DXVECTOR2(250, 10), 10, 5, 3);
 	
 	InitAnim(ANIM_HIGH_KICK, "HighKick", 3);
-	m_SkillSpec[ANIM_HIGH_KICK] = SkillSpec(&D3DXVECTOR2(0, 20), &D3DXVECTOR2(250, 10), 6, 6, false);
+	m_SkillSpec[ANIM_HIGH_KICK] = SkillSpec(&D3DXVECTOR2(0, 20), &D3DXVECTOR2(250, 10), 10, 6, 6);
 
 	InitAnim(ANIM_SQUAT_LOW_PUNCH, "SquatLowPunch", 3);
-	m_SkillSpec[ANIM_SQUAT_LOW_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 6, 3, true);
+	m_SkillSpec[ANIM_SQUAT_LOW_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 10, 5, 3);
 	
 	InitAnim(ANIM_SQUAT_LOW_KICK, "SquatLowKick", 3);
-	m_SkillSpec[ANIM_SQUAT_LOW_KICK] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 4, 6, true);
+	m_SkillSpec[ANIM_SQUAT_LOW_KICK] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 10, 4, 6);
 	
 	InitAnim(ANIM_SQUAT_HIGH_PUNCH, "SquatHighPunch", 3);
-	m_SkillSpec[ANIM_SQUAT_HIGH_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 5, 5, true);
+	m_SkillSpec[ANIM_SQUAT_HIGH_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 10, 5, 5);
 	
 	InitAnim(ANIM_SQUAT_HIGH_KICK, "SquatHighKick", 3);
-	m_SkillSpec[ANIM_SQUAT_HIGH_KICK] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 6, 6, true);
+	m_SkillSpec[ANIM_SQUAT_HIGH_KICK] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 10, 6, 6);
 	// Lib::AnimTexture Init End
 }
 
@@ -158,20 +158,25 @@ void CharacterBase::InitVertex2D()
 		GetTexture(m_CollisionTextureIndex));
 }
 
-void CharacterBase::DamageControl()
+void CharacterBase::CollisionControl()
 {
 	if (m_pCollisionData->GetCollisionState().HitType == CollisionData::ATTACK_HIT &&
 		!m_CharacterState.IsDamageMotion)
 	{
 		/* ダメージ処理 */
 		m_AnimState = ANIM_DAMAGE;
+
+		m_CharacterState.IsSquat ? (m_AnimState = ANIM_SQUAT_DAMAGE) : (m_AnimState = ANIM_DAMAGE);
+
 		m_CharacterState.IsDamageMotion = true;
 		m_AnimOperation = Lib::ANIM_NORMAL;
 	}
 	else if (m_CharacterState.IsDamageMotion)
 	{
-		m_AnimState = ANIM_DAMAGE;
+		/* ダメージモーション中 */
 		m_AnimOperation = Lib::ANIM_NORMAL;
+
+		m_CharacterState.IsSquat ? (m_AnimState = ANIM_SQUAT_DAMAGE) : (m_AnimState = ANIM_DAMAGE);
 
 		if (m_isAnimEnd)
 		{
@@ -181,7 +186,23 @@ void CharacterBase::DamageControl()
 	}
 	else if (m_pCollisionData->GetCollisionState().HitType == CollisionData::BODY_HIT)
 	{
-		m_Pos = m_OldPos;
+		/* 体や壁にぶつかったとき */
+		if (m_CharacterState.IsJump)
+		{
+			//if ((m_Pos.y - m_OldHeight) < 0);
+			if (m_CharacterState.IsRight && (m_Pos.y - m_OldHeight) > 0)
+			{
+				m_Pos.x -= m_pCollisionData->GetCollisionState().CollisionRect.x / 2;
+			}
+			else if ((m_Pos.y - m_OldHeight) > 0)
+			{
+				m_Pos.x += m_pCollisionData->GetCollisionState().CollisionRect.x / 2;
+			}
+		}
+		else
+		{
+			m_Pos.x = m_OldPos.x;
+		}
 	}
 }
 

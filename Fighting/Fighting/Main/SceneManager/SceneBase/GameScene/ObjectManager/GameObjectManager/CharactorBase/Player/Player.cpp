@@ -12,7 +12,8 @@
 #include "CommandManager\CommandManager.h"
 #include "../../../../CollisionManager/CollisionManager.h"
 
-const D3DXVECTOR2 Player::m_HPBarPos = D3DXVECTOR2(0, 0);
+const D3DXVECTOR2 Player::m_HPBarPos = D3DXVECTOR2(HPBar::m_HPBarRect.x / 2 + 70, 67.5);
+
 
 Player::Player(const std::shared_ptr<CombatManager> &_pCombatManager) :
 CharacterBase(D3DXVECTOR2(220, 550), D3DXVECTOR2(256, 256), _pCombatManager, true),
@@ -39,6 +40,8 @@ m_MoveSpeed(4.5f)
 	m_pCollisionData.reset(new CollisionData(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY)));
 	SINGLETON_INSTANCE(CollisionManager).AddCollision(m_pCollisionData.get());
 
+	m_pHPBar.reset(new HPBar(&m_HPBarPos));
+
 	m_pCombatManager->SetPlayerPos(&m_Pos);
 }
 
@@ -64,11 +67,6 @@ void Player::Update()
 		m_AnimOperation = Lib::ANIM_LOOP;
 	}
 
-	/* ジャンプしているかチェック */
-	if (m_CharacterState.IsJump)
-	{
-		JumpControl();
-	}
 
 	LeftMoveControl();
 	RightMoveControl();
@@ -82,10 +80,13 @@ void Player::Update()
 
 	m_pCollisionData->Update(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY));
 
-	
 	SINGLETON_INSTANCE(CollisionManager).Update();
-	m_pCombatManager->SetPlayerPos(&m_Pos);
-	DamageControl();
+	/* ジャンプしているかチェック */
+	if (m_CharacterState.IsJump)
+	{
+		JumpControl();
+	}
+	CollisionControl();
 
 	/* 攻撃のモーション中か */
 	if (m_CharacterState.IsAttackMotion)
@@ -97,6 +98,8 @@ void Player::Update()
 	{
 		m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
 	}
+	
+	m_pCombatManager->SetPlayerPos(&m_Pos);
 	m_OldPos = m_Pos;
 }
 
@@ -116,6 +119,7 @@ void Player::Draw()
 		InvertUV(UV);
 		m_pVertex->Draw(&m_Pos, UV);
 	}
+	m_pHPBar->Draw();
 #ifdef _DEBUG
 	CollisionDraw();
 #endif
@@ -162,7 +166,14 @@ void Player::LeftMoveControl()
 	{
 		if (!m_CharacterState.IsJump)
 		{
-			m_AnimState = ANIM_BACK_WALK;
+			if (m_CharacterState.IsRight)
+			{
+				m_AnimState = ANIM_BACK_WALK;
+			}
+			else
+			{
+				m_AnimState = ANIM_FRONT_WALK;
+			}
 			m_AnimOperation = Lib::ANIM_LOOP;
 		}
 		m_Pos.x -= m_MoveSpeed;
@@ -177,7 +188,14 @@ void Player::RightMoveControl()
 	{
 		if (!m_CharacterState.IsJump)
 		{
-			m_AnimState = ANIM_FRONT_WALK;
+			if (m_CharacterState.IsRight)
+			{
+				m_AnimState = ANIM_FRONT_WALK;
+			}
+			else
+			{
+				m_AnimState = ANIM_BACK_WALK;
+			}
 			m_AnimOperation = Lib::ANIM_LOOP;
 		}
 		m_Pos.x += m_MoveSpeed;
