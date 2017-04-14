@@ -7,6 +7,7 @@
 #include "TextureManager.h"
 #include "DX11Manager.h"
 #include "Window.h"
+#include "DSoundManager.h"
 #include "../../../CollisionManager/CollisionManager.h"
 
 const float CharacterBase::m_GroundHeight = 550;
@@ -34,7 +35,9 @@ m_isAnimEnd(false)
 	m_SquatRectCollision.y = 100;
 
 	SINGLETON_INSTANCE(Lib::TextureManager).
-		Load("Resource/GameScene/test.png", &m_CollisionTextureIndex);
+		Load("Resource/Texture/GameScene/test.png", &m_CollisionTextureIndex);
+
+	SINGLETON_INSTANCE(Lib::DSoundManager).LoadSound("Resource/Sound/damage.wav",&m_DamageSoundIndex);
 
 	InitVertex2D();
 
@@ -47,6 +50,7 @@ m_isAnimEnd(false)
 	InitAnim(ANIM_SQUAT, "Squat", 3);
 	InitAnim(ANIM_DAMAGE, "Damage", 4);
 	InitAnim(ANIM_SQUAT_DAMAGE, "SquatDamage", 4);
+	InitAnim(ANIM_DOWN, "Down", 4);
 
 	InitAnim(ANIM_LOW_PUNCH, "LowPunch", 3);
 	m_SkillSpec[ANIM_LOW_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 10 ,4, 3);
@@ -76,11 +80,10 @@ m_isAnimEnd(false)
 
 CharacterBase::~CharacterBase()
 {
-	SINGLETON_INSTANCE(Lib::TextureManager).
-		ReleaseTexture(m_CollisionTextureIndex);
-
 	m_pSquatCollisionVertex->Release();
 	m_pStandCollisionVertex->Release();
+	SINGLETON_INSTANCE(Lib::DSoundManager).ReleaseSound(m_DamageSoundIndex);
+	SINGLETON_INSTANCE(Lib::TextureManager).ReleaseTexture(m_CollisionTextureIndex);
 }
 
 
@@ -123,7 +126,7 @@ void CharacterBase::CollisionDraw()
 void CharacterBase::InitAnim(ANIMATION _animEnum, LPCTSTR _animName, int _setFrame)
 {
 	m_pAnimTexture[_animEnum] = (std::unique_ptr<Lib::AnimTexture>(new Lib::AnimTexture()));
-	m_pAnimTexture[_animEnum]->LoadAnimation("Resource/GameScene/Character.anim", _animName);
+	m_pAnimTexture[_animEnum]->LoadAnimation("Resource/Texture/GameScene/Character.anim", _animName);
 	m_pAnimTexture[_animEnum]->SetAnimFrame(_setFrame);
 }
 
@@ -162,9 +165,16 @@ void CharacterBase::CollisionControl()
 		!m_CharacterState.IsDamageMotion)
 	{
 		/* ダメージ処理 */
-		m_AnimState = ANIM_DAMAGE;
+		SINGLETON_INSTANCE(Lib::DSoundManager).SoundOperation(m_DamageSoundIndex,Lib::DSoundManager::SOUND_PLAY);
 		m_CharacterState.HP -= m_pCollisionData->GetCollisionState().ReceiveDamage;
-		m_CharacterState.IsSquat ? (m_AnimState = ANIM_SQUAT_DAMAGE) : (m_AnimState = ANIM_DAMAGE);
+		if (m_CharacterState.HP == 0)
+		{
+			m_AnimState = ANIM_DOWN;
+		}
+		else
+		{
+			m_CharacterState.IsSquat ? (m_AnimState = ANIM_SQUAT_DAMAGE) : (m_AnimState = ANIM_DAMAGE);
+		}
 
 		m_CharacterState.IsDamageMotion = true;
 		m_AnimOperation = Lib::ANIM_NORMAL;
@@ -174,12 +184,18 @@ void CharacterBase::CollisionControl()
 		/* ダメージモーション中 */
 		m_AnimOperation = Lib::ANIM_NORMAL;
 
-		m_CharacterState.IsSquat ? (m_AnimState = ANIM_SQUAT_DAMAGE) : (m_AnimState = ANIM_DAMAGE);
-
-		if (m_isAnimEnd)
+		if (m_CharacterState.HP == 0)
 		{
-			m_pAnimTexture[m_AnimState]->ResetAnim();
-			m_CharacterState.IsDamageMotion = false;
+			m_AnimState = ANIM_DOWN;
+		}
+		else
+		{
+			m_CharacterState.IsSquat ? (m_AnimState = ANIM_SQUAT_DAMAGE) : (m_AnimState = ANIM_DAMAGE);
+			if (m_isAnimEnd)
+			{
+				m_pAnimTexture[m_AnimState]->ResetAnim();
+				m_CharacterState.IsDamageMotion = false;
+			}
 		}
 	}
 	else if (m_pCollisionData->GetCollisionState().HitType == CollisionData::BODY_HIT)
@@ -191,11 +207,11 @@ void CharacterBase::CollisionControl()
 			{
 				if (m_CharacterState.IsRight)
 				{
-					m_Pos.x -= 1;
+					m_Pos.x -= 2;
 				}
 				else
 				{
-					m_Pos.x += 1;
+					m_Pos.x += 2;
 				}
 			}
 			else

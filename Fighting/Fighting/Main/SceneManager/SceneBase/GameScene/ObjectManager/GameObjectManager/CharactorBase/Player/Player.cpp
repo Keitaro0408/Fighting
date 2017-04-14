@@ -22,7 +22,7 @@ m_MoveSpeed(4.5f)
 {
 	// Lib::TextureManager Texture Load
 	SINGLETON_INSTANCE(Lib::TextureManager).
-		Load("Resource/GameScene/Character.png", &m_TextureIndex);
+		Load("Resource/Texture/GameScene/Character.png", &m_TextureIndex);
 	// Lib::TextureManager Texture Load end
 
 	// Lib::Vertex2D Init
@@ -61,6 +61,10 @@ Player::~Player()
 void Player::Update()
 {
 	KeyCheck();
+
+	D3DXVECTOR2 enemyPos = SINGLETON_INSTANCE(CombatManager).GetEnemyPos();
+	m_CharacterState.IsRight = (m_Pos.x < enemyPos.x);
+
 	/* 操作がされないとステートが変化しないので、最初に */
 	if (!m_CharacterState.IsAttackMotion)
 	{
@@ -109,8 +113,6 @@ void Player::Update()
 void Player::Draw()
 {
 	// 相手が右に居れば右に向き、左に居れば左を向かせる
-	D3DXVECTOR2 enemyPos = SINGLETON_INSTANCE(CombatManager).GetEnemyPos();
-	m_CharacterState.IsRight = (m_Pos.x < enemyPos.x);
 	if (m_CharacterState.IsRight)
 	{
 		m_pVertex->Draw(&m_Pos, m_pAnimTexture[m_AnimState]->GetUV());

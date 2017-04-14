@@ -14,7 +14,7 @@ const D3DXVECTOR2 BackGround::m_RectSize = D3DXVECTOR2(1280, 720);
 
 BackGround::BackGround()
 {
-	SINGLETON_INSTANCE(Lib::TextureManager).Load("Resource/GameScene/stage.png",&m_TextureIndex);
+	SINGLETON_INSTANCE(Lib::TextureManager).Load("Resource/Texture/GameScene/stage.png",&m_TextureIndex);
 
 	m_pVertex.reset(new Lib::Vertex2D(
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDevice(),

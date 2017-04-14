@@ -14,9 +14,9 @@ HPBar::HPBar(const D3DXVECTOR2*  _pos) :
 m_Pos(*_pos)
 {
 	SINGLETON_INSTANCE(Lib::TextureManager).
-		Load("Resource/GameScene/HPbarFrame.png", &m_BarFrameTextureIndex);
+		Load("Resource/Texture/GameScene/HPbarFrame.png", &m_BarFrameTextureIndex);
 	SINGLETON_INSTANCE(Lib::TextureManager).
-		Load("Resource/GameScene/HPbar.png", &m_BarTextureIndex);
+		Load("Resource/Texture/GameScene/HPbar.png", &m_BarTextureIndex);
 
 	m_UV[0] = D3DXVECTOR2(0, 0);
 	m_UV[1] = D3DXVECTOR2(1, 0);

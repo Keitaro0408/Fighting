@@ -42,7 +42,6 @@ private:
 	void operator=(const GameScene&);
 
 	ObjectManager* m_pObjectManager;
-
 };
 
 

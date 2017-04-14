@@ -66,6 +66,7 @@ protected:
 		ANIM_SQUAT_HIGH_PUNCH, //!< しゃがみ強パンチ
 		ANIM_SQUAT_LOW_KICK,   //!< しゃがみ弱キック
 		ANIM_SQUAT_HIGH_KICK,  //!< しゃがみ強キック
+		ANIM_DOWN,			   //!< 体力切れダウン
 		ANIM_MAX		
 	};
 	typedef std::map<ANIMATION, std::unique_ptr<Lib::AnimTexture> > CharacterAnim;
@@ -127,6 +128,7 @@ protected:
 	float						    m_OldHeight;
 	CharacterState					m_CharacterState;
 	std::unique_ptr<HPBar>			m_pHPBar;
+	int								m_DamageSoundIndex;
 
 	// 当たり判定
 	std::unique_ptr<CollisionData>  m_pCollisionData;

@@ -20,7 +20,7 @@ m_MoveSpeed(4.5f)
 {
 	// Lib::TextureManager Texture Load
 	SINGLETON_INSTANCE(Lib::TextureManager).
-		Load("Resource/GameScene/Enemy.png", &m_TextureIndex);
+		Load("Resource/Texture/GameScene/Enemy.png", &m_TextureIndex);
 	// Lib::TextureManager Texture Load End
 
 	// Lib::Vertex2D Init
@@ -61,7 +61,24 @@ void Enemy::Update()
 	m_pCollisionData->Update(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY, 0));
 	SINGLETON_INSTANCE(CollisionManager).Update();
 
+	D3DXVECTOR2 playerPos = SINGLETON_INSTANCE(CombatManager).GetPlayerPos();
+
+	if (abs(m_Pos.x - playerPos.x) > 250.f)
+	{
+		if (m_CharacterState.IsRight)
+		{
+			m_AnimState = ANIM_FRONT_WALK;
+			m_Pos.x += m_MoveSpeed;
+		}
+		else
+		{
+			m_AnimState = ANIM_FRONT_WALK;
+			m_Pos.x -= m_MoveSpeed;
+		}
+	}
+
 	CollisionControl();
+	
 	m_isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
 
 	SINGLETON_INSTANCE(CombatManager).SetEnemyPos(&m_Pos);
