@@ -6,16 +6,15 @@
 #ifndef COMBATMANAGER_H
 #define COMBATMANAGER_H
 #include <D3DX10.h>
+#include "Singleton.h"
 
 /**
  * 戦闘を管理するクラス
  */
 class CombatManager
 {
+	friend Lib::Singleton<CombatManager>;
 public:
-	CombatManager() = default;
-	~CombatManager() = default;
-
 	enum RESULT
 	{
 		RESULT_WIN,     //!< 勝ち
@@ -38,6 +37,7 @@ public:
 	{
 		m_PlayerPos = *_playerPos;
 	}
+
 	/**
 	 * プレイヤーの座標の取得
 	 */
@@ -63,9 +63,25 @@ public:
 		return m_EnemyPos;
 	}
 
+	inline void SetPlayerHP(int _hp)
+	{
+		m_PlayerHP = _hp;
+	}
+
+	inline void SetEnemyHP(int _hp)
+	{
+		m_EnemyHP = _hp;
+	}
+
 private:
+	CombatManager() = default;
+	~CombatManager() = default;
+
 	D3DXVECTOR2 m_PlayerPos;
 	D3DXVECTOR2 m_EnemyPos;
+
+	int			m_PlayerHP;
+	int			m_EnemyHP;
 	
 };
 

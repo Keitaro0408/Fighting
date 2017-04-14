@@ -63,8 +63,7 @@ void HPBar::Update()
 
 void HPBar::Draw(int _hp)
 {
-
-	RECT g_RectBar = { 0, 0, -500, 0 };
+	RECT g_RectBar = { 0, 0, -(500 - (_hp * 5)), 0 };
 	m_pVertex->Draw(&m_Pos,&g_RectBar, m_UV);
 	m_pBarFrameVertex->Draw(&m_Pos, m_UV);
 }

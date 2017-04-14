@@ -13,8 +13,6 @@
 #include "../../../CollisionManager/CollisionData/CollisionData.h"
 #include "HPBar/HPBar.h"
 
-class CombatManager;
-
 /**
  * キャラクターの基底クラス
  */
@@ -24,7 +22,7 @@ public:
 	/**
 	 * コンストラクタ
 	 */
-	CharacterBase(D3DXVECTOR2& _pos, D3DXVECTOR2& _rectSize, const std::shared_ptr<CombatManager> &_pCombatManager, bool isRight);
+	CharacterBase(D3DXVECTOR2& _pos, D3DXVECTOR2& _rectSize, bool isRight);
 
 	/**
 	 * デストラクタ
@@ -120,7 +118,6 @@ protected:
 	static const float			    m_StageWidth;
 	static const float			    m_JumpPower;
 
-	std::shared_ptr<CombatManager>  m_pCombatManager;
 	D3DXVECTOR2					    m_Pos;
 	D3DXVECTOR2					    m_OldPos;
 	D3DXVECTOR2					    m_RectSize;

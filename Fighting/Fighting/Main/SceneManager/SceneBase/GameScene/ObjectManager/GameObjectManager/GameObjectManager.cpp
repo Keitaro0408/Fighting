@@ -8,14 +8,13 @@
 #include "BackGround\BackGround.h"
 #include "CharactorBase\Player\Player.h"
 #include "CharactorBase\Enemy\Enemy.h"
-#include "CombatManager\CombatManager.h"
+#include "../../CombatManager\CombatManager.h"
 
-GameObjectManager::GameObjectManager() :
-m_pCombatManager(std::make_shared<CombatManager>())
+GameObjectManager::GameObjectManager()
 {
 	m_pObjectBase.push_back(std::unique_ptr<BackGround>(new BackGround()));
-	m_pObjectBase.push_back(std::unique_ptr<Enemy>(new Enemy(m_pCombatManager)));
-	m_pObjectBase.push_back(std::unique_ptr<Player>(new Player(m_pCombatManager)));
+	m_pObjectBase.push_back(std::unique_ptr<Enemy>(new Enemy()));
+	m_pObjectBase.push_back(std::unique_ptr<Player>(new Player()));
 }
 
 GameObjectManager::~GameObjectManager()

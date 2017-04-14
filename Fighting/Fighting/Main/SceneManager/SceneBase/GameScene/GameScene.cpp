@@ -12,6 +12,7 @@
 #include "ObjectManager\ObjectManager.h"
 #include "DXInputDevice.h"
 #include "CollisionManager\CollisionManager.h"
+#include "CombatManager\CombatManager.h"
 
 GameScene::GameScene() :
 SceneBase(SCENE_GAME)
@@ -53,12 +54,14 @@ SceneBase(SCENE_GAME)
 		// Lib::TextureManager Init end
 	}
 	SINGLETON_CREATE(CollisionManager);
+	SINGLETON_CREATE(CombatManager);
 	m_pObjectManager = new ObjectManager();
 }
 
 GameScene::~GameScene()
 {
 	delete m_pObjectManager;
+	SINGLETON_DELETE(CombatManager);
 	SINGLETON_DELETE(CollisionManager);
 
 	// Lib::TextureManager Delete
@@ -96,6 +99,7 @@ SceneBase::SceneID GameScene::Update()
 {
 	m_pObjectManager->Update();
 	SINGLETON_INSTANCE(Lib::KeyDevice).Update();
+	SINGLETON_INSTANCE(CombatManager).BattleJudge();
 	return m_SceneID;
 }
 

@@ -8,15 +8,15 @@
 #include "DX11Manager.h"
 #include "Window.h"
 #include "KeyDevice.h"
-#include "../../CombatManager/CombatManager.h"
 #include "CommandManager\CommandManager.h"
 #include "../../../../CollisionManager/CollisionManager.h"
+#include "../../../../CombatManager/CombatManager.h"
 
 const D3DXVECTOR2 Player::m_HPBarPos = D3DXVECTOR2(HPBar::m_HPBarRect.x / 2 + 70, 67.5);
 
 
-Player::Player(const std::shared_ptr<CombatManager> &_pCombatManager) :
-CharacterBase(D3DXVECTOR2(220, 550), D3DXVECTOR2(256, 256), _pCombatManager, true),
+Player::Player() :
+CharacterBase(D3DXVECTOR2(220, 550), D3DXVECTOR2(256, 256), true),
 m_pCommandManager(std::unique_ptr<CommandManager>(new CommandManager())),
 m_MoveSpeed(4.5f)
 {
@@ -37,12 +37,13 @@ m_MoveSpeed(4.5f)
 		GetTexture(m_TextureIndex));
 	// Lib::Vertex2D Init end
 
-	m_pCollisionData.reset(new CollisionData(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY)));
+	m_pCollisionData.reset(new CollisionData(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY,0)));
 	SINGLETON_INSTANCE(CollisionManager).AddCollision(m_pCollisionData.get());
 
 	m_pHPBar.reset(new HPBar(&m_HPBarPos));
 
-	m_pCombatManager->SetPlayerPos(&m_Pos);
+	SINGLETON_INSTANCE(CombatManager).SetPlayerHP(m_CharacterState.HP);
+	SINGLETON_INSTANCE(CombatManager).SetPlayerPos(&m_Pos);
 }
 
 Player::~Player()
@@ -78,14 +79,15 @@ void Player::Update()
 	CKeyControl();
 	VKeyControl();
 
-	m_pCollisionData->Update(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY));
-
-	SINGLETON_INSTANCE(CollisionManager).Update();
+	
 	/* ジャンプしているかチェック */
 	if (m_CharacterState.IsJump)
 	{
 		JumpControl();
 	}
+
+	m_pCollisionData->Update(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY, 0));
+	SINGLETON_INSTANCE(CollisionManager).Update();
 	CollisionControl();
 
 	/* 攻撃のモーション中か */
@@ -99,14 +101,15 @@ void Player::Update()
 		m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
 	}
 	
-	m_pCombatManager->SetPlayerPos(&m_Pos);
+	SINGLETON_INSTANCE(CombatManager).SetPlayerPos(&m_Pos);
+	SINGLETON_INSTANCE(CombatManager).SetPlayerHP(m_CharacterState.HP);
 	m_OldPos = m_Pos;
 }
 
 void Player::Draw()
 {
 	// 相手が右に居れば右に向き、左に居れば左を向かせる
-	D3DXVECTOR2 enemyPos = m_pCombatManager->GetEnemyPos();
+	D3DXVECTOR2 enemyPos = SINGLETON_INSTANCE(CombatManager).GetEnemyPos();
 	m_CharacterState.IsRight = (m_Pos.x < enemyPos.x);
 	if (m_CharacterState.IsRight)
 	{
@@ -119,7 +122,7 @@ void Player::Draw()
 		InvertUV(UV);
 		m_pVertex->Draw(&m_Pos, UV);
 	}
-	m_pHPBar->Draw();
+	m_pHPBar->Draw(m_CharacterState.HP);
 #ifdef _DEBUG
 	CollisionDraw();
 #endif
@@ -324,17 +327,16 @@ void Player::VKeyControl()
 void Player::AttackControl()
 {
 	m_AnimOperation = Lib::ANIM_NORMAL;
-	static ANIMATION var;
 	/* アニメーション再生が最後ならフラグを反転させてIsAttackMotionをfalseにしている */
 	m_CharacterState.IsAttackMotion = !m_isAnimEnd;
 	if (m_CharacterState.IsAttackMotion)
 	{
-		var = m_AnimState;
 		int attackAnimCount = m_pAnimTexture[m_AnimState]->GetAnimCount();
 
 		if (m_SkillSpec[m_AnimState].FirstHitCheckCount < attackAnimCount)
 		{
-			m_pCollisionData->Update(&CollisionData::CollisionState(&(m_Pos + m_SkillSpec[m_AnimState].Pos), &m_SkillSpec[m_AnimState].Rect, CollisionData::ATTACK));
+			m_pCollisionData->Update(&CollisionData::CollisionState(&(m_Pos + m_SkillSpec[m_AnimState].Pos),
+				&m_SkillSpec[m_AnimState].Rect, CollisionData::ATTACK, m_SkillSpec[m_AnimState].Damage));
 		}
 	}
 	else

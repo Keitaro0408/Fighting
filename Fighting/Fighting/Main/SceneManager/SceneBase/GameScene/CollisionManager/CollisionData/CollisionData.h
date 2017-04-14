@@ -11,13 +11,12 @@ class CollisionManager;
 
 class CollisionData
 {
-	friend CollisionManager;
 public:
 	enum COLLISION_TYPE
 	{
 		WALL,   //!< 壁の判定
 		BODY,	//!< 体の判定
-		ATTACK  //!< 攻撃の判定
+		ATTACK, //!< 攻撃の判定
 	};
 
 	enum HIT_TYPE
@@ -30,16 +29,19 @@ public:
 	struct CollisionState
 	{
 		CollisionState();
-		CollisionState(const D3DXVECTOR2* _pos,const D3DXVECTOR2* _collisionRect,const COLLISION_TYPE _collisionType)
+		CollisionState(const D3DXVECTOR2* _pos,const D3DXVECTOR2* _collisionRect,const COLLISION_TYPE _collisionType, int _giveDamage)
 		{
 			Pos = *_pos;
 			CollisionRect = *_collisionRect;
 			CollisionType = _collisionType;
+			GiveDamage = _giveDamage;
 			HitType = NON_HIT;
 		}
 		D3DXVECTOR2	   Pos;
 		D3DXVECTOR2    CollisionRect;
 		COLLISION_TYPE CollisionType;
+		int			   GiveDamage;
+		int			   ReceiveDamage;
 		HIT_TYPE	   HitType;
 	};
 
@@ -54,14 +56,20 @@ public:
 	 */
 	~CollisionData() = default;
 
-
 	/**
 	 * 判定座標の更新
+	 * @param[in] _collisionState 更新した判定
 	 */
 	void Update(const CollisionState* _collisionState);
 
 	/**
-	 * 
+	 * 判定チェック
+	 * @param[in] _collisionState チェックする判定
+	 */
+	void HitCheck(const CollisionState* _collisionState);
+
+	/**
+	 * 当たり判定の取得
 	 */
 	inline CollisionState GetCollisionState() const
 	{

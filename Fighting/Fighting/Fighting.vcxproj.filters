@@ -47,9 +47,6 @@
     <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\Player\CommandManager">
       <UniqueIdentifier>{3b5cada3-6eda-4478-abe6-8e5c976db17a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager">
-      <UniqueIdentifier>{8b6dda31-c2ed-4a24-850d-bb67737764fa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\HPBar">
       <UniqueIdentifier>{26b32e75-6a22-4a38-82fc-666c94f61416}</UniqueIdentifier>
     </Filter>
@@ -58,6 +55,9 @@
     </Filter>
     <Filter Include="Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionData">
       <UniqueIdentifier>{09f06385-732c-4e75-972c-5eb378b7c2d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\SceneManager\SceneBase\GameScene\CombatManager">
+      <UniqueIdentifier>{8b6dda31-c2ed-4a24-850d-bb67737764fa}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,9 +100,6 @@
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Enemy\Enemy.cpp">
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager\CombatManager.cpp">
-      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager</Filter>
-    </ClCompile>
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\HPBar\HPBar.cpp">
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\HPBar</Filter>
     </ClCompile>
@@ -111,6 +108,9 @@
     </ClCompile>
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionData\CollisionData.cpp">
       <Filter>Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionData</Filter>
+    </ClCompile>
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\CombatManager\CombatManager.cpp">
+      <Filter>Main\SceneManager\SceneBase\GameScene\CombatManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -153,9 +153,6 @@
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Enemy\Enemy.h">
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager\CombatManager.h">
-      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager</Filter>
-    </ClInclude>
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\HPBar\HPBar.h">
       <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\HPBar</Filter>
     </ClInclude>
@@ -164,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionData\CollisionData.h">
       <Filter>Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionData</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\CombatManager\CombatManager.h">
+      <Filter>Main\SceneManager\SceneBase\GameScene\CombatManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

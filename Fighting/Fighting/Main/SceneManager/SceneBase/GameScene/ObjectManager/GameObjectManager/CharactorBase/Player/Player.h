@@ -18,7 +18,7 @@ public:
 	/**
 	 * コンストラクタ
 	 */
-	Player(const std::shared_ptr<CombatManager> &_pCombatManager);
+	Player();
 
 	/**
 	 * デストラクタ

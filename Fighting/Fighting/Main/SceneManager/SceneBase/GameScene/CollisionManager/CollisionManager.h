@@ -29,11 +29,6 @@ private:
 	CollisionManager() = default;
 	~CollisionManager() = default;
 
-	/**
-	 * 当たった際の制御
-	 */
-	void HitControl(int _countI, int _countJ);
-	
 	std::vector<CollisionData*> m_pCollisionData;
 
 };

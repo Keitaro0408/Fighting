@@ -75,7 +75,7 @@
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionData\CollisionData.cpp" />
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionManager.cpp" />
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\HPBar\HPBar.cpp" />
-    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager\CombatManager.cpp" />
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\CombatManager\CombatManager.cpp" />
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Player\CommandManager\CommandManager.cpp" />
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Enemy\Enemy.cpp" />
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\CharacterBase.cpp" />
@@ -94,7 +94,7 @@
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionData\CollisionData.h" />
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\CollisionManager\CollisionManager.h" />
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\HPBar\HPBar.h" />
-    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CombatManager\CombatManager.h" />
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\CombatManager\CombatManager.h" />
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Player\CommandManager\CommandManager.h" />
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Enemy\Enemy.h" />
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\CharacterBase.h" />

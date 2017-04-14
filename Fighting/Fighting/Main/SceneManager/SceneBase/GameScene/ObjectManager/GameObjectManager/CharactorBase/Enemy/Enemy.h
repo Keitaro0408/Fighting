@@ -13,7 +13,7 @@ public:
 	/**
 	 * コンストラクタ
 	 */
-	Enemy(const std::shared_ptr<CombatManager> &_pCombatManager);
+	Enemy();
 
 	/**
 	 * デストラクタ

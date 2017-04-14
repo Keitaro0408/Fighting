@@ -8,14 +8,14 @@
 #include "DX11Manager.h"
 #include "Window.h"
 #include "KeyDevice.h"
-#include "../../CombatManager/CombatManager.h"
 #include "../../../../CollisionManager/CollisionManager.h"
+#include "../../../../CombatManager/CombatManager.h"
 
 const D3DXVECTOR2 Enemy::m_HPBarPos = D3DXVECTOR2(1280 - (HPBar::m_HPBarRect.x / 2 + 70), 67.5);
 
 
-Enemy::Enemy(const std::shared_ptr<CombatManager> &_pCombatManager) :
-CharacterBase(D3DXVECTOR2(1060, 550), D3DXVECTOR2(256, 256), _pCombatManager, false),
+Enemy::Enemy() :
+CharacterBase(D3DXVECTOR2(1060, 550), D3DXVECTOR2(256, 256), false),
 m_MoveSpeed(4.5f)
 {
 	// Lib::TextureManager Texture Load
@@ -33,12 +33,13 @@ m_MoveSpeed(4.5f)
 		GetTexture(m_TextureIndex));
 	// Lib::Vertex2D Init end
 
-	m_pCollisionData.reset(new CollisionData(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY)));
+	m_pCollisionData.reset(new CollisionData(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY,0)));
 	SINGLETON_INSTANCE(CollisionManager).AddCollision(m_pCollisionData.get());
 
 	m_pHPBar.reset(new HPBar(&m_HPBarPos));
 
-	m_pCombatManager->SetEnemyPos(&m_Pos);
+	SINGLETON_INSTANCE(CombatManager).SetEnemyHP(m_CharacterState.HP);
+	SINGLETON_INSTANCE(CombatManager).SetEnemyPos(&m_Pos);
 }
 
 Enemy::~Enemy()
@@ -55,20 +56,23 @@ Enemy::~Enemy()
 void Enemy::Update()
 {
 	m_AnimState = ANIM_WAIT;
-
-	m_pCombatManager->SetEnemyPos(&m_Pos);
+	m_AnimOperation = Lib::ANIM_LOOP;
 	
+	m_pCollisionData->Update(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY, 0));
 	SINGLETON_INSTANCE(CollisionManager).Update();
+
 	CollisionControl();
 	m_isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
 
+	SINGLETON_INSTANCE(CombatManager).SetEnemyPos(&m_Pos);
+	SINGLETON_INSTANCE(CombatManager).SetEnemyHP(m_CharacterState.HP);
 	m_OldPos = m_Pos;
 }
 
 void Enemy::Draw()
 {
 	// 相手が右に居れば右に向き、左に居れば左を向かせる
-	D3DXVECTOR2 playerPos = m_pCombatManager->GetPlayerPos();
+	D3DXVECTOR2 playerPos = SINGLETON_INSTANCE(CombatManager).GetPlayerPos();
 	m_CharacterState.IsRight = (m_Pos.x < playerPos.x);
 	if (m_CharacterState.IsRight)
 	{
@@ -81,7 +85,7 @@ void Enemy::Draw()
 		InvertUV(UV);
 		m_pVertex->Draw(&m_Pos, UV);
 	}
-	m_pHPBar->Draw();
+	m_pHPBar->Draw(m_CharacterState.HP);
 #ifdef _DEBUG
 	CollisionDraw();
 #endif

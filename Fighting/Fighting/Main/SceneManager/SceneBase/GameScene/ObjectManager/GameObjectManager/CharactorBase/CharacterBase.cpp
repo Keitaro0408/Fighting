@@ -4,7 +4,6 @@
  * @author kotani
  */
 #include "CharacterBase.h"
-#include "../CombatManager/CombatManager.h"
 #include "TextureManager.h"
 #include "DX11Manager.h"
 #include "Window.h"
@@ -15,10 +14,9 @@ const float CharacterBase::m_StageWidth = 1280.f;
 const float CharacterBase::m_JumpPower = 23.f;
 
 
-CharacterBase::CharacterBase(D3DXVECTOR2& _pos, D3DXVECTOR2& _rectSize, const std::shared_ptr<CombatManager> &_pCombatManager, bool isRight) :
+CharacterBase::CharacterBase(D3DXVECTOR2& _pos, D3DXVECTOR2& _rectSize, bool isRight) :
 m_Pos(_pos),
 m_RectSize(_rectSize),
-m_pCombatManager(_pCombatManager),
 m_AnimState(ANIM_WAIT),
 m_isAnimEnd(false)
 {
@@ -29,10 +27,10 @@ m_isAnimEnd(false)
 	m_CharacterState.IsJump = false;
 	m_CharacterState.IsDamageMotion = false;
 
-	m_StandRectCollision.x = 90;
+	m_StandRectCollision.x = 60;
 	m_StandRectCollision.y = 200;
 
-	m_SquatRectCollision.x = 100;
+	m_SquatRectCollision.x = 80;
 	m_SquatRectCollision.y = 100;
 
 	SINGLETON_INSTANCE(Lib::TextureManager).
@@ -165,7 +163,7 @@ void CharacterBase::CollisionControl()
 	{
 		/* ダメージ処理 */
 		m_AnimState = ANIM_DAMAGE;
-
+		m_CharacterState.HP -= m_pCollisionData->GetCollisionState().ReceiveDamage;
 		m_CharacterState.IsSquat ? (m_AnimState = ANIM_SQUAT_DAMAGE) : (m_AnimState = ANIM_DAMAGE);
 
 		m_CharacterState.IsDamageMotion = true;
@@ -187,21 +185,23 @@ void CharacterBase::CollisionControl()
 	else if (m_pCollisionData->GetCollisionState().HitType == CollisionData::BODY_HIT)
 	{
 		/* 体や壁にぶつかったとき */
-		if (m_CharacterState.IsJump)
+		if (!m_CharacterState.IsJump)
 		{
-			//if ((m_Pos.y - m_OldHeight) < 0);
-			if (m_CharacterState.IsRight && (m_Pos.y - m_OldHeight) > 0)
+			if (m_OldPos.x == m_Pos.x)
 			{
-				m_Pos.x -= m_pCollisionData->GetCollisionState().CollisionRect.x / 2;
+				if (m_CharacterState.IsRight)
+				{
+					m_Pos.x -= 1;
+				}
+				else
+				{
+					m_Pos.x += 1;
+				}
 			}
-			else if ((m_Pos.y - m_OldHeight) > 0)
+			else
 			{
-				m_Pos.x += m_pCollisionData->GetCollisionState().CollisionRect.x / 2;
+				m_Pos.x = m_OldPos.x;
 			}
-		}
-		else
-		{
-			m_Pos.x = m_OldPos.x;
 		}
 	}
 }
