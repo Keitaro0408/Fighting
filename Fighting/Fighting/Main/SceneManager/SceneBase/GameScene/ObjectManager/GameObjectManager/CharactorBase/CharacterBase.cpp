@@ -65,16 +65,16 @@ m_isAnimEnd(false)
 	m_SkillSpec[ANIM_HIGH_KICK] = SkillSpec(&D3DXVECTOR2(0, 20), &D3DXVECTOR2(250, 10), 10, 6, 6);
 
 	InitAnim(ANIM_SQUAT_LOW_PUNCH, "SquatLowPunch", 3);
-	m_SkillSpec[ANIM_SQUAT_LOW_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 10, 5, 3);
+	m_SkillSpec[ANIM_SQUAT_LOW_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 40), &D3DXVECTOR2(180, 10), 10, 5, 3);
 	
 	InitAnim(ANIM_SQUAT_LOW_KICK, "SquatLowKick", 3);
-	m_SkillSpec[ANIM_SQUAT_LOW_KICK] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 10, 4, 6);
+	m_SkillSpec[ANIM_SQUAT_LOW_KICK] = SkillSpec(&D3DXVECTOR2(0, 40), &D3DXVECTOR2(180, 10), 10, 4, 6);
 	
 	InitAnim(ANIM_SQUAT_HIGH_PUNCH, "SquatHighPunch", 3);
-	m_SkillSpec[ANIM_SQUAT_HIGH_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 10, 5, 5);
+	m_SkillSpec[ANIM_SQUAT_HIGH_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 40), &D3DXVECTOR2(180, 10), 10, 5, 5);
 	
 	InitAnim(ANIM_SQUAT_HIGH_KICK, "SquatHighKick", 3);
-	m_SkillSpec[ANIM_SQUAT_HIGH_KICK] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 10, 6, 6);
+	m_SkillSpec[ANIM_SQUAT_HIGH_KICK] = SkillSpec(&D3DXVECTOR2(0, 40), &D3DXVECTOR2(180, 10), 10, 6, 6);
 	// Lib::AnimTexture Init End
 }
 
@@ -106,66 +106,52 @@ void CharacterBase::InvertUV(D3DXVECTOR2* _uv)
 	_uv[3] = tmpUV[2];
 }
 
-void CharacterBase::CollisionDraw()
+void CharacterBase::JumpControl()
 {
-	if (m_CharacterState.IsSquat)
+	m_AnimState = ANIM_JUMP;
+	m_AnimOperation = Lib::ANIM_NORMAL;
+
+	float HeightTmp = m_Pos.y;
+	m_Pos.y += (m_Pos.y - m_OldHeight) + 1.f;
+	m_OldHeight = HeightTmp;
+	if (550.f < m_Pos.y)
 	{
-		m_pSquatCollisionVertex->Draw(&D3DXVECTOR2(m_Pos.x, m_Pos.y + 40), m_UV);
+		m_pAnimTexture[ANIM_JUMP]->ResetAnim();
+		m_CharacterState.IsJump = false;
+		m_Pos.y = 550.f;
+	}
+}
+
+void CharacterBase::AttackControl()
+{
+	m_AnimOperation = Lib::ANIM_NORMAL;
+	/* アニメーション再生が最後ならフラグを反転させてIsAttackMotionをfalseにしている */
+	m_CharacterState.IsAttackMotion = !m_isAnimEnd;
+	if (m_CharacterState.IsAttackMotion)
+	{
+		int attackAnimCount = m_pAnimTexture[m_AnimState]->GetAnimCount();
+
+		if (m_SkillSpec[m_AnimState].FirstHitCheckCount < attackAnimCount)
+		{
+			m_pCollisionData->Update(&CollisionData::CollisionState(&(m_Pos + m_SkillSpec[m_AnimState].Pos),
+				&m_SkillSpec[m_AnimState].Rect, CollisionData::ATTACK, m_SkillSpec[m_AnimState].Damage));
+		}
 	}
 	else
 	{
-		m_pStandCollisionVertex->Draw(&m_Pos, m_UV);
+		m_pAnimTexture[m_AnimState]->ResetAnim();
 	}
-}
-
-
-//----------------------------------------------------------------------------------------------------
-// Private Functions
-//----------------------------------------------------------------------------------------------------
-
-void CharacterBase::InitAnim(ANIMATION _animEnum, LPCTSTR _animName, int _setFrame)
-{
-	m_pAnimTexture[_animEnum] = (std::unique_ptr<Lib::AnimTexture>(new Lib::AnimTexture()));
-	m_pAnimTexture[_animEnum]->LoadAnimation("Resource/Texture/GameScene/Character.anim", _animName);
-	m_pAnimTexture[_animEnum]->SetAnimFrame(_setFrame);
-}
-
-void CharacterBase::InitVertex2D()
-{
-	m_UV[0] = D3DXVECTOR2(0, 0);
-	m_UV[1] = D3DXVECTOR2(1, 0);
-	m_UV[2] = D3DXVECTOR2(0, 1);
-	m_UV[3] = D3DXVECTOR2(1, 1);
-
-	m_pStandCollisionVertex.reset(new Lib::Vertex2D(
-		SINGLETON_INSTANCE(Lib::DX11Manager).GetDevice(),
-		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
-		SINGLETON_INSTANCE(Lib::Window).GetWindowHandle()));
-
-	m_pStandCollisionVertex->Init(&m_StandRectCollision, m_UV);
-
-	m_pStandCollisionVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
-		GetTexture(m_CollisionTextureIndex));
-
-
-	m_pSquatCollisionVertex.reset(new Lib::Vertex2D(
-		SINGLETON_INSTANCE(Lib::DX11Manager).GetDevice(),
-		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
-		SINGLETON_INSTANCE(Lib::Window).GetWindowHandle()));
-
-	m_pSquatCollisionVertex->Init(&m_SquatRectCollision, m_UV);
-
-	m_pSquatCollisionVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
-		GetTexture(m_CollisionTextureIndex));
 }
 
 void CharacterBase::CollisionControl()
 {
+	m_pCollisionData->Update(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY, 0));
+	SINGLETON_INSTANCE(CollisionManager).Update();
 	if (m_pCollisionData->GetCollisionState().HitType == CollisionData::ATTACK_HIT &&
 		!m_CharacterState.IsDamageMotion)
 	{
 		/* ダメージ処理 */
-		SINGLETON_INSTANCE(Lib::DSoundManager).SoundOperation(m_DamageSoundIndex,Lib::DSoundManager::SOUND_PLAY);
+		SINGLETON_INSTANCE(Lib::DSoundManager).SoundOperation(m_DamageSoundIndex, Lib::DSoundManager::SOUND_PLAY);
 		m_CharacterState.HP -= m_pCollisionData->GetCollisionState().ReceiveDamage;
 		if (m_CharacterState.HP == 0)
 		{
@@ -221,4 +207,58 @@ void CharacterBase::CollisionControl()
 		}
 	}
 }
+
+void CharacterBase::CollisionDraw()
+{
+	if (m_CharacterState.IsSquat)
+	{
+		m_pSquatCollisionVertex->Draw(&D3DXVECTOR2(m_Pos.x, m_Pos.y + 40), m_UV);
+	}
+	else
+	{
+		m_pStandCollisionVertex->Draw(&m_Pos, m_UV);
+	}
+}
+
+
+//----------------------------------------------------------------------------------------------------
+// Private Functions
+//----------------------------------------------------------------------------------------------------
+
+void CharacterBase::InitAnim(ANIMATION _animEnum, LPCTSTR _animName, int _setFrame)
+{
+	m_pAnimTexture[_animEnum] = (std::unique_ptr<Lib::AnimTexture>(new Lib::AnimTexture()));
+	m_pAnimTexture[_animEnum]->LoadAnimation("Resource/Texture/GameScene/Character.anim", _animName);
+	m_pAnimTexture[_animEnum]->SetAnimFrame(_setFrame);
+}
+
+void CharacterBase::InitVertex2D()
+{
+	m_UV[0] = D3DXVECTOR2(0, 0);
+	m_UV[1] = D3DXVECTOR2(1, 0);
+	m_UV[2] = D3DXVECTOR2(0, 1);
+	m_UV[3] = D3DXVECTOR2(1, 1);
+
+	m_pStandCollisionVertex.reset(new Lib::Vertex2D(
+		SINGLETON_INSTANCE(Lib::DX11Manager).GetDevice(),
+		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
+		SINGLETON_INSTANCE(Lib::Window).GetWindowHandle()));
+
+	m_pStandCollisionVertex->Init(&m_StandRectCollision, m_UV);
+
+	m_pStandCollisionVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
+		GetTexture(m_CollisionTextureIndex));
+
+
+	m_pSquatCollisionVertex.reset(new Lib::Vertex2D(
+		SINGLETON_INSTANCE(Lib::DX11Manager).GetDevice(),
+		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
+		SINGLETON_INSTANCE(Lib::Window).GetWindowHandle()));
+
+	m_pSquatCollisionVertex->Init(&m_SquatRectCollision, m_UV);
+
+	m_pSquatCollisionVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
+		GetTexture(m_CollisionTextureIndex));
+}
+
 

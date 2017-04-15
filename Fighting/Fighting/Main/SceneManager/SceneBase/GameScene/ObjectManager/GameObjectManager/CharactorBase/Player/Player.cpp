@@ -62,16 +62,12 @@ void Player::Update()
 {
 	KeyCheck();
 
-	D3DXVECTOR2 enemyPos = SINGLETON_INSTANCE(CombatManager).GetEnemyPos();
-	m_CharacterState.IsRight = (m_Pos.x < enemyPos.x);
-
 	/* 操作がされないとステートが変化しないので、最初に */
 	if (!m_CharacterState.IsAttackMotion)
 	{
 		m_AnimState = ANIM_WAIT;
 		m_AnimOperation = Lib::ANIM_LOOP;
 	}
-
 
 	LeftMoveControl();
 	RightMoveControl();
@@ -83,15 +79,12 @@ void Player::Update()
 	CKeyControl();
 	VKeyControl();
 
-	
 	/* ジャンプしているかチェック */
 	if (m_CharacterState.IsJump)
 	{
 		JumpControl();
 	}
-
-	m_pCollisionData->Update(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY, 0));
-	SINGLETON_INSTANCE(CollisionManager).Update();
+	
 	CollisionControl();
 
 	/* 攻撃のモーション中か */
@@ -100,11 +93,17 @@ void Player::Update()
 		AttackControl();
 		m_isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
 	}
+	else if (m_CharacterState.IsDamageMotion)
+	{
+		m_isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
+	}
 	else
 	{
 		m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
 	}
-	
+
+	D3DXVECTOR2 enemyPos = SINGLETON_INSTANCE(CombatManager).GetEnemyPos();
+	m_CharacterState.IsRight = (m_Pos.x < enemyPos.x);
 	SINGLETON_INSTANCE(CombatManager).SetPlayerPos(&m_Pos);
 	SINGLETON_INSTANCE(CombatManager).SetPlayerHP(m_CharacterState.HP);
 	m_OldPos = m_Pos;
@@ -112,7 +111,7 @@ void Player::Update()
 
 void Player::Draw()
 {
-	// 相手が右に居れば右に向き、左に居れば左を向かせる
+	/* 相手が右に居れば右に向き、左に居れば左を向かせる */ 
 	if (m_CharacterState.IsRight)
 	{
 		m_pVertex->Draw(&m_Pos, m_pAnimTexture[m_AnimState]->GetUV());
@@ -145,22 +144,6 @@ void Player::KeyCheck()
 	SINGLETON_INSTANCE(Lib::KeyDevice).KeyCheck(DIK_X); // 強パンチボタン.
 	SINGLETON_INSTANCE(Lib::KeyDevice).KeyCheck(DIK_C); // 弱キックボタン.
 	SINGLETON_INSTANCE(Lib::KeyDevice).KeyCheck(DIK_V); // 強キックボタン.
-}
-
-void Player::JumpControl()
-{
-	m_AnimState = ANIM_JUMP;
-	m_AnimOperation = Lib::ANIM_NORMAL;
-
-	float HeightTmp = m_Pos.y;
-	m_Pos.y += (m_Pos.y - m_OldHeight) + 1.f;
-	m_OldHeight = HeightTmp;
-	if (550.f < m_Pos.y)
-	{
-		m_pAnimTexture[ANIM_JUMP]->ResetAnim();
-		m_CharacterState.IsJump = false;
-		m_Pos.y = 550.f;
-	}
 }
 
 void Player::LeftMoveControl()
@@ -211,7 +194,6 @@ void Player::UpMoveControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_UPARROW] == Lib::KEY_PUSH &&
 		!m_CharacterState.IsJump &&
-		!m_CharacterState.IsSquat &&
 		!m_CharacterState.IsAttackMotion)
 	{
 		// ジャンプ処理.
@@ -227,14 +209,14 @@ void Player::DownMoveControl()
 		!m_CharacterState.IsJump &&
 		!m_CharacterState.IsAttackMotion)
 	{
-		m_CharacterState.IsSquat = true;
 		m_AnimState = ANIM_SQUAT;
 		m_AnimOperation = Lib::ANIM_NORMAL;
+		m_CharacterState.IsSquat = true;
 	}
 	else if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWNARROW] == Lib::KEY_RELEASE)
 	{
-		m_CharacterState.IsSquat = false;
 		m_pAnimTexture[ANIM_SQUAT]->ResetAnim();
+		m_CharacterState.IsSquat = false;
 	}
 }
 
@@ -323,26 +305,5 @@ void Player::VKeyControl()
 				m_CharacterState.IsAttackMotion = true;
 			}
 		}
-	}
-}
-
-void Player::AttackControl()
-{
-	m_AnimOperation = Lib::ANIM_NORMAL;
-	/* アニメーション再生が最後ならフラグを反転させてIsAttackMotionをfalseにしている */
-	m_CharacterState.IsAttackMotion = !m_isAnimEnd;
-	if (m_CharacterState.IsAttackMotion)
-	{
-		int attackAnimCount = m_pAnimTexture[m_AnimState]->GetAnimCount();
-
-		if (m_SkillSpec[m_AnimState].FirstHitCheckCount < attackAnimCount)
-		{
-			m_pCollisionData->Update(&CollisionData::CollisionState(&(m_Pos + m_SkillSpec[m_AnimState].Pos),
-				&m_SkillSpec[m_AnimState].Rect, CollisionData::ATTACK, m_SkillSpec[m_AnimState].Damage));
-		}
-	}
-	else
-	{
-		m_pAnimTexture[m_AnimState]->ResetAnim();
 	}
 }

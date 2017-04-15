@@ -55,14 +55,12 @@ Enemy::~Enemy()
 
 void Enemy::Update()
 {
-	m_AnimState = ANIM_WAIT;
-	m_AnimOperation = Lib::ANIM_LOOP;
-	
-	m_pCollisionData->Update(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY, 0));
-	SINGLETON_INSTANCE(CollisionManager).Update();
-
+	if (!m_CharacterState.IsAttackMotion)
+	{
+		m_AnimState = ANIM_WAIT;
+		m_AnimOperation = Lib::ANIM_LOOP;
+	}
 	D3DXVECTOR2 playerPos = SINGLETON_INSTANCE(CombatManager).GetPlayerPos();
-
 	if (abs(m_Pos.x - playerPos.x) > 250.f)
 	{
 		if (m_CharacterState.IsRight)
@@ -79,8 +77,22 @@ void Enemy::Update()
 
 	CollisionControl();
 	
-	m_isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
+	/* 攻撃のモーション中か */
+	if (m_CharacterState.IsAttackMotion)
+	{
+		AttackControl();
+		m_isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
+	}
+	else if (m_CharacterState.IsDamageMotion)
+	{
+		m_isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
+	}
+	else
+	{
+		m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
+	}
 
+	m_CharacterState.IsRight = (m_Pos.x < playerPos.x);
 	SINGLETON_INSTANCE(CombatManager).SetEnemyPos(&m_Pos);
 	SINGLETON_INSTANCE(CombatManager).SetEnemyHP(m_CharacterState.HP);
 	m_OldPos = m_Pos;
@@ -89,8 +101,6 @@ void Enemy::Update()
 void Enemy::Draw()
 {
 	// 相手が右に居れば右に向き、左に居れば左を向かせる
-	D3DXVECTOR2 playerPos = SINGLETON_INSTANCE(CombatManager).GetPlayerPos();
-	m_CharacterState.IsRight = (m_Pos.x < playerPos.x);
 	if (m_CharacterState.IsRight)
 	{
 		m_pVertex->Draw(&m_Pos, m_pAnimTexture[m_AnimState]->GetUV());

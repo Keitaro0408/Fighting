@@ -115,6 +115,16 @@ protected:
 	 */
 	void CollisionControl();
 
+	/**
+	 * 攻撃処理
+	 */
+	void AttackControl();
+
+	/**
+	 * ジャンプ処理
+	 */
+	void JumpControl();
+
 	static const float			    m_GroundHeight;
 	static const float			    m_StageWidth;
 	static const float			    m_JumpPower;

@@ -42,11 +42,6 @@ private:
 	void KeyCheck();
 
 	/**
-	 * ジャンプ処理
-	 */
-	void JumpControl();
-
-	/**
 	 * 左のボタンの処理
 	 */
 	void LeftMoveControl();
@@ -85,8 +80,6 @@ private:
 	 * Vボタン処理
 	 */
 	void VKeyControl();
-
-	void AttackControl();
 
 	static const D3DXVECTOR2		m_HPBarPos;
 	std::unique_ptr<CommandManager> m_pCommandManager;
