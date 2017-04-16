@@ -99,7 +99,12 @@ SceneBase::SceneID GameScene::Update()
 {
 	m_pObjectManager->Update();
 	SINGLETON_INSTANCE(Lib::KeyDevice).Update();
+	SINGLETON_INSTANCE(Lib::KeyDevice).KeyCheck(DIK_R);
 	SINGLETON_INSTANCE(CombatManager).BattleJudge();
+	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_R] == Lib::KEY_PUSH)
+	{
+		m_SceneID = SCENE_TITLE;
+	}
 	return m_SceneID;
 }
 

@@ -60,6 +60,7 @@ void Enemy::Update()
 		m_AnimState = ANIM_WAIT;
 		m_AnimOperation = Lib::ANIM_LOOP;
 	}
+
 	D3DXVECTOR2 playerPos = SINGLETON_INSTANCE(CombatManager).GetPlayerPos();
 	if (abs(m_Pos.x - playerPos.x) > 250.f)
 	{

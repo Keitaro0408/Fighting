@@ -22,7 +22,8 @@ public:
 		KEY_LOW_PUNCH,
 		KEY_HIGH_PUNCH,
 		KEY_LOW_KICK,
-		KEY_HIGH_KICK
+		KEY_HIGH_KICK,
+		KEY_NONE
 	};
 
 	/**
@@ -36,6 +37,8 @@ public:
 	~CommandManager();
 
 	void PushButton(KEY _key);
+
+	void Update();
 
 private:
 	static const int m_KeyValidTime;   //!< 次のキー入力が有効なフレーム数

@@ -260,5 +260,3 @@ void CharacterBase::InitVertex2D()
 	m_pSquatCollisionVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
 		GetTexture(m_CollisionTextureIndex));
 }
-
-
