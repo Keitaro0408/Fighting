@@ -116,6 +116,16 @@ protected:
 	void CollisionControl();
 
 	/**
+	 * ダメージ判定初期処理
+	 */
+	void DamageInit();
+
+	/**
+	 * ダメージ処理中(ダメージモーション中)
+	 */
+	void DamageControl();
+
+	/**
 	 * 攻撃処理
 	 */
 	void AttackControl();

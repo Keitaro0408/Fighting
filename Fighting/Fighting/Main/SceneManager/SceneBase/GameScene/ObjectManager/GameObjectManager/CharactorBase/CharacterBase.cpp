@@ -147,58 +147,26 @@ void CharacterBase::CollisionControl()
 {
 	m_pCollisionData->Update(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY, 0));
 	SINGLETON_INSTANCE(CollisionManager).Update();
-	if (m_pCollisionData->GetCollisionState().HitType == CollisionData::ATTACK_HIT &&
-		!m_CharacterState.IsDamageMotion)
+
+	CollisionData::HIT_TYPE hitType = m_pCollisionData->GetCollisionState().HitType;
+	if (hitType == CollisionData::ATTACK_HIT && !m_CharacterState.IsDamageMotion)
 	{
 		/* ダメージ処理 */
-		SINGLETON_INSTANCE(Lib::DSoundManager).SoundOperation(m_DamageSoundIndex, Lib::DSoundManager::SOUND_PLAY);
-		m_CharacterState.HP -= m_pCollisionData->GetCollisionState().ReceiveDamage;
-		if (m_CharacterState.HP == 0)
-		{
-			m_AnimState = ANIM_DOWN;
-		}
-		else
-		{
-			m_CharacterState.IsSquat ? (m_AnimState = ANIM_SQUAT_DAMAGE) : (m_AnimState = ANIM_DAMAGE);
-		}
-
-		m_CharacterState.IsDamageMotion = true;
-		m_AnimOperation = Lib::ANIM_NORMAL;
+		DamageInit();
 	}
 	else if (m_CharacterState.IsDamageMotion)
 	{
 		/* ダメージモーション中 */
-		m_AnimOperation = Lib::ANIM_NORMAL;
-
-		if (m_CharacterState.HP == 0)
-		{
-			m_AnimState = ANIM_DOWN;
-		}
-		else
-		{
-			m_CharacterState.IsSquat ? (m_AnimState = ANIM_SQUAT_DAMAGE) : (m_AnimState = ANIM_DAMAGE);
-			if (m_isAnimEnd)
-			{
-				m_pAnimTexture[m_AnimState]->ResetAnim();
-				m_CharacterState.IsDamageMotion = false;
-			}
-		}
+		DamageControl();
 	}
-	else if (m_pCollisionData->GetCollisionState().HitType == CollisionData::BODY_HIT)
+	else if (hitType == CollisionData::BODY_HIT)
 	{
 		/* 体や壁にぶつかったとき */
 		if (!m_CharacterState.IsJump)
 		{
 			if (m_OldPos.x == m_Pos.x)
 			{
-				if (m_CharacterState.IsRight)
-				{
-					m_Pos.x -= 2;
-				}
-				else
-				{
-					m_Pos.x += 2;
-				}
+				m_CharacterState.IsRight ? m_Pos.x -= 2 : m_Pos.x += 2;
 			}
 			else
 			{
@@ -259,4 +227,40 @@ void CharacterBase::InitVertex2D()
 
 	m_pSquatCollisionVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
 		GetTexture(m_CollisionTextureIndex));
+}
+
+void CharacterBase::DamageInit()
+{
+	SINGLETON_INSTANCE(Lib::DSoundManager).SoundOperation(m_DamageSoundIndex, Lib::DSoundManager::SOUND_PLAY);
+	m_CharacterState.HP -= m_pCollisionData->GetCollisionState().ReceiveDamage;
+	if (m_CharacterState.HP == 0)
+	{
+		m_AnimState = ANIM_DOWN;
+	}
+	else
+	{
+		m_CharacterState.IsSquat ? (m_AnimState = ANIM_SQUAT_DAMAGE) : (m_AnimState = ANIM_DAMAGE);
+	}
+
+	m_CharacterState.IsDamageMotion = true;
+	m_AnimOperation = Lib::ANIM_NORMAL;
+}
+
+void CharacterBase::DamageControl()
+{
+	m_AnimOperation = Lib::ANIM_NORMAL;
+
+	if (m_CharacterState.HP == 0)
+	{
+		m_AnimState = ANIM_DOWN;
+	}
+	else
+	{
+		m_CharacterState.IsSquat ? (m_AnimState = ANIM_SQUAT_DAMAGE) : (m_AnimState = ANIM_DAMAGE);
+		if (m_isAnimEnd)
+		{
+			m_pAnimTexture[m_AnimState]->ResetAnim();
+			m_CharacterState.IsDamageMotion = false;
+		}
+	}
 }
