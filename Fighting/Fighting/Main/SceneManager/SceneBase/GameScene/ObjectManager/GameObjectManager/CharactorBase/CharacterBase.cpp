@@ -53,25 +53,25 @@ m_isAnimEnd(false)
 	InitAnim(ANIM_DOWN, "Down", 4);
 
 	InitAnim(ANIM_LOW_PUNCH, "LowPunch", 3);
-	m_SkillSpec[ANIM_LOW_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 10 ,4, 3);
+	m_SkillSpec[ANIM_LOW_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 5 ,4, 3);
 
 	InitAnim(ANIM_HIGH_PUNCH, "HighPunch", 3);
 	m_SkillSpec[ANIM_HIGH_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 0), &D3DXVECTOR2(180, 10), 10, 7, 3);
 	
 	InitAnim(ANIM_LOW_KICK, "LowKick", 3);
-	m_SkillSpec[ANIM_LOW_KICK] = SkillSpec(&D3DXVECTOR2(0, 20), &D3DXVECTOR2(250, 10), 10, 5, 3);
+	m_SkillSpec[ANIM_LOW_KICK] = SkillSpec(&D3DXVECTOR2(0, 20), &D3DXVECTOR2(250, 10), 5, 5, 3);
 	
 	InitAnim(ANIM_HIGH_KICK, "HighKick", 3);
 	m_SkillSpec[ANIM_HIGH_KICK] = SkillSpec(&D3DXVECTOR2(0, 20), &D3DXVECTOR2(250, 10), 10, 6, 6);
 
 	InitAnim(ANIM_SQUAT_LOW_PUNCH, "SquatLowPunch", 3);
-	m_SkillSpec[ANIM_SQUAT_LOW_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 40), &D3DXVECTOR2(180, 10), 10, 5, 3);
-	
-	InitAnim(ANIM_SQUAT_LOW_KICK, "SquatLowKick", 3);
-	m_SkillSpec[ANIM_SQUAT_LOW_KICK] = SkillSpec(&D3DXVECTOR2(0, 40), &D3DXVECTOR2(180, 10), 10, 4, 6);
+	m_SkillSpec[ANIM_SQUAT_LOW_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 40), &D3DXVECTOR2(180, 10), 5, 5, 3);
 	
 	InitAnim(ANIM_SQUAT_HIGH_PUNCH, "SquatHighPunch", 3);
 	m_SkillSpec[ANIM_SQUAT_HIGH_PUNCH] = SkillSpec(&D3DXVECTOR2(0, 40), &D3DXVECTOR2(180, 10), 10, 5, 5);
+	
+	InitAnim(ANIM_SQUAT_LOW_KICK, "SquatLowKick", 3);
+	m_SkillSpec[ANIM_SQUAT_LOW_KICK] = SkillSpec(&D3DXVECTOR2(0, 40), &D3DXVECTOR2(180, 10), 5, 4, 6);
 	
 	InitAnim(ANIM_SQUAT_HIGH_KICK, "SquatHighKick", 3);
 	m_SkillSpec[ANIM_SQUAT_HIGH_KICK] = SkillSpec(&D3DXVECTOR2(0, 40), &D3DXVECTOR2(180, 10), 10, 6, 6);

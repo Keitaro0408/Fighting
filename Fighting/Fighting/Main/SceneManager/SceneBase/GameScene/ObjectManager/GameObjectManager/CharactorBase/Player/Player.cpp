@@ -80,6 +80,8 @@ void Player::Update()
 		XKeyControl();
 		CKeyControl();
 		VKeyControl();
+
+		CommandControl();
 	}
 
 	/* ジャンプしているかチェック */
@@ -152,18 +154,6 @@ void Player::KeyCheck()
 
 void Player::LeftMoveControl()
 {
-	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_PUSH)
-	{
-		if (m_CharacterState.IsRight)
-		{
-			m_pCommandManager->PushButton(CommandManager::KEY_LEFT);
-		}
-		else
-		{
-			m_pCommandManager->PushButton(CommandManager::KEY_RIGHT);
-		}
-	}
-
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_ON && 
 		!m_CharacterState.IsSquat &&
 		!m_CharacterState.IsAttackMotion)
@@ -186,18 +176,6 @@ void Player::LeftMoveControl()
 
 void Player::RightMoveControl()
 {
-	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_PUSH)
-	{
-		if (m_CharacterState.IsRight)
-		{
-			m_pCommandManager->PushButton(CommandManager::KEY_RIGHT);
-		}
-		else
-		{
-			m_pCommandManager->PushButton(CommandManager::KEY_LEFT);
-		}
-	}
-
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_ON && 
 		!m_CharacterState.IsSquat &&
 		!m_CharacterState.IsAttackMotion)
@@ -220,11 +198,6 @@ void Player::RightMoveControl()
 
 void Player::UpMoveControl()
 {
-	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_UPARROW] == Lib::KEY_PUSH)
-	{
-		m_pCommandManager->PushButton(CommandManager::KEY_UP);
-	}
-
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_UPARROW] == Lib::KEY_PUSH &&
 		!m_CharacterState.IsJump &&
 		!m_CharacterState.IsAttackMotion)
@@ -238,11 +211,6 @@ void Player::UpMoveControl()
 
 void Player::DownMoveControl()
 {
-	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWNARROW] == Lib::KEY_PUSH)
-	{
-		m_pCommandManager->PushButton(CommandManager::KEY_DOWN);
-	}
-
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWNARROW] == Lib::KEY_ON &&
 		!m_CharacterState.IsJump &&
 		!m_CharacterState.IsAttackMotion)
@@ -262,7 +230,6 @@ void Player::ZKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_Z] == Lib::KEY_PUSH)
 	{
-		m_pCommandManager->PushButton(CommandManager::KEY_LOW_PUNCH);
 		if (!m_CharacterState.IsAttackMotion)
 		{
 			if (m_CharacterState.IsSquat && !m_CharacterState.IsJump)
@@ -285,7 +252,6 @@ void Player::XKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_X] == Lib::KEY_PUSH)
 	{
-		m_pCommandManager->PushButton(CommandManager::KEY_HIGH_PUNCH);
 		if (!m_CharacterState.IsAttackMotion)
 		{
 			if (m_CharacterState.IsSquat && !m_CharacterState.IsJump)
@@ -308,7 +274,6 @@ void Player::CKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_C] == Lib::KEY_PUSH)
 	{
-		m_pCommandManager->PushButton(CommandManager::KEY_LOW_KICK);
 		if (!m_CharacterState.IsAttackMotion)
 		{
 			if (m_CharacterState.IsSquat && !m_CharacterState.IsJump)
@@ -331,7 +296,6 @@ void Player::VKeyControl()
 {
 	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_V] == Lib::KEY_PUSH)
 	{
-		m_pCommandManager->PushButton(CommandManager::KEY_HIGH_KICK);
 		if (!m_CharacterState.IsAttackMotion)
 		{
 			if (m_CharacterState.IsSquat && !m_CharacterState.IsJump)
@@ -352,6 +316,62 @@ void Player::VKeyControl()
 
 void Player::CommandControl()
 {
-
+	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_ON)
+	{
+		if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWNARROW] == Lib::KEY_ON)
+		{
+			if (m_CharacterState.IsRight)
+			{
+				m_pCommandManager->PushButton(CommandManager::KEY_RIGHT_SLANT);
+			}
+			else
+			{
+				m_pCommandManager->PushButton(CommandManager::KEY_LEFT_SLANT);
+			}
+		}
+		else
+		{
+			if (m_CharacterState.IsRight)
+			{
+				m_pCommandManager->PushButton(CommandManager::KEY_RIGHT);
+			}
+			else
+			{
+				m_pCommandManager->PushButton(CommandManager::KEY_LEFT);
+			}
+		}
+	}
+	else if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_ON)
+	{
+		if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWNARROW] == Lib::KEY_ON)
+		{
+			if (m_CharacterState.IsRight)
+			{
+				m_pCommandManager->PushButton(CommandManager::KEY_LEFT_SLANT);
+			}
+			else
+			{
+				m_pCommandManager->PushButton(CommandManager::KEY_RIGHT_SLANT);
+			}
+		}
+		else
+		{
+			if (m_CharacterState.IsRight)
+			{
+				m_pCommandManager->PushButton(CommandManager::KEY_LEFT);
+			}
+			else
+			{
+				m_pCommandManager->PushButton(CommandManager::KEY_RIGHT);
+			}
+		}
+	}
+	else if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWNARROW] == Lib::KEY_ON)
+	{
+		m_pCommandManager->PushButton(CommandManager::KEY_DOWN);
+	}
+	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_Z] == Lib::KEY_ON)
+	{
+		m_pCommandManager->PushButton(CommandManager::KEY_LOW_PUNCH);
+	}
 }
-
