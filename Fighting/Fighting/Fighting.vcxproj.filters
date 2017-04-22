@@ -59,6 +59,9 @@
     <Filter Include="Main\SceneManager\SceneBase\GameScene\CombatManager">
       <UniqueIdentifier>{8b6dda31-c2ed-4a24-850d-bb67737764fa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\Bullet">
+      <UniqueIdentifier>{39107776-6f44-4ed3-b93e-e74da0bac6cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\GameObjectManager.cpp">
@@ -112,6 +115,9 @@
     <ClCompile Include="Main\SceneManager\SceneBase\GameScene\CombatManager\CombatManager.cpp">
       <Filter>Main\SceneManager\SceneBase\GameScene\CombatManager</Filter>
     </ClCompile>
+    <ClCompile Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Bullet\Bullet.cpp">
+      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\Bullet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\GameObjectManager.h">
@@ -164,6 +170,9 @@
     </ClInclude>
     <ClInclude Include="Main\SceneManager\SceneBase\GameScene\CombatManager\CombatManager.h">
       <Filter>Main\SceneManager\SceneBase\GameScene\CombatManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharactorBase\Bullet\Bullet.h">
+      <Filter>Main\SceneManager\SceneBase\GameScene\ObjectManager\GameObjectManager\CharacterBase\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

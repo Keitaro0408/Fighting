@@ -55,14 +55,14 @@ Enemy::~Enemy()
 
 void Enemy::Update()
 {
-	if (!m_CharacterState.IsAttackMotion)
+	if (!m_CharacterState.IsAttackMotion && m_CharacterState.HP != 0)
 	{
 		m_AnimState = ANIM_WAIT;
 		m_AnimOperation = Lib::ANIM_LOOP;
 	}
 
 	D3DXVECTOR2 playerPos = SINGLETON_INSTANCE(CombatManager).GetPlayerPos();
-	if (abs(m_Pos.x - playerPos.x) > 250.f)
+	if (abs(m_Pos.x - playerPos.x) > 400.f)
 	{
 		if (m_CharacterState.IsRight)
 		{

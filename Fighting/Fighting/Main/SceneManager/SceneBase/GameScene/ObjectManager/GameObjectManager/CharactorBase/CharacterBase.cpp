@@ -8,6 +8,7 @@
 #include "DX11Manager.h"
 #include "Window.h"
 #include "DSoundManager.h"
+#include "Bullet\Bullet.h"
 #include "../../../CollisionManager/CollisionManager.h"
 
 const float CharacterBase::m_GroundHeight = 550;
@@ -19,21 +20,11 @@ CharacterBase::CharacterBase(D3DXVECTOR2& _pos, D3DXVECTOR2& _rectSize, bool isR
 m_Pos(_pos),
 m_RectSize(_rectSize),
 m_AnimState(ANIM_WAIT),
-m_isAnimEnd(false)
+m_isAnimEnd(false),
+m_StandRectCollision(D3DXVECTOR2(60, 200)),
+m_SquatRectCollision(D3DXVECTOR2(80, 100)),
+m_pBullet(std::unique_ptr<Bullet>(new Bullet()))
 {
-	m_CharacterState.HP = 100;
-	m_CharacterState.IsRight = isRight;
-	m_CharacterState.IsSquat = false;
-	m_CharacterState.IsAttackMotion = false;
-	m_CharacterState.IsJump = false;
-	m_CharacterState.IsDamageMotion = false;
-
-	m_StandRectCollision.x = 60;
-	m_StandRectCollision.y = 200;
-
-	m_SquatRectCollision.x = 80;
-	m_SquatRectCollision.y = 100;
-
 	SINGLETON_INSTANCE(Lib::TextureManager).
 		Load("Resource/Texture/GameScene/test.png", &m_CollisionTextureIndex);
 
@@ -50,6 +41,9 @@ m_isAnimEnd(false)
 	InitAnim(ANIM_SQUAT, "Squat", 3);
 	InitAnim(ANIM_DAMAGE, "Damage", 4);
 	InitAnim(ANIM_SQUAT_DAMAGE, "SquatDamage", 4);
+	InitAnim(ANIM_GUARD, "Guard", 4);
+	InitAnim(ANIM_SQUAT_GUARD, "SquatGuard", 4);
+	InitAnim(ANIM_SHOT, "Shot", 4);
 	InitAnim(ANIM_DOWN, "Down", 4);
 
 	InitAnim(ANIM_LOW_PUNCH, "LowPunch", 3);
@@ -133,7 +127,7 @@ void CharacterBase::AttackControl()
 
 		if (m_SkillSpec[m_AnimState].FirstHitCheckCount < attackAnimCount)
 		{
-			m_pCollisionData->Update(&CollisionData::CollisionState(&(m_Pos + m_SkillSpec[m_AnimState].Pos),
+			m_pCollisionData->SetCollisionState(&CollisionData::CollisionState(&(m_Pos + m_SkillSpec[m_AnimState].Pos),
 				&m_SkillSpec[m_AnimState].Rect, CollisionData::ATTACK, m_SkillSpec[m_AnimState].Damage));
 		}
 	}
@@ -145,8 +139,8 @@ void CharacterBase::AttackControl()
 
 void CharacterBase::CollisionControl()
 {
-	m_pCollisionData->Update(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY, 0));
-	SINGLETON_INSTANCE(CollisionManager).Update();
+	m_pCollisionData->SetCollisionState(&CollisionData::CollisionState(&m_Pos, &m_StandRectCollision, CollisionData::BODY, 0));
+	SINGLETON_INSTANCE(CollisionManager).Update(m_pCollisionData->GetIndex());
 
 	CollisionData::HIT_TYPE hitType = m_pCollisionData->GetCollisionState().HitType;
 	if (hitType == CollisionData::ATTACK_HIT && !m_CharacterState.IsDamageMotion)
@@ -216,7 +210,6 @@ void CharacterBase::InitVertex2D()
 
 	m_pStandCollisionVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
 		GetTexture(m_CollisionTextureIndex));
-
 
 	m_pSquatCollisionVertex.reset(new Lib::Vertex2D(
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDevice(),

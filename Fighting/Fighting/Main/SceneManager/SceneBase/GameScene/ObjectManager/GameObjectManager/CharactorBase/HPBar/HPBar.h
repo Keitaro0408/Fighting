@@ -36,7 +36,6 @@ public:
 
 	static const D3DXVECTOR2 m_HPBarRect;
 private:
-
 	D3DXVECTOR2 m_Pos;
 	int			m_BarTextureIndex;
 	int			m_BarFrameTextureIndex;

@@ -22,8 +22,9 @@ public:
 
 	/**
 	 * 判定の更新
+	 * @param[in] _index 当たり判定を更新するindex
 	 */
-	void Update();
+	void Update(int _index);
 
 private:
 	CollisionManager() = default;

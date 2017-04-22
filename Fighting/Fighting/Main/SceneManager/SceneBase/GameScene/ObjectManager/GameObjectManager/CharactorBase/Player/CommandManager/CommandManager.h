@@ -33,7 +33,8 @@ public:
 	enum COMMAND_ARTS
 	{
 		HADOUKEN,
-		SYOURYUU
+		SYOURYUU,
+		ARTS_NONE
 	};
 
 	/**
@@ -48,10 +49,13 @@ public:
 
 	void PushButton(KEY _key);
 
-	void Update();
+	/**
+	 * 技が出ているか確認
+	 */
+	COMMAND_ARTS Update();
 
 private:
-	bool KeyCheck(int _arrayNum);
+	bool KeyCheck(int _arrayNum = 0);
 
 	static const int m_KeyValidTime;   //!< 次のキー入力が有効なフレーム数
 

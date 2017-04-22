@@ -17,6 +17,7 @@ public:
 		WALL,   //!< 壁の判定
 		BODY,	//!< 体の判定
 		ATTACK, //!< 攻撃の判定
+		COLLISION_NONE
 	};
 
 	enum HIT_TYPE
@@ -57,16 +58,20 @@ public:
 	~CollisionData() = default;
 
 	/**
-	 * 判定座標の更新
-	 * @param[in] _collisionState 更新した判定
-	 */
-	void Update(const CollisionState* _collisionState);
-
-	/**
 	 * 判定チェック
 	 * @param[in] _collisionState チェックする判定
+	 * @return 当たったらtrue
 	 */
-	void HitCheck(const CollisionState* _collisionState);
+	bool HitCheck(const CollisionState* _collisionState);
+
+	/**
+	 * 当たり判定の設定
+	 * @param[in] _collisionState 更新した判定
+	 */
+	inline void SetCollisionState(const CollisionState* _collisionState)
+	{
+		m_CollisionState = *_collisionState;
+	}
 
 	/**
 	 * 当たり判定の取得
@@ -76,8 +81,19 @@ public:
 		return m_CollisionState;
 	}
 
+	inline void SetIndex(int _index)
+	{
+		m_Index = _index;
+	}
+
+	inline int GetIndex()
+	{
+		return m_Index;
+	}
+
 private:
 	CollisionState m_CollisionState;
+	int			   m_Index; //!< 何番目の配列にセットされたか?
 
 };
 

@@ -13,6 +13,8 @@
 #include "../../../CollisionManager/CollisionData/CollisionData.h"
 #include "HPBar/HPBar.h"
 
+class Bullet;
+
 /**
  * キャラクターの基底クラス
  */
@@ -66,6 +68,9 @@ protected:
 		ANIM_SQUAT_HIGH_PUNCH, //!< しゃがみ強パンチ
 		ANIM_SQUAT_LOW_KICK,   //!< しゃがみ弱キック
 		ANIM_SQUAT_HIGH_KICK,  //!< しゃがみ強キック
+		ANIM_GUARD,			   //!< ガード
+		ANIM_SQUAT_GUARD,	   //!< しゃがみガード
+		ANIM_SHOT,			   //!< 遠距離技
 		ANIM_DOWN,			   //!< 体力切れダウン
 		ANIM_MAX		
 	};
@@ -73,6 +78,15 @@ protected:
 
 	struct CharacterState
 	{
+		CharacterState()
+		{
+			HP = 100;
+			IsRight = false;
+			IsSquat = false;
+			IsAttackMotion = false;
+			IsJump = false;
+			IsDamageMotion = false;
+		}
 		int	 HP;
 		bool IsRight;
 		bool IsSquat; //!< しゃがんでいるか?
@@ -148,6 +162,7 @@ protected:
 	float						    m_OldHeight;
 	CharacterState					m_CharacterState;
 	std::unique_ptr<HPBar>			m_pHPBar;
+	std::unique_ptr<Bullet>			m_pBullet;
 	int								m_DamageSoundIndex;
 
 	// 当たり判定
@@ -160,6 +175,7 @@ protected:
 	int							    m_CollisionTextureIndex;
 	Lib::ANIM_OPERATION			    m_AnimOperation; //!< アニメーションの再生設定
 	bool						    m_isAnimEnd;
+
 private:
 	/**
 	 * アニメーションの初期化

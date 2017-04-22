@@ -14,19 +14,20 @@
 void CollisionManager::AddCollision(CollisionData* _pCollisionData)
 {
 	m_pCollisionData.push_back(_pCollisionData);
+	m_pCollisionData[m_pCollisionData.size() - 1]->SetIndex(m_pCollisionData.size() - 1);
 }
 
-void CollisionManager::Update()
+void CollisionManager::Update(int _index)
 {
 	if (m_pCollisionData.size() < 1) return;
 
-	for (unsigned int i = 0; i < m_pCollisionData.size(); i++)
+	for (unsigned int j = 0; j < m_pCollisionData.size(); j++)
 	{
-		for (unsigned int j = 0; j < m_pCollisionData.size(); j++)
+		if (_index != j)
 		{
-			if (i != j)
+			if (m_pCollisionData[_index]->HitCheck(&m_pCollisionData[j]->GetCollisionState()))
 			{
-				m_pCollisionData[i]->HitCheck(&m_pCollisionData[j]->GetCollisionState());
+				break;
 			}
 		}
 	}

@@ -11,6 +11,7 @@
 #include "CommandManager\CommandManager.h"
 #include "../../../../CollisionManager/CollisionManager.h"
 #include "../../../../CombatManager/CombatManager.h"
+#include "../Bullet/Bullet.h"
 
 const D3DXVECTOR2 Player::m_HPBarPos = D3DXVECTOR2(HPBar::m_HPBarRect.x / 2 + 70, 67.5);
 
@@ -80,8 +81,8 @@ void Player::Update()
 		XKeyControl();
 		CKeyControl();
 		VKeyControl();
-
 		CommandControl();
+
 	}
 
 	/* ジャンプしているかチェック */
@@ -92,11 +93,23 @@ void Player::Update()
 	
 	CollisionControl();
 
+	/* テストコード */
+	if (m_pCommandManager->Update() == CommandManager::HADOUKEN)
+	{
+		m_AnimState = ANIM_SHOT;
+		m_AnimOperation = Lib::ANIM_NORMAL;
+		m_CharacterState.IsAttackMotion = true;
+	}
+
 	/* 攻撃のモーション中か */
 	if (m_CharacterState.IsAttackMotion)
 	{
 		AttackControl();
 		m_isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
+		if (m_AnimState == ANIM_SHOT && m_isAnimEnd)
+		{
+			m_pBullet->InitState(&m_Pos, m_CharacterState.IsRight);
+		}
 	}
 	else if (m_CharacterState.IsDamageMotion)
 	{
@@ -107,7 +120,7 @@ void Player::Update()
 		m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
 	}
 
-	m_pCommandManager->Update();
+	m_pBullet->Update();
 	D3DXVECTOR2 enemyPos = SINGLETON_INSTANCE(CombatManager).GetEnemyPos();
 	m_CharacterState.IsRight = (m_Pos.x < enemyPos.x);
 	SINGLETON_INSTANCE(CombatManager).SetPlayerPos(&m_Pos);
@@ -130,6 +143,7 @@ void Player::Draw()
 		m_pVertex->Draw(&m_Pos, UV);
 	}
 	m_pHPBar->Draw(m_CharacterState.HP);
+	m_pBullet->Draw();
 #ifdef _DEBUG
 	CollisionDraw();
 #endif

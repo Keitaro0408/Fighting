@@ -85,6 +85,7 @@ private:
 
 	static const D3DXVECTOR2		m_HPBarPos;
 	std::unique_ptr<CommandManager> m_pCommandManager;
+
 	int							    m_TextureIndex;
 	float						    m_MoveSpeed;
 
