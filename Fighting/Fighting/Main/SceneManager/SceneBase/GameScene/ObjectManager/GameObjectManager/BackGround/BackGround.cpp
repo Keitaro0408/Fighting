@@ -4,9 +4,9 @@
  * @author kotani
  */
 #include "BackGround.h"
-#include "TextureManager.h"
-#include "DX11Manager.h"
-#include "Window.h"
+#include "Texture/TextureManager.h"
+#include "Dx11/DX11Manager.h"
+#include "Window/Window.h"
 
 const D3DXVECTOR2 BackGround::m_Pos = D3DXVECTOR2(640,360);
 const D3DXVECTOR2 BackGround::m_RectSize = D3DXVECTOR2(1280, 720);

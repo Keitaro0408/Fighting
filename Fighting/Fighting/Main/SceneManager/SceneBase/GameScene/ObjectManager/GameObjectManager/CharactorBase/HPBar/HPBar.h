@@ -6,7 +6,7 @@
 #ifndef HPBAR_H
 #define HPBAR_H
 #include "../../../ObjectBase/ObjecBase.h"
-#include "Vertex2D.h"
+#include "Vertex2D/Vertex2D.h"
 #include <memory>
 
 class HPBar : public ObjecBase

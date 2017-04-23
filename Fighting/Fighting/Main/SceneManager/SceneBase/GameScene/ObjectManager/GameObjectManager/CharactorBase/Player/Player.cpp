@@ -4,10 +4,10 @@
  * @author kotani
  */
 #include "Player.h"
-#include "TextureManager.h"
-#include "DX11Manager.h"
-#include "Window.h"
-#include "KeyDevice.h"
+#include "Texture/TextureManager.h"
+#include "Dx11/DX11Manager.h"
+#include "Window/Window.h"
+#include "DxInput\KeyBoard\KeyDevice.h"
 #include "CommandManager\CommandManager.h"
 #include "../../../../CollisionManager/CollisionManager.h"
 #include "../../../../CombatManager/CombatManager.h"
@@ -32,7 +32,7 @@ m_MoveSpeed(4.5f)
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
 		SINGLETON_INSTANCE(Lib::Window).GetWindowHandle()));
 
-	m_pVertex->Init(&m_RectSize, m_pAnimTexture[ANIM_WAIT]->GetUV());
+	m_pVertex->Init(&m_RectSize, m_pAnimUvController[ANIM_WAIT]->GetUV());
 
 	m_pVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
 		GetTexture(m_TextureIndex));
@@ -105,7 +105,7 @@ void Player::Update()
 	if (m_CharacterState.IsAttackMotion)
 	{
 		AttackControl();
-		m_isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
+		m_isAnimEnd = m_pAnimUvController[m_AnimState]->Control(false, m_AnimOperation);
 		if (m_AnimState == ANIM_SHOT && m_isAnimEnd)
 		{
 			m_pBullet->InitState(&m_Pos, m_CharacterState.IsRight);
@@ -113,11 +113,11 @@ void Player::Update()
 	}
 	else if (m_CharacterState.IsDamageMotion)
 	{
-		m_isAnimEnd = m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
+		m_isAnimEnd = m_pAnimUvController[m_AnimState]->Control(false, m_AnimOperation);
 	}
 	else
 	{
-		m_pAnimTexture[m_AnimState]->Control(false, m_AnimOperation);
+		m_pAnimUvController[m_AnimState]->Control(false, m_AnimOperation);
 	}
 
 	m_pBullet->Update();
@@ -133,12 +133,12 @@ void Player::Draw()
 	/* 相手が右に居れば右に向き、左に居れば左を向かせる */ 
 	if (m_CharacterState.IsRight)
 	{
-		m_pVertex->Draw(&m_Pos, m_pAnimTexture[m_AnimState]->GetUV());
+		m_pVertex->Draw(&m_Pos, m_pAnimUvController[m_AnimState]->GetUV());
 	}
 	else
 	{
 		D3DXVECTOR2 UV[4];
-		memcpy(UV, m_pAnimTexture[m_AnimState]->GetUV(), sizeof(D3DXVECTOR2) * 4);
+		memcpy(UV, m_pAnimUvController[m_AnimState]->GetUV(), sizeof(D3DXVECTOR2) * 4);
 		InvertUV(UV);
 		m_pVertex->Draw(&m_Pos, UV);
 	}
@@ -235,7 +235,7 @@ void Player::DownMoveControl()
 	}
 	else if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_DOWNARROW] == Lib::KEY_RELEASE)
 	{
-		m_pAnimTexture[ANIM_SQUAT]->ResetAnim();
+		m_pAnimUvController[ANIM_SQUAT]->ResetAnim();
 		m_CharacterState.IsSquat = false;
 	}
 }

@@ -1,5 +1,5 @@
 ﻿#include <crtdbg.h>
-#include "Window.h"
+#include "Window/Window.h"
 #include "SceneManager/SceneManager.h"
 
 #define WINDOW_WIDTH 1280

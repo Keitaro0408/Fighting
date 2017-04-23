@@ -7,8 +7,8 @@
 #define CHARACTERBASE_H
 #include <memory>
 #include <map>
-#include "Vertex2D.h"
-#include "AnimTexture.h"
+#include "Vertex2D/Vertex2D.h"
+#include "Animation/AnimUvController.h"
 #include "../../ObjectBase/ObjecBase.h"
 #include "../../../CollisionManager/CollisionData/CollisionData.h"
 #include "HPBar/HPBar.h"
@@ -74,7 +74,7 @@ protected:
 		ANIM_DOWN,			   //!< 体力切れダウン
 		ANIM_MAX		
 	};
-	typedef std::map<ANIMATION, std::unique_ptr<Lib::AnimTexture> > CharacterAnim;
+	typedef std::map<ANIMATION, std::unique_ptr<Lib::AnimUvController> > CharacterAnim;
 
 	struct CharacterState
 	{
@@ -156,7 +156,7 @@ protected:
 	D3DXVECTOR2					    m_Pos;
 	D3DXVECTOR2					    m_OldPos;
 	D3DXVECTOR2					    m_RectSize;
-	CharacterAnim				    m_pAnimTexture;
+	CharacterAnim				    m_pAnimUvController;
 	std::map<ANIMATION, SkillSpec>  m_SkillSpec; //!< 技の性能
 	ANIMATION					    m_AnimState;
 	float						    m_OldHeight;

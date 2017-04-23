@@ -4,9 +4,9 @@
  * @author kotani
  */
 #include "Bullet.h"
-#include "TextureManager.h"
-#include "DX11Manager.h"
-#include "Window.h"
+#include "Texture/TextureManager.h"
+#include "Dx11/DX11Manager.h"
+#include "Window/Window.h"
 #include "../../../../CollisionManager/CollisionManager.h"
 
 
@@ -16,16 +16,16 @@ m_RectCollision(D3DXVECTOR2(60, 60))
 {
 	SINGLETON_INSTANCE(Lib::TextureManager).
 		Load("Resource/Texture/GameScene/effect.png", &m_TextureIndex);
-	m_pAnimTexture = (std::unique_ptr<Lib::AnimTexture>(new Lib::AnimTexture()));
-	m_pAnimTexture->LoadAnimation("Resource/Texture/GameScene/Effect.anim", "Shot");
-	m_pAnimTexture->SetAnimFrame(4);
+	m_pAnimUvController = (std::unique_ptr<Lib::AnimUvController>(new Lib::AnimUvController()));
+	m_pAnimUvController->LoadAnimation("Resource/Texture/GameScene/Effect.anim", "Shot");
+	m_pAnimUvController->SetAnimFrame(4);
 
 	// Lib::Vertex2D Init
 	m_pVertex.reset(new Lib::Vertex2D(
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDevice(),
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
 		SINGLETON_INSTANCE(Lib::Window).GetWindowHandle()));
-	m_pVertex->Init(&D3DXVECTOR2(100, 100), m_pAnimTexture->GetUV());
+	m_pVertex->Init(&D3DXVECTOR2(100, 100), m_pAnimUvController->GetUV());
 	m_pVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
 		GetTexture(m_TextureIndex));
 	// Lib::Vertex2D Init end
@@ -60,7 +60,7 @@ void Bullet::Update()
 	if (!m_IsEnable) return;
 	m_IsRight ? m_Pos.x += 5 : m_Pos.x -= 5;
 	CollisionControl();
-	m_pAnimTexture->Control(false,Lib::ANIM_LOOP);
+	m_pAnimUvController->Control(false, Lib::ANIM_LOOP);
 }
 
 void Bullet::Draw()
@@ -69,12 +69,12 @@ void Bullet::Draw()
 
 	if (m_IsRight)
 	{
-		m_pVertex->Draw(&m_Pos, m_pAnimTexture->GetUV());
+		m_pVertex->Draw(&m_Pos, m_pAnimUvController->GetUV());
 	}
 	else
 	{
 		D3DXVECTOR2 UV[4];
-		memcpy(UV, m_pAnimTexture->GetUV(), sizeof(D3DXVECTOR2) * 4);
+		memcpy(UV, m_pAnimUvController->GetUV(), sizeof(D3DXVECTOR2) * 4);
 		InvertUV(UV);
 		m_pVertex->Draw(&m_Pos, UV);
 	}

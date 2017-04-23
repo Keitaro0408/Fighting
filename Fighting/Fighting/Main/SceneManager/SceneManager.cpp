@@ -6,7 +6,7 @@
 #include "SceneManager.h"
 #include "SceneBase\SceneBase.h"
 #include "SceneFactory\SceneFactory.h"
-#include "DebugTimer.h"
+#include "Debug/DebugTimer.h"
 
 
 SceneManager::SceneManager(HWND _hwnd) :

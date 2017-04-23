@@ -4,9 +4,9 @@
  * @author kotani
  */
 #include "HPBar.h"
-#include "TextureManager.h"
-#include "DX11Manager.h"
-#include "Window.h"
+#include "Texture/TextureManager.h"
+#include "Dx11/DX11Manager.h"
+#include "Window/Window.h"
 
 const D3DXVECTOR2 HPBar::m_HPBarRect = D3DXVECTOR2(500, 70);
 

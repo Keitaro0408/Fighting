@@ -6,7 +6,7 @@
 #ifndef OBJECTBASE_H
 #define OBJECTBASE_H
 #include <memory>
-#include "Vertex2D.h"
+#include "Vertex2D/Vertex2D.h"
 
 /**
  * ゲームのオブジェクトの基底クラス

@@ -7,7 +7,7 @@
 #define BULLET_H
 #include "../../../ObjectBase/ObjecBase.h"
 #include "../../../../CollisionManager/CollisionData/CollisionData.h"
-#include "AnimTexture.h"
+#include "Animation/AnimUvController.h"
 
 
 /**
@@ -51,13 +51,13 @@ private:
 	void InvertUV(D3DXVECTOR2* _uv);
 
 
-	D3DXVECTOR2						  m_Pos;
-	D3DXVECTOR2					      m_RectCollision; //!< 立っているときのあたり判定
-	int								  m_TextureIndex;
-	bool							  m_IsRight;
-	bool							  m_IsEnable; //!< 弾が存在するか
-	std::unique_ptr<CollisionData>    m_pCollisionData;
-	std::unique_ptr<Lib::AnimTexture> m_pAnimTexture;
+	D3DXVECTOR2						       m_Pos;
+	D3DXVECTOR2					           m_RectCollision; //!< 立っているときのあたり判定
+	int								       m_TextureIndex;
+	bool							       m_IsRight;
+	bool							       m_IsEnable; //!< 弾が存在するか
+	std::unique_ptr<CollisionData>         m_pCollisionData;
+	std::unique_ptr<Lib::AnimUvController> m_pAnimUvController;
 };
 
 

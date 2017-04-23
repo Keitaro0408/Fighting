@@ -4,15 +4,15 @@
  * @author kotani
  */
 #include "GameScene.h"
-#include "Window.h"
-#include "TextureManager.h"
-#include "DSoundManager.h"
-#include "KeyDevice.h"
-#include "DX11Manager.h"
-#include "ObjectManager\ObjectManager.h"
-#include "DXInputDevice.h"
-#include "CollisionManager\CollisionManager.h"
-#include "CombatManager\CombatManager.h"
+#include "Window/Window.h"
+#include "Texture/TextureManager.h"
+#include "Sound/DSoundManager.h"
+#include "DxInput/KeyBoard/KeyDevice.h"
+#include "Dx11/DX11Manager.h"
+#include "ObjectManager/ObjectManager.h"
+#include "DxInput/DXInputDevice.h"
+#include "CollisionManager/CollisionManager.h"
+#include "CombatManager/CombatManager.h"
 
 GameScene::GameScene() :
 SceneBase(SCENE_GAME)

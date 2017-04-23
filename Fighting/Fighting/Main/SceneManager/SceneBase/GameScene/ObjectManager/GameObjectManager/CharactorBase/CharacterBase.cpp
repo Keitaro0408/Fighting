@@ -4,11 +4,11 @@
  * @author kotani
  */
 #include "CharacterBase.h"
-#include "TextureManager.h"
-#include "DX11Manager.h"
-#include "Window.h"
-#include "DSoundManager.h"
-#include "Bullet\Bullet.h"
+#include "Texture/TextureManager.h"
+#include "Dx11/DX11Manager.h"
+#include "Window/Window.h"
+#include "Sound/DSoundManager.h"
+#include "Bullet/Bullet.h"
 #include "../../../CollisionManager/CollisionManager.h"
 
 const float CharacterBase::m_GroundHeight = 550;
@@ -110,7 +110,7 @@ void CharacterBase::JumpControl()
 	m_OldHeight = HeightTmp;
 	if (550.f < m_Pos.y)
 	{
-		m_pAnimTexture[ANIM_JUMP]->ResetAnim();
+		m_pAnimUvController[ANIM_JUMP]->ResetAnim();
 		m_CharacterState.IsJump = false;
 		m_Pos.y = 550.f;
 	}
@@ -123,7 +123,7 @@ void CharacterBase::AttackControl()
 	m_CharacterState.IsAttackMotion = !m_isAnimEnd;
 	if (m_CharacterState.IsAttackMotion)
 	{
-		int attackAnimCount = m_pAnimTexture[m_AnimState]->GetAnimCount();
+		int attackAnimCount = m_pAnimUvController[m_AnimState]->GetAnimCount();
 
 		if (m_SkillSpec[m_AnimState].FirstHitCheckCount < attackAnimCount)
 		{
@@ -133,7 +133,7 @@ void CharacterBase::AttackControl()
 	}
 	else
 	{
-		m_pAnimTexture[m_AnimState]->ResetAnim();
+		m_pAnimUvController[m_AnimState]->ResetAnim();
 	}
 }
 
@@ -189,9 +189,9 @@ void CharacterBase::CollisionDraw()
 
 void CharacterBase::InitAnim(ANIMATION _animEnum, LPCTSTR _animName, int _setFrame)
 {
-	m_pAnimTexture[_animEnum] = (std::unique_ptr<Lib::AnimTexture>(new Lib::AnimTexture()));
-	m_pAnimTexture[_animEnum]->LoadAnimation("Resource/Texture/GameScene/Character.anim", _animName);
-	m_pAnimTexture[_animEnum]->SetAnimFrame(_setFrame);
+	m_pAnimUvController[_animEnum] = (std::unique_ptr<Lib::AnimUvController>(new Lib::AnimUvController()));
+	m_pAnimUvController[_animEnum]->LoadAnimation("Resource/Texture/GameScene/Character.anim", _animName);
+	m_pAnimUvController[_animEnum]->SetAnimFrame(_setFrame);
 }
 
 void CharacterBase::InitVertex2D()
@@ -252,7 +252,7 @@ void CharacterBase::DamageControl()
 		m_CharacterState.IsSquat ? (m_AnimState = ANIM_SQUAT_DAMAGE) : (m_AnimState = ANIM_DAMAGE);
 		if (m_isAnimEnd)
 		{
-			m_pAnimTexture[m_AnimState]->ResetAnim();
+			m_pAnimUvController[m_AnimState]->ResetAnim();
 			m_CharacterState.IsDamageMotion = false;
 		}
 	}
