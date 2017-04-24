@@ -226,7 +226,7 @@ void CharacterBase::DamageInit()
 {
 	SINGLETON_INSTANCE(Lib::DSoundManager).SoundOperation(m_DamageSoundIndex, Lib::DSoundManager::SOUND_PLAY);
 	m_CharacterState.HP -= m_pCollisionData->GetCollisionState().ReceiveDamage;
-	if (m_CharacterState.HP == 0)
+	if (m_CharacterState.HP <= 0)
 	{
 		m_AnimState = ANIM_DOWN;
 	}
@@ -243,7 +243,7 @@ void CharacterBase::DamageControl()
 {
 	m_AnimOperation = Lib::ANIM_NORMAL;
 
-	if (m_CharacterState.HP == 0)
+	if (m_CharacterState.HP <= 0)
 	{
 		m_AnimState = ANIM_DOWN;
 	}

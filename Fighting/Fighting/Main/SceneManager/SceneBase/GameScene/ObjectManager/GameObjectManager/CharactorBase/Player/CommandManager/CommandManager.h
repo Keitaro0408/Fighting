@@ -5,7 +5,7 @@
  */
 #ifndef COMMANDMANAGER_H
 #define COMMANDMANAGER_H
-#define KEY_COMMAND_MAX 15
+#define KEY_COMMAND_MAX 32
 #include <vector>
 
 
@@ -64,6 +64,7 @@ private:
 	int				 m_PushButtonNum;  //!< ボタン入力数
 	KEY				 m_KeyCommand[KEY_COMMAND_MAX];   //!< 押されたボタンのリスト
 	std::vector<KEY> m_CheckCommandList;
+	int				 m_CommandListNum;
 	int				 m_VectorNum;
 };
 

@@ -25,7 +25,7 @@ m_RectCollision(D3DXVECTOR2(60, 60))
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDevice(),
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
 		SINGLETON_INSTANCE(Lib::Window).GetWindowHandle()));
-	m_pVertex->Init(&D3DXVECTOR2(100, 100), m_pAnimUvController->GetUV());
+	m_pVertex->Init(&D3DXVECTOR2(120, 120), m_pAnimUvController->GetUV());
 	m_pVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
 		GetTexture(m_TextureIndex));
 	// Lib::Vertex2D Init end
@@ -48,6 +48,7 @@ Bullet::~Bullet()
 
 void Bullet::InitState(D3DXVECTOR2* _pos, bool _isRight)
 {
+	if (m_IsEnable) return;
 	m_Pos = *_pos;
 	m_IsRight = _isRight;
 	m_IsEnable = true;
@@ -58,7 +59,7 @@ void Bullet::InitState(D3DXVECTOR2* _pos, bool _isRight)
 void Bullet::Update()
 {
 	if (!m_IsEnable) return;
-	m_IsRight ? m_Pos.x += 5 : m_Pos.x -= 5;
+	m_IsRight ? m_Pos.x += 6 : m_Pos.x -= 6;
 	CollisionControl();
 	m_pAnimUvController->Control(false, Lib::ANIM_LOOP);
 }
@@ -89,14 +90,10 @@ void Bullet::CollisionControl()
 {
 	CollisionData::HIT_TYPE hitType = m_pCollisionData->GetCollisionState().HitType;
 	m_pCollisionData->SetCollisionState(&CollisionData::CollisionState(&m_Pos, &m_RectCollision, CollisionData::ATTACK, 10));
-	if (hitType == CollisionData::BODY_HIT)
+	if (hitType == CollisionData::BODY_HIT || hitType == CollisionData::ATTACK_HIT)
 	{
 		m_IsEnable = false;
 		m_pCollisionData->SetCollisionState(&CollisionData::CollisionState(&m_Pos, &m_RectCollision, CollisionData::COLLISION_NONE, 10));
-	}
-	else if (hitType != CollisionData::NON_HIT)
-	{
-		int var = 0;
 	}
 
 	SINGLETON_INSTANCE(CollisionManager).Update(m_pCollisionData->GetIndex());

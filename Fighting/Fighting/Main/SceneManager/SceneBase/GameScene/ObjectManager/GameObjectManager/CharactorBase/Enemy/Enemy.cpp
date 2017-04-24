@@ -55,7 +55,7 @@ Enemy::~Enemy()
 
 void Enemy::Update()
 {
-	if (!m_CharacterState.IsAttackMotion && m_CharacterState.HP != 0)
+	if (!m_CharacterState.IsAttackMotion && m_CharacterState.HP > 0)
 	{
 		m_AnimState = ANIM_WAIT;
 		m_AnimOperation = Lib::ANIM_LOOP;

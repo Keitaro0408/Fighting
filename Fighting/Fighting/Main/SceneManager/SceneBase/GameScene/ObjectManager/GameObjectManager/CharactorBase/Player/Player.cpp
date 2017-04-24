@@ -82,7 +82,6 @@ void Player::Update()
 		CKeyControl();
 		VKeyControl();
 		CommandControl();
-
 	}
 
 	/* ジャンプしているかチェック */
@@ -90,7 +89,7 @@ void Player::Update()
 	{
 		JumpControl();
 	}
-	
+
 	CollisionControl();
 
 	/* テストコード */
@@ -106,7 +105,10 @@ void Player::Update()
 	{
 		AttackControl();
 		m_isAnimEnd = m_pAnimUvController[m_AnimState]->Control(false, m_AnimOperation);
-		if (m_AnimState == ANIM_SHOT && m_isAnimEnd)
+		int animNum = m_pAnimUvController[m_AnimState]->GetAnimNum();
+		int animCount = m_pAnimUvController[m_AnimState]->GetAnimCount();
+
+		if (m_AnimState == ANIM_SHOT && animCount > animNum - 4)
 		{
 			m_pBullet->InitState(&m_Pos, m_CharacterState.IsRight);
 		}
@@ -130,7 +132,7 @@ void Player::Update()
 
 void Player::Draw()
 {
-	/* 相手が右に居れば右に向き、左に居れば左を向かせる */ 
+	/* 相手が右に居れば右に向き、左に居れば左を向かせる */
 	if (m_CharacterState.IsRight)
 	{
 		m_pVertex->Draw(&m_Pos, m_pAnimUvController[m_AnimState]->GetUV());
@@ -168,7 +170,7 @@ void Player::KeyCheck()
 
 void Player::LeftMoveControl()
 {
-	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_ON && 
+	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFT] == Lib::KEY_ON &&
 		!m_CharacterState.IsSquat &&
 		!m_CharacterState.IsAttackMotion)
 	{
@@ -190,7 +192,7 @@ void Player::LeftMoveControl()
 
 void Player::RightMoveControl()
 {
-	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_ON && 
+	if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHT] == Lib::KEY_ON &&
 		!m_CharacterState.IsSquat &&
 		!m_CharacterState.IsAttackMotion)
 	{
