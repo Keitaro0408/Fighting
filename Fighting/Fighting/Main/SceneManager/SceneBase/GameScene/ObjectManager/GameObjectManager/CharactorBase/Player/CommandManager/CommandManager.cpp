@@ -11,7 +11,7 @@ const int CommandManager::m_KeyValidTime = 15;
 CommandManager::CommandManager() :
 m_PushButtonNum(0),
 m_FrameCount(0),
-m_isFirstKeyPush(false),
+m_IsFirstKeyPush(false),
 m_VectorNum(0)
 {
 	for (int i = 0; i < KEY_COMMAND_MAX; i++)
@@ -36,7 +36,7 @@ void CommandManager::PushButton(KEY _key)
 	m_FrameCount = 0;
 	if (m_PushButtonNum == 0)
 	{
-		m_isFirstKeyPush = true;
+		m_IsFirstKeyPush = true;
 	}
 	else if (m_PushButtonNum > KEY_COMMAND_MAX - 1)
 	{
@@ -48,7 +48,7 @@ void CommandManager::PushButton(KEY _key)
 
 CommandManager::COMMAND_ARTS CommandManager::Update()
 {
-	if (!m_isFirstKeyPush) return ARTS_NONE;
+	if (!m_IsFirstKeyPush) return ARTS_NONE;
 
 	m_FrameCount++;
 
@@ -60,11 +60,11 @@ CommandManager::COMMAND_ARTS CommandManager::Update()
 		}
 		m_FrameCount = 0;
 		m_PushButtonNum = 0;
-		m_isFirstKeyPush = false;
+		m_IsFirstKeyPush = false;
 		m_VectorNum = 0;
 	}
 
-	if ((KEY_COMMAND_MAX / 2 ) > m_PushButtonNum) return ARTS_NONE;
+	if (m_CheckCommandList.size() >  static_cast<unsigned int>(m_PushButtonNum)) return ARTS_NONE;
 	m_CommandListNum = m_CheckCommandList.size();
 	m_VectorNum = 0;
 	if (KeyCheck())
@@ -89,7 +89,7 @@ bool CommandManager::KeyCheck(int _arrayNum)
 			count++;
 			matchKeyCount++;
 
-			if (matchKeyCount > 5) return false;
+			if (matchKeyCount > 6) return false;
 		}
 		else
 		{

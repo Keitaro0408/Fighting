@@ -60,7 +60,7 @@ private:
 	static const int m_KeyValidTime;   //!< 次のキー入力が有効なフレーム数
 
 	int				 m_FrameCount;	   //!< フレーム計測用
-	bool			 m_isFirstKeyPush; //!< 最初のキーが押されたか?
+	bool			 m_IsFirstKeyPush; //!< 最初のキーが押されたか?
 	int				 m_PushButtonNum;  //!< ボタン入力数
 	KEY				 m_KeyCommand[KEY_COMMAND_MAX];   //!< 押されたボタンのリスト
 	std::vector<KEY> m_CheckCommandList;

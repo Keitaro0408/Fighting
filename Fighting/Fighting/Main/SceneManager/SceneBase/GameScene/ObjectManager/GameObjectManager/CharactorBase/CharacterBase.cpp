@@ -23,7 +23,8 @@ m_AnimState(ANIM_WAIT),
 m_isAnimEnd(false),
 m_StandRectCollision(D3DXVECTOR2(60, 200)),
 m_SquatRectCollision(D3DXVECTOR2(80, 100)),
-m_pBullet(std::unique_ptr<Bullet>(new Bullet()))
+m_pBullet(std::unique_ptr<Bullet>(new Bullet())),
+m_JumpWidth(0)
 {
 	SINGLETON_INSTANCE(Lib::TextureManager).
 		Load("Resource/Texture/GameScene/test.png", &m_CollisionTextureIndex);
@@ -104,12 +105,13 @@ void CharacterBase::JumpControl()
 {
 	m_AnimState = ANIM_JUMP;
 	m_AnimOperation = Lib::ANIM_NORMAL;
-
 	float HeightTmp = m_Pos.y;
 	m_Pos.y += (m_Pos.y - m_OldHeight) + 1.f;
+	m_Pos.x += m_JumpWidth;
 	m_OldHeight = HeightTmp;
 	if (550.f < m_Pos.y)
 	{
+		m_JumpWidth = 0;
 		m_pAnimUvController[ANIM_JUMP]->ResetAnim();
 		m_CharacterState.IsJump = false;
 		m_Pos.y = 550.f;

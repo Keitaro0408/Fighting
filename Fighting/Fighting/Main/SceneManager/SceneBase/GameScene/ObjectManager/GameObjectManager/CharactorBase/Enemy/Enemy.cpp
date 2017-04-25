@@ -55,6 +55,8 @@ Enemy::~Enemy()
 
 void Enemy::Update()
 {
+	if (m_CharacterState.HP <= 0 && m_isAnimEnd) return;
+
 	if (!m_CharacterState.IsAttackMotion && m_CharacterState.HP > 0)
 	{
 		m_AnimState = ANIM_WAIT;

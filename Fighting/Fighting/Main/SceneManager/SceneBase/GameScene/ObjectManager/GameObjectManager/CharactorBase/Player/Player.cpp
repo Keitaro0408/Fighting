@@ -61,6 +61,8 @@ Player::~Player()
 
 void Player::Update()
 {
+	if (m_CharacterState.HP <= 0 && m_isAnimEnd) return;
+
 	KeyCheck();
 
 	/* 操作がされないとステートが変化しないので、最初に */
@@ -72,10 +74,13 @@ void Player::Update()
 
 	if (!m_CharacterState.IsDamageMotion)
 	{
-		LeftMoveControl();
-		RightMoveControl();
-		UpMoveControl();
-		DownMoveControl();
+		if (!m_CharacterState.IsJump)
+		{
+			LeftMoveControl();
+			RightMoveControl();
+			UpMoveControl();
+			DownMoveControl();
+		}
 
 		ZKeyControl();
 		XKeyControl();
@@ -218,10 +223,18 @@ void Player::UpMoveControl()
 		!m_CharacterState.IsJump &&
 		!m_CharacterState.IsAttackMotion)
 	{
-		// ジャンプ処理.
+		/* ジャンプ処理 */
 		m_OldHeight = m_Pos.y;
 		m_Pos.y -= m_JumpPower;
 		m_CharacterState.IsJump = true;
+		if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_RIGHTARROW] == Lib::KEY_ON)
+		{ 
+			m_JumpWidth += m_MoveSpeed;
+		}
+		else if (SINGLETON_INSTANCE(Lib::KeyDevice).GetKeyState()[DIK_LEFTARROW] == Lib::KEY_ON)
+		{
+			m_JumpWidth -= m_MoveSpeed;
+		}
 	}
 }
 

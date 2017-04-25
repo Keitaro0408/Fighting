@@ -160,6 +160,7 @@ protected:
 	std::map<ANIMATION, SkillSpec>  m_SkillSpec; //!< 技の性能
 	ANIMATION					    m_AnimState;
 	float						    m_OldHeight;
+	float							m_JumpWidth;
 	CharacterState					m_CharacterState;
 	std::unique_ptr<HPBar>			m_pHPBar;
 	std::unique_ptr<Bullet>			m_pBullet;
