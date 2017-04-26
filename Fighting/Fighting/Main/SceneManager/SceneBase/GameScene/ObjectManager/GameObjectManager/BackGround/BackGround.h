@@ -5,12 +5,12 @@
  */
 #ifndef BACKGROUND_H
 #define BACKGROUND_H
-#include "../../ObjectBase/ObjecBase.h"
+#include "../../ObjectBase/ObjectBase.h"
 
 /**
  * 背景管理クラス
  */
-class BackGround : public ObjecBase
+class BackGround : public ObjectBase
 {
 public:
 	/**

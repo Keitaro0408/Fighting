@@ -5,7 +5,7 @@
  */
 #ifndef BULLET_H
 #define BULLET_H
-#include "../../../ObjectBase/ObjecBase.h"
+#include "../../../ObjectBase/ObjectBase.h"
 #include "../../../../CollisionManager/CollisionData/CollisionData.h"
 #include "Animation/AnimUvController.h"
 
@@ -13,7 +13,7 @@
 /**
  * 遠距離技のオブジェクト
  */
-class Bullet : public ObjecBase
+class Bullet : public ObjectBase
 {
 public:
 	/**

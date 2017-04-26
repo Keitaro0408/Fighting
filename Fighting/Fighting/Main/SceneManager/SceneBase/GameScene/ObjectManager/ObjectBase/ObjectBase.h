@@ -1,6 +1,6 @@
 ﻿/**
- * @file   GameObjectManager.h
- * @brief  GameObjectManagerクラスのヘッダファイル
+ * @file   ObjectBase.h
+ * @brief  ObjectBaseクラスのヘッダファイル
  * @author kotani
  */
 #ifndef OBJECTBASE_H
@@ -11,18 +11,18 @@
 /**
  * ゲームのオブジェクトの基底クラス
  */
-class ObjecBase
+class ObjectBase
 {
 public:
 	/**
 	 * コンストラクタ
 	 */
-	ObjecBase() = default;
+	ObjectBase() = default;
 
 	/**
 	 * デストラクタ
 	 */
-	virtual ~ObjecBase() = default;
+	virtual ~ObjectBase() = default;
 
 	/**
 	 * 更新関数

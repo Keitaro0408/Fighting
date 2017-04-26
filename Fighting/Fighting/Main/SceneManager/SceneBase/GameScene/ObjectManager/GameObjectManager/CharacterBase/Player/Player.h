@@ -5,7 +5,7 @@
  */
 #ifndef PLAYER_H
 #define PLAYER_H
-#include "../../CharactorBase/CharacterBase.h"
+#include "../../CharacterBase/CharacterBase.h"
 
 class CommandManager;
 

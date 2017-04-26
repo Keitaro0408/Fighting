@@ -9,7 +9,7 @@
 #include <memory>
 
 class CombatManager;
-class ObjecBase;
+class ObjectBase;
 
 /**
  * ゲームのUI以外のオブジェクト管理
@@ -41,7 +41,7 @@ private:
 	GameObjectManager(const GameObjectManager&);
 	void operator=(const GameObjectManager&);
 
-	std::vector<std::unique_ptr<ObjecBase> > m_pObjectBase;
+	std::vector<std::unique_ptr<ObjectBase> > m_pObjectBase;
 
 };
 

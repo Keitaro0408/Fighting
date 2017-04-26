@@ -4,10 +4,10 @@
  * @author kotani
  */
 #include "GameObjectManager.h"
-#include "../ObjectBase/ObjecBase.h"
+#include "../ObjectBase/ObjectBase.h"
 #include "BackGround\BackGround.h"
-#include "CharactorBase\Player\Player.h"
-#include "CharactorBase\Enemy\Enemy.h"
+#include "CharacterBase\Player\Player.h"
+#include "CharacterBase\Enemy\Enemy.h"
 #include "../../CombatManager\CombatManager.h"
 
 GameObjectManager::GameObjectManager()

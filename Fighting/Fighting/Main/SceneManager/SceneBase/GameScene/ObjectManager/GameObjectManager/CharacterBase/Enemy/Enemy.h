@@ -5,7 +5,7 @@
  */
 #ifndef ENEMY_H
 #define ENEMY_H
-#include "../../CharactorBase/CharacterBase.h"
+#include "../../CharacterBase/CharacterBase.h"
 
 class Enemy : public CharacterBase
 {

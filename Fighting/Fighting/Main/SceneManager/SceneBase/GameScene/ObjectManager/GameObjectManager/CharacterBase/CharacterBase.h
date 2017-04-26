@@ -9,7 +9,7 @@
 #include <map>
 #include "Vertex2D/Vertex2D.h"
 #include "Animation/AnimUvController.h"
-#include "../../ObjectBase/ObjecBase.h"
+#include "../../ObjectBase/ObjectBase.h"
 #include "../../../CollisionManager/CollisionData/CollisionData.h"
 #include "HPBar/HPBar.h"
 
@@ -18,7 +18,7 @@ class Bullet;
 /**
  * キャラクターの基底クラス
  */
-class CharacterBase : public ObjecBase
+class CharacterBase : public ObjectBase
 {
 public:
 	/**

@@ -5,11 +5,11 @@
  */
 #ifndef HPBAR_H
 #define HPBAR_H
-#include "../../../ObjectBase/ObjecBase.h"
+#include "../../../ObjectBase/ObjectBase.h"
 #include "Vertex2D/Vertex2D.h"
 #include <memory>
 
-class HPBar : public ObjecBase
+class HPBar : public ObjectBase
 {
 public:
 	/**
