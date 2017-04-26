@@ -19,6 +19,6 @@ bool Lib::TextureManager::Load(LPCTSTR _pFileName, int* _index)
 		return false;
 	}
 	SINGLETON_INSTANCE(TextureContainer).
-		Add(TextureLoader::Load(_pFileName), _index);
+		Add(pTexture, _index);
 	return true;
 }
