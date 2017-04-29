@@ -1,6 +1,7 @@
 ﻿#include <crtdbg.h>
 #include "Window/Window.h"
 #include "SceneManager/SceneManager.h"
+#include "Dx11\DX11Manager.h"
 
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
@@ -15,6 +16,15 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR szStr, INT iCmdSh
 	SINGLETON_CREATE(Lib::Window);
 	SINGLETON_INSTANCE(Lib::Window).DispWindow(hInst, WINDOW_WIDTH, WINDOW_HEIGHT, "Fighting", &WindowProc);
 
+	{
+		const HWND hWnd = SINGLETON_INSTANCE(Lib::Window).GetWindowHandle();
+
+		// Lib::DX11Manager Init
+		SINGLETON_CREATE(Lib::DX11Manager);
+		SINGLETON_INSTANCE(Lib::DX11Manager).Init(hWnd);
+		// Lib::DX11Manager Init end
+
+	}
 	SceneManager* sceneManager = new SceneManager(SINGLETON_INSTANCE(Lib::Window).GetWindowHandle());
 
 	MSG Msg;
@@ -36,6 +46,10 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR szStr, INT iCmdSh
 	}
 
 	delete sceneManager;
+	// Lib::DX11Manager Delete
+	SINGLETON_INSTANCE(Lib::DX11Manager).Release();
+	SINGLETON_DELETE(Lib::DX11Manager);
+	// Lib::DX11Manager Delete end
 	SINGLETON_DELETE(Lib::Window);
 
 	return (INT)Msg.wParam;
