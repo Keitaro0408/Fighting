@@ -18,7 +18,7 @@ const D3DXVECTOR2 Player::m_HPBarPos = D3DXVECTOR2(HPBar::m_HPBarRect.x / 2 + 70
 
 Player::Player() :
 CharacterBase(D3DXVECTOR2(220, 550), D3DXVECTOR2(256, 256), true),
-m_pCommandManager(std::unique_ptr<CommandManager>(new CommandManager())),
+m_pCommandManager(new CommandManager()),
 m_MoveSpeed(4.5f)
 {
 	// Lib::TextureManager Texture Load
