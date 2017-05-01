@@ -26,9 +26,10 @@ m_SquatRectCollision(D3DXVECTOR2(80, 100)),
 m_pBullet(std::unique_ptr<Bullet>(new Bullet())),
 m_JumpWidth(0)
 {
+#ifdef _DEBUG
 	SINGLETON_INSTANCE(Lib::TextureManager).
 		Load("Resource/Texture/GameScene/test.png", &m_CollisionTextureIndex);
-
+#endif
 	SINGLETON_INSTANCE(Lib::DSoundManager).LoadSound("Resource/Sound/damage.wav",&m_DamageSoundIndex);
 
 	InitVertex2D();
@@ -75,10 +76,16 @@ m_JumpWidth(0)
 
 CharacterBase::~CharacterBase()
 {
+#ifdef _DEBUG
 	m_pSquatCollisionVertex->Release();
 	m_pStandCollisionVertex->Release();
+#endif
+
 	SINGLETON_INSTANCE(Lib::DSoundManager).ReleaseSound(m_DamageSoundIndex);
+
+#ifdef _DEBUG
 	SINGLETON_INSTANCE(Lib::TextureManager).ReleaseTexture(m_CollisionTextureIndex);
+#endif
 }
 
 
@@ -202,7 +209,7 @@ void CharacterBase::InitVertex2D()
 	m_UV[1] = D3DXVECTOR2(1, 0);
 	m_UV[2] = D3DXVECTOR2(0, 1);
 	m_UV[3] = D3DXVECTOR2(1, 1);
-
+#ifdef _DEBUG
 	m_pStandCollisionVertex.reset(new Lib::Vertex2D(
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDevice(),
 		SINGLETON_INSTANCE(Lib::DX11Manager).GetDeviceContext(),
@@ -222,11 +229,14 @@ void CharacterBase::InitVertex2D()
 
 	m_pSquatCollisionVertex->SetTexture(SINGLETON_INSTANCE(Lib::TextureManager).
 		GetTexture(m_CollisionTextureIndex));
+#endif
+
 }
 
 void CharacterBase::DamageInit()
 {
 	SINGLETON_INSTANCE(Lib::DSoundManager).SoundOperation(m_DamageSoundIndex, Lib::DSoundManager::SOUND_PLAY);
+
 	m_CharacterState.HP -= m_pCollisionData->GetCollisionState().ReceiveDamage;
 	if (m_CharacterState.HP <= 0)
 	{
